@@ -17,7 +17,6 @@ import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -41,11 +40,6 @@ public final class ProxyClient extends ProxyCommon {
 
         MinecraftForge.EVENT_BUS.register(LookAtInfoRenderer.INSTANCE);
         MinecraftForge.EVENT_BUS.register(this);
-    }
-
-    @Override
-    public void onPostInit(final FMLPostInitializationEvent event) {
-        super.onPostInit(event);
     }
 
     // --------------------------------------------------------------------- //

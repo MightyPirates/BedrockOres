@@ -35,4 +35,9 @@ public final class Blocks {
 
         GameRegistry.registerTileEntity(tileEntity, Constants.MOD_ID + ": " + name);
     }
+
+    // --------------------------------------------------------------------- //
+
+    private Blocks() {
+    }
 }

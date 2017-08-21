@@ -22,4 +22,9 @@ public final class Items {
                 setCreativeTab(CreativeTabs.MISC).
                 setRegistryName(name));
     }
+
+    // --------------------------------------------------------------------- //
+
+    private Items() {
+    }
 }
