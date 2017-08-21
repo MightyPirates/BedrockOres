@@ -1,5 +1,6 @@
 package li.cil.bedrockores.client.render;
 
+import li.cil.bedrockores.common.config.Settings;
 import li.cil.bedrockores.common.tileentity.LookAtInfoProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -22,6 +23,11 @@ public enum LookAtInfoRenderer {
     @SubscribeEvent
     public void onWorldRender(final RenderWorldLastEvent event) {
         final Minecraft mc = Minecraft.getMinecraft();
+        final EntityPlayer player = mc.player;
+
+        if (Settings.uiOnlyWhenSneaking && !player.isSneaking()) {
+            return;
+        }
 
         if (mc.objectMouseOver.typeOfHit != RayTraceResult.Type.BLOCK) {
             return;
@@ -38,7 +44,6 @@ public enum LookAtInfoRenderer {
         doPositionPrologue(event);
         doOverlayPrologue();
 
-        final EntityPlayer player = mc.player;
         float entityYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * event.getPartialTicks();
         float entityPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * event.getPartialTicks();
         drawNameplateOnTop(mc.fontRenderer,

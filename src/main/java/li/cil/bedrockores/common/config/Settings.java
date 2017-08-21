@@ -25,6 +25,9 @@ public final class Settings {
     @Config.RangeDouble(min = 0, max = 10000)
     public static float veinYieldScale = 2f;
 
+    @Config.Comment("Whether to only show the floating UI indicating ore yield when sneaking.")
+    public static boolean uiOnlyWhenSneaking = false;
+
     // --------------------------------------------------------------------- //
 
     private Settings() {
