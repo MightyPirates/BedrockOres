@@ -1,0 +1,328 @@
+[
+  {
+    "comment": [
+      "Coal is disabled by default because, frankly, it's kinda abundant anyway.",
+      "Also, this demonstrates use of the comment field. It isn't parsed, it's just",
+      "what it says. A comment.",
+      "Explanation of the fields:",
+      "  enabled   -- handy to quickly disable ores without removing them ore setting",
+      "               their weight to zero.",
+      "  comment   -- just that, a comment field, useful to document ore settings.",
+      "  state     -- defines the actual ore that will be dropped by the bedrock ore.",
+      "  dimension -- allows defining what dimension *types* an ore can be generated",
+      "               in. Legal values are 'overworld', 'nether' and '*' (for any).",
+      "               defaults to 'overworld'.",
+      "  weight    -- this defines the weight of the ore type in relation to others.",
+      "               It is used to determine which ore to use when generating a vein.",
+      "               A weight divided by the sum of all weights of ores that are also",
+      "               valid results in the probability of the ore being picked.",
+      "  width*    -- the min and max width of a vein. This defines the horizontal",
+      "               'bounds' of a vein (their actual top-view shape is an ellipse).",
+      "               This is more or less decorative, but the wider a vein the easier",
+      "               it will be to find. Max value is 8.",
+      "  count*    -- the min and max number of of blocks to generate per vein. If the",
+      "               max is larger than the number of candidate blocks the yield is",
+      "               simply distributed across the blocks that *do* exist.",
+      "  yield*    -- the min and max amount of actual resources contained in a vein.",
+      "               This is the number of times a player can harvest the bedrock ores",
+      "               in the vein/the miner can pull a block from the vein. The actual",
+      "               yields will be distributed across all the blocks in the vein."
+    ],
+    "enabled": false,
+    "state": {
+      "name": "minecraft:coal_ore"
+    },
+    "dimension": "overworld",
+    "weight": 5,
+    "widthMin": 5,
+    "widthMax": 7,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 12,
+    "countMax": 20,
+    "yieldMin": 2000,
+    "yieldMax": 2500
+  },
+  {
+    "state": {
+      "name": "minecraft:iron_ore"
+    },
+    "dimension": "overworld",
+    "weight": 4,
+    "widthMin": 4,
+    "widthMax": 6,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 10,
+    "countMax": 16,
+    "yieldMin": 1000,
+    "yieldMax": 1500
+  },
+  {
+    "state": {
+      "name": "minecraft:gold_ore"
+    },
+    "dimension": "overworld",
+    "weight": 3,
+    "widthMin": 3,
+    "widthMax": 5,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 8,
+    "countMax": 12,
+    "yieldMin": 500,
+    "yieldMax": 750
+  },
+  {
+    "state": {
+      "name": "minecraft:diamond_ore"
+    },
+    "dimension": "overworld",
+    "weight": 2,
+    "widthMin": 2,
+    "widthMax": 4,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 100,
+    "yieldMax": 150
+  },
+  {
+    "state": {
+      "name": "minecraft:redstone_ore"
+    },
+    "dimension": "overworld",
+    "weight": 3,
+    "widthMin": 3,
+    "widthMax": 5,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 8,
+    "countMax": 10,
+    "yieldMin": 400,
+    "yieldMax": 600
+  },
+  {
+    "state": {
+      "name": "minecraft:lapis_ore"
+    },
+    "dimension": "overworld",
+    "weight": 3,
+    "widthMin": 2,
+    "widthMax": 3,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 4,
+    "countMax": 6,
+    "yieldMin": 300,
+    "yieldMax": 400
+  },
+  {
+    "state": {
+      "name": "minecraft:emerald_ore"
+    },
+    "dimension": "overworld",
+    "weight": 1,
+    "widthMin": 2,
+    "widthMax": 3,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 2,
+    "countMax": 4,
+    "yieldMin": 50,
+    "yieldMax": 75
+  },
+  {
+    "state": {
+      "name": "minecraft:quartz_ore"
+    },
+    "dimension": "nether",
+    "weight": 2,
+    "widthMin": 2,
+    "widthMax": 5,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 8,
+    "countMax": 10,
+    "yieldMin": 800,
+    "yieldMax": 1200
+  },
+  {
+    "state": {
+      "name": "minecraft:glowstone"
+    },
+    "dimension": "nether",
+    "weight": 1,
+    "widthMin": 5,
+    "widthMax": 8,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 10,
+    "countMax": 14,
+    "yieldMin": 1000,
+    "yieldMax": 1500
+  },
+  {
+    "state": {
+      "name": "thermalfoundation:ore",
+      "properties": {
+        "type": "copper"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 4,
+    "widthMin": 4,
+    "widthMax": 6,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 10,
+    "countMax": 16,
+    "yieldMin": 1000,
+    "yieldMax": 1500
+  },
+  {
+    "state": {
+      "name": "thermalfoundation:ore",
+      "properties": {
+        "type": "tin"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 4,
+    "widthMin": 4,
+    "widthMax": 6,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 10,
+    "countMax": 16,
+    "yieldMin": 1000,
+    "yieldMax": 1500
+  },
+  {
+    "state": {
+      "name": "thermalfoundation:ore",
+      "properties": {
+        "type": "silver"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 3,
+    "widthMin": 3,
+    "widthMax": 5,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 8,
+    "countMax": 12,
+    "yieldMin": 500,
+    "yieldMax": 750
+  },
+  {
+    "state": {
+      "name": "thermalfoundation:ore",
+      "properties": {
+        "type": "lead"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 3,
+    "widthMin": 3,
+    "widthMax": 5,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 8,
+    "countMax": 12,
+    "yieldMin": 500,
+    "yieldMax": 750
+  },
+  {
+    "state": {
+      "name": "thermalfoundation:ore",
+      "properties": {
+        "type": "aluminum"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 3,
+    "widthMin": 3,
+    "widthMax": 5,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 8,
+    "countMax": 12,
+    "yieldMin": 500,
+    "yieldMax": 750
+  },
+  {
+    "state": {
+      "name": "thermalfoundation:ore",
+      "properties": {
+        "type": "nickel"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 2,
+    "widthMin": 2,
+    "widthMax": 4,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 100,
+    "yieldMax": 150
+  },
+  {
+    "state": {
+      "name": "thermalfoundation:ore",
+      "properties": {
+        "type": "platinum"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 2,
+    "widthMin": 2,
+    "widthMax": 4,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 100,
+    "yieldMax": 150
+  },
+  {
+    "state": {
+      "name": "thermalfoundation:ore",
+      "properties": {
+        "type": "iridium"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 1,
+    "widthMin": 2,
+    "widthMax": 3,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 2,
+    "countMax": 4,
+    "yieldMin": 50,
+    "yieldMax": 75
+  },
+  {
+    "state": {
+      "name": "thermalfoundation:ore",
+      "properties": {
+        "type": "mithril"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 1,
+    "widthMin": 2,
+    "widthMax": 3,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 2,
+    "countMax": 4,
+    "yieldMin": 50,
+    "yieldMax": 75
+  }
+]

@@ -1,0 +1,15 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "top": "bedrockores:blocks/bedrock_miner_top",
+            "side": "bedrockores:blocks/bedrock_miner_side",
+            "bottom": "bedrockores:blocks/bedrock_miner_bottom"
+        },
+        "model": "cube_bottom_top"
+    },
+    "variants": {
+        "normal": [{}],
+        "inventory": [{}]
+    }
+}
