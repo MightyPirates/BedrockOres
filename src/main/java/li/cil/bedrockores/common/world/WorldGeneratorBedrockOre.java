@@ -12,6 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -49,7 +50,7 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
         final int veinMaxYield = Math.max(veinMinYield, ore.yieldMax);
 
         final int veinCount = veinMinCount == veinMaxCount ? veinMinCount : (veinMinCount + random.nextInt(veinMaxCount - veinMinCount));
-        final int veinYield = Math.max(0, Math.round((veinMinYield == veinMaxYield ? veinMinYield : (veinMinYield + random.nextInt(veinMaxYield - veinMinYield))) * Settings.veinYieldScale));
+        final int veinYield = Math.max(0, Math.round((veinMinYield == veinMaxYield ? veinMinYield : (veinMinYield + random.nextInt(veinMaxYield - veinMinYield))) * Settings.veinYieldBaseScale));
         if (veinYield == 0) {
             return;
         }
@@ -63,6 +64,18 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
         final float rotation = random.nextFloat() * (float) Math.PI;
         final int centerX = chunkX * 16 + 8 - maxWidth + random.nextInt(maxWidth * 2);
         final int centerZ = chunkZ * 16 + 8 - maxWidth + random.nextInt(maxWidth * 2);
+
+        final BlockPos spawnPoint = world.getSpawnPoint();
+        final double distanceToSpawn = new Vec3i(spawnPoint.getX(), 0, spawnPoint.getZ()).getDistance(centerX, 0, centerZ);
+        final float veinScale;
+        if (distanceToSpawn > Settings.veinDistanceScaleStart) {
+            veinScale = Math.max(1, (float) Math.log((distanceToSpawn - Settings.veinDistanceScaleStart) / 10) * Settings.veinDistanceScaleMultiplier);
+        } else {
+            veinScale = 1;
+        }
+
+        final int adjustedCount = Math.round(veinCount * veinScale);
+        final int adjustedYield = Math.round(veinYield * veinScale);
 
         final int minX = centerX - maxWidth;
         final int maxX = centerX + maxWidth;
@@ -81,7 +94,7 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
             int maxY = 0;
             for (int z = minZ; z <= maxZ; z++) {
                 for (int x = minX; x <= maxX; x++) {
-                    if (!isPointInEllipse(x, z, centerX, centerZ, a, b, rotation)) {
+                    if (!isPointInEllipse(x, z, centerX, centerZ,- a, b, rotation)) {
                         continue;
                     }
                     for (int y = Settings.veinBaseY; y >= 0; y--) {
@@ -105,11 +118,11 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
 
             // Inside the ellipsoid we pick a number of actually used blocks
             // in a uniform random fashion.
-            if (candidates.size() > veinCount) {
+            if (candidates.size() > adjustedCount) {
                 Collections.shuffle(candidates, random);
             }
 
-            final int placeCount = Math.min(veinCount, candidates.size());
+            final int placeCount = Math.min(adjustedCount, candidates.size());
 
             // Each generated block gets a bit of randomness to its actual
             // amount to make things less boring.
@@ -123,10 +136,10 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
             // Half of the total yield is evenly distributed across blocks, the
             // rest falls into this random distribution. Adjust the normalizer
             // accordingly.
-            final float fixedYield = veinYield / 2f;
+            final float fixedYield = adjustedYield / 2f;
             final int baseYield = MathHelper.ceil(fixedYield / placeCount);
-            final float normalizer = (veinYield - fixedYield) / sum;
-            int remaining = veinYield;
+            final float normalizer = (adjustedYield - fixedYield) / sum;
+            int remaining = adjustedYield;
             for (int i = 0; i < placeCount && remaining > 0; i++) {
                 final int amount = Math.min(remaining, baseYield + MathHelper.ceil(distribution.get(i) * normalizer));
                 if (amount == 0) {
