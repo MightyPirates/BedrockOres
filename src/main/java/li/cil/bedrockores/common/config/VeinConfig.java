@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -179,7 +180,7 @@ public final class VeinConfig {
 
     private static void save(final Object value, final File path, final Gson gson) {
         try {
-            FileUtils.writeStringToFile(path, gson.toJson(value));
+            FileUtils.writeStringToFile(path, gson.toJson(value), Charset.defaultCharset());
         } catch (final IOException e) {
             BedrockOres.getLog().warn("Failed writing " + path.toString() + ".", e);
         }

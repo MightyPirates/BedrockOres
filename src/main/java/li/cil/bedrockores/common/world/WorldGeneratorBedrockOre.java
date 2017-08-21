@@ -14,8 +14,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.ArrayList;
@@ -94,7 +94,7 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
             int maxY = 0;
             for (int z = minZ; z <= maxZ; z++) {
                 for (int x = minX; x <= maxX; x++) {
-                    if (!isPointInEllipse(x, z, centerX, centerZ,- a, b, rotation)) {
+                    if (!isPointInEllipse(x, z, centerX, centerZ, -a, b, rotation)) {
                         continue;
                     }
                     for (int y = Settings.veinBaseY; y >= 0; y--) {

@@ -1,6 +1,6 @@
 package li.cil.bedrockores.common.tileentity;
 
-import cofh.api.energy.IEnergyReceiver;
+import cofh.redstoneflux.api.IEnergyReceiver;
 import li.cil.bedrockores.common.config.Constants;
 import li.cil.bedrockores.common.config.Settings;
 import li.cil.bedrockores.common.integration.ModIDs;
@@ -40,7 +40,7 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-@Optional.Interface(modid = ModIDs.REDSTONE_FLUX, iface = "cofh.api.energy.IEnergyReceiver")
+@Optional.Interface(modid = ModIDs.REDSTONE_FLUX, iface = "cofh.redstoneflux.api.IEnergyReceiver")
 public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider implements ITickable, IEnergyReceiver {
     // --------------------------------------------------------------------- //
     // Persisted data

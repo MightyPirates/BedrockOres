@@ -7,7 +7,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
 
@@ -57,10 +57,12 @@ minecraft {
 
 repositories {
     maven { url "http://dvs1.progwml6.com/files/maven" }
+    maven { url = "http://maven.covers1624.net" }
 }
 
 dependencies {
     deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
+    deobfCompile "cofh:RedstoneFlux:${config.minecraft.version}-${config.rf.version}:universal"
 }
 
 processResources {

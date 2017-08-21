@@ -1,6 +1,5 @@
 package li.cil.bedrockores.client.render;
 
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import li.cil.bedrockores.client.model.ModelLoaderBedrockOre;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -14,6 +13,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Collection;
+import java.util.function.Function;
 
 @SideOnly(Side.CLIENT)
 public enum ModelBedrockOre implements IModel {
