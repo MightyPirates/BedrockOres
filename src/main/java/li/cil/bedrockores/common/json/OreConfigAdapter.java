@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import li.cil.bedrockores.common.config.VeinConfig;
+import li.cil.bedrockores.common.config.OreConfig;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -16,14 +16,14 @@ import java.util.Objects;
 // Reflection based adapter fail when trying to look up an adapter for runtime
 // type of state, so we do it manually... also allows some other custom logic,
 // so that's nice.
-public class OreAdapter implements JsonSerializer<VeinConfig.Ore>, JsonDeserializer<VeinConfig.Ore> {
+public class OreConfigAdapter implements JsonSerializer<OreConfig>, JsonDeserializer<OreConfig> {
     // --------------------------------------------------------------------- //
     // JsonSerializer
 
     @Override
-    public JsonElement serialize(final VeinConfig.Ore src, final Type typeOfSrc, final JsonSerializationContext context) {
+    public JsonElement serialize(final OreConfig src, final Type typeOfSrc, final JsonSerializationContext context) {
         final JsonObject jsonObject = new JsonObject();
-        for (final Field field : VeinConfig.Ore.class.getFields()) {
+        for (final Field field : OreConfig.class.getFields()) {
             try {
                 if (Objects.equals("enabled", field.getName()) && Objects.equals(true, field.get(src))) {
                     continue;
@@ -45,10 +45,10 @@ public class OreAdapter implements JsonSerializer<VeinConfig.Ore>, JsonDeseriali
     // JsonDeserializer
 
     @Override
-    public VeinConfig.Ore deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context) throws JsonParseException {
-        final VeinConfig.Ore dst = new VeinConfig.Ore();
+    public OreConfig deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context) throws JsonParseException {
+        final OreConfig dst = new OreConfig();
         final JsonObject jsonObject = json.getAsJsonObject();
-        for (final Field field : VeinConfig.Ore.class.getFields()) {
+        for (final Field field : OreConfig.class.getFields()) {
             final JsonElement jsonElement = jsonObject.get(field.getName());
             if (jsonElement == null) {
                 continue;

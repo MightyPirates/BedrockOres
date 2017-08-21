@@ -3,6 +3,7 @@ package li.cil.bedrockores.common.world;
 import com.google.common.base.Predicate;
 import gnu.trove.list.TFloatList;
 import gnu.trove.list.array.TFloatArrayList;
+import li.cil.bedrockores.common.config.OreConfig;
 import li.cil.bedrockores.common.config.Settings;
 import li.cil.bedrockores.common.config.VeinConfig;
 import li.cil.bedrockores.common.init.Blocks;
@@ -33,7 +34,7 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
             return;
         }
 
-        final VeinConfig.Ore ore = VeinConfig.getOre(world.provider.getDimensionType(), random.nextFloat());
+        final OreConfig ore = VeinConfig.getOre(world.provider.getDimensionType(), random.nextFloat());
         if (ore == null) {
             return;
         }
@@ -140,7 +141,7 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
                 final TileEntity tileEntity = world.getTileEntity(pos);
                 if (tileEntity instanceof TileEntityBedrockOre) {
                     final TileEntityBedrockOre tileEntityBedrockOre = (TileEntityBedrockOre) tileEntity;
-                    tileEntityBedrockOre.setOreBlockState(ore.state, amount);
+                    tileEntityBedrockOre.setOreBlockState(ore.state.getBlockState(), amount);
                 }
             }
 

@@ -5,10 +5,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import joptsimple.internal.Strings;
 import li.cil.bedrockores.common.BedrockOres;
-import li.cil.bedrockores.common.json.BlockStateAdapter;
-import li.cil.bedrockores.common.json.OreAdapter;
+import li.cil.bedrockores.common.json.OreConfigAdapter;
 import li.cil.bedrockores.common.json.ResourceLocationAdapter;
 import li.cil.bedrockores.common.json.Types;
+import li.cil.bedrockores.common.json.WrappedBlockStateAdapter;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
@@ -29,41 +29,15 @@ import java.util.Comparator;
 import java.util.Objects;
 
 public final class VeinConfig {
-    @SuppressWarnings({"WeakerAccess", "unused"})
-    public static final class Ore {
-        public String[] comment;
-        public boolean enabled = true;
-
-        public IBlockState state;
-
-        public String dimension = "overworld";
-        public int weight = 1;
-
-        public int widthMin = 4;
-        public int widthMax = 6;
-
-        public int heightMin = 2;
-        public int heightMax = 4;
-
-        public int countMin = 8;
-        public int countMax = 12;
-
-        public int yieldMin = 2000;
-        public int yieldMax = 3000;
-
-        public String group;
-        public int groupOrder;
-    }
-
-    private static ArrayList<Ore> allOres = new ArrayList<>();
-    private static ArrayList<Ore> overworldOres = new ArrayList<>();
-    private static ArrayList<Ore> netherOres = new ArrayList<>();
+    private static ArrayList<OreConfig> allOres = new ArrayList<>();
+    private static ArrayList<OreConfig> overworldOres = new ArrayList<>();
+    private static ArrayList<OreConfig> netherOres = new ArrayList<>();
     private static int overworldOreWeightSum;
     private static int netherOreWeightSum;
 
     @Nullable
-    public static Ore getOre(final DimensionType dimensionType, final float r) {
-        final ArrayList<Ore> list;
+    public static OreConfig getOre(final DimensionType dimensionType, final float r) {
+        final ArrayList<OreConfig> list;
         final int oreWeightSum;
         switch (dimensionType) {
             case OVERWORLD:
@@ -84,7 +58,7 @@ public final class VeinConfig {
 
         final int wantWeightSum = (int) (r * oreWeightSum);
         int weightSum = 0;
-        for (final Ore ore : list) {
+        for (final OreConfig ore : list) {
             weightSum += ore.weight;
             if (weightSum > wantWeightSum) {
                 return ore;
@@ -99,8 +73,8 @@ public final class VeinConfig {
 
         final Gson gson = new GsonBuilder().
                 registerTypeAdapter(ResourceLocation.class, new ResourceLocationAdapter()).
-                registerTypeAdapter(IBlockState.class, new BlockStateAdapter()).
-                registerTypeAdapter(Ore.class, new OreAdapter()).
+                registerTypeAdapter(IBlockState.class, new WrappedBlockStateAdapter()).
+                registerTypeAdapter(OreConfig.class, new OreConfigAdapter()).
                 setPrettyPrinting().
                 disableHtmlEscaping().
                 create();
@@ -109,14 +83,14 @@ public final class VeinConfig {
         loadOres(configDirectory, gson);
 
         // Remove entries where block state could not be loaded ore have no weight.
-        allOres.removeIf(ore -> !ore.enabled || ore.weight < 1 || ore.state.getBlock() == Blocks.AIR);
+        allOres.removeIf(ore -> !ore.enabled || ore.weight < 1 || ore.state.getBlockState().getBlock() == Blocks.AIR);
 
         // Remove grouped entries where a group entry with a lower order exists.
         allOres.removeIf(ore -> {
             if (Strings.isNullOrEmpty(ore.group)) {
                 return false;
             }
-            for (final Ore otherOre : allOres) {
+            for (final OreConfig otherOre : allOres) {
                 if (ore == otherOre) {
                     continue;
                 }
@@ -160,7 +134,7 @@ public final class VeinConfig {
 
     private static void loadDefaultOres(final Gson gson) {
         try {
-            final ArrayList<Ore> result = loadDefault(Constants.BEDROCK_VEINS_FILENAME, Types.ORE_LIST, gson);
+            final ArrayList<OreConfig> result = loadDefault(Constants.BEDROCK_VEINS_FILENAME, Types.LIST_ORE, gson);
             allOres.clear();
             allOres.addAll(result);
         } catch (final IOException | JsonSyntaxException e) {
@@ -169,7 +143,7 @@ public final class VeinConfig {
     }
 
     private static void loadOres(final String basePath, final Gson gson) {
-        final ArrayList<Ore> result = load(allOres, Constants.BEDROCK_VEINS_FILENAME, Types.ORE_LIST, basePath, gson);
+        final ArrayList<OreConfig> result = load(allOres, Constants.BEDROCK_VEINS_FILENAME, Types.LIST_ORE, basePath, gson);
         if (result != allOres) {
             allOres.clear();
             allOres.addAll(result);
