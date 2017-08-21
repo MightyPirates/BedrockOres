@@ -29,7 +29,7 @@ public final class WrappedBlockState {
     @SuppressWarnings("unchecked")
     private IBlockState resolveBlockState() {
         final Block block = ForgeRegistries.BLOCKS.getValue(name);
-        if (block == null) {
+        if (block == null || block == Blocks.AIR) {
             return Blocks.AIR.getDefaultState();
         }
 
