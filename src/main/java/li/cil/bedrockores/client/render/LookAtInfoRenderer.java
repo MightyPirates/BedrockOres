@@ -46,7 +46,7 @@ public enum LookAtInfoRenderer {
 
         float entityYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * event.getPartialTicks();
         float entityPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * event.getPartialTicks();
-        drawNameplateOnTop(mc.fontRenderer,
+        drawNameplateOnTop(mc.fontRendererObj,
                            infoProvider.getLookAtInfo(),
                            blockPos.getX() + 0.5f,
                            blockPos.getY() + 1.5f,

@@ -62,7 +62,7 @@ public final class ProxyClient extends ProxyCommon {
             return;
         }
 
-        ConfigManager.sync(Constants.MOD_ID, Config.Type.INSTANCE);
+        ConfigManager.load(Constants.MOD_ID, Config.Type.INSTANCE);
     }
 
     // --------------------------------------------------------------------- //

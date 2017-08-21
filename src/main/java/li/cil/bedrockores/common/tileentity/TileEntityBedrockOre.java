@@ -67,6 +67,7 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
         return amount;
     }
 
+    @Nullable
     public ItemStack extract() {
         final ItemStack stack = getDroppedStack();
 
@@ -77,7 +78,7 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
             getWorld().markChunkDirty(getPos(), this);
         }
 
-        return stack.copy();
+        return stack != null ? stack.copy() : null;
     }
 
     // --------------------------------------------------------------------- //
@@ -162,15 +163,12 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
         setOreBlockState(Block.BLOCK_STATE_IDS.getByValue(oreBlockStateId), compound.getInteger(TAG_AMOUNT));
     }
 
+    @Nullable
     private ItemStack getDroppedStack() {
-        if (droppedStack == null) {
-            if (oreBlockState == null) {
-                droppedStack = ItemStack.EMPTY;
-            } else {
-                droppedStack = oreBlockState.getBlock().getPickBlock(oreBlockState, null, getWorld(), BlockPos.ORIGIN, null);
-            }
+        if (droppedStack == null && oreBlockState != null) {
+            droppedStack = oreBlockState.getBlock().getPickBlock(oreBlockState, null, getWorld(), BlockPos.ORIGIN, null);
         }
-        if (droppedStack.isEmpty()) {
+        if (droppedStack == null) {
             amount = 0;
         }
         return droppedStack;

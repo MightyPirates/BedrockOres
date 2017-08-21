@@ -133,7 +133,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
                     add(up.scale(dy));
             final Vec3d velocity = new Vec3d(direction).scale(0.05);
 
-            getWorld().spawnParticle(EnumParticleTypes.SMOKE_NORMAL, origin.x, origin.y, origin.z, velocity.x, velocity.y, velocity.z);
+            getWorld().spawnParticle(EnumParticleTypes.SMOKE_NORMAL, origin.xCoord, origin.yCoord, origin.zCoord, velocity.xCoord, velocity.yCoord, velocity.zCoord);
         }
     }
 
@@ -298,7 +298,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
 
     private boolean tryTransferOutput() {
         final ItemStack stack = inventory.getStackInSlot(SLOT_OUTPUT);
-        if (stack.isEmpty()) {
+        if (stack == null) {
             return true;
         }
 
@@ -312,7 +312,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
         final ItemStack remainder = ItemHandlerHelper.insertItem(itemHandler, stack, false);
         inventory.setStackInSlot(SLOT_OUTPUT, remainder);
 
-        return remainder.isEmpty();
+        return remainder == null || remainder.stackSize < 1;
     }
 
     @Nullable
@@ -357,7 +357,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
         final int burnTime = Math.round(TileEntityFurnace.getItemBurnTime(stack) * Settings.minerEfficiency);
 
         // Either it was empty, invalid or we're consuming the fuel.
-        inventory.setStackInSlot(SLOT_FUEL, ItemStack.EMPTY);
+        inventory.setStackInSlot(SLOT_FUEL, null);
         if (burnTime > 0) {
             remainingBurnTime = burnTime;
             return true;
@@ -425,7 +425,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
             super(2);
         }
 
-        @Nonnull
+        @Nullable
         @Override
         public ItemStack insertItem(final int slot, @Nonnull final ItemStack stack, final boolean simulate) {
             if (slot == SLOT_OUTPUT) {
@@ -439,18 +439,18 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
             return super.insertItem(slot, stack, simulate);
         }
 
-        @Nonnull
+        @Nullable
         @Override
         public ItemStack extractItem(final int slot, final int amount, final boolean simulate) {
             if (slot == SLOT_FUEL) {
-                return ItemStack.EMPTY;
+                return null;
             }
 
             return super.extractItem(slot, amount, simulate);
         }
 
         @Override
-        public int getSlotLimit(final int slot) {
+        protected int getStackLimit(final int slot, final ItemStack stack) {
             return 1;
         }
     }
