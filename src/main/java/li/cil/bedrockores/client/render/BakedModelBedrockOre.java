@@ -36,21 +36,25 @@ public final class BakedModelBedrockOre implements IBakedModel {
             return ImmutableList.of();
         }
 
-        final IExtendedBlockState extendedBlockState = (IExtendedBlockState) state;
-        IBlockState oreState = extendedBlockState.getValue(BlockBedrockOre.ORE_BLOCK_STATE);
-        if (oreState == null) {
-            oreState = bedrockState;
+        try {
+            final IExtendedBlockState extendedBlockState = (IExtendedBlockState) state;
+            IBlockState oreState = extendedBlockState.getValue(BlockBedrockOre.ORE_BLOCK_STATE);
+            if (oreState == null) {
+                oreState = bedrockState;
+            }
+
+            final BlockModelShapes shapes = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
+            final IBakedModel model = shapes.getModelForState(oreState);
+            final List<BakedQuad> oreQuads = model.getQuads(state, side, rand);
+            final List<BakedQuad> maskQuads = mask.getQuads(state, side, rand);
+
+            final ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
+            builder.addAll(oreQuads);
+            builder.addAll(maskQuads);
+            return builder.build();
+        } catch (final Throwable ignored) {
+            return ImmutableList.of();
         }
-
-        final BlockModelShapes shapes = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
-        final IBakedModel model = shapes.getModelForState(oreState);
-        final List<BakedQuad> oreQuads = model.getQuads(state, side, rand);
-        final List<BakedQuad> maskQuads = mask.getQuads(state, side, rand);
-
-        final ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
-        builder.addAll(oreQuads);
-        builder.addAll(maskQuads);
-        return builder.build();
     }
 
     @Override
