@@ -28,4 +28,9 @@ public final class Items {
                 'D', "gemDiamond",
                 'O', "obsidian"));
     }
+
+    // --------------------------------------------------------------------- //
+
+    private Items() {
+    }
 }

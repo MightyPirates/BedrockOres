@@ -16,4 +16,9 @@ public final class Blocks {
         bedrockOre = proxy.registerBlock(Constants.NAME_BEDROCK_ORE, BlockBedrockOre::new, TileEntityBedrockOre.class);
         bedrockMiner = proxy.registerBlock(Constants.NAME_BEDROCK_MINER, BlockBedrockMiner::new, TileEntityBedrockMiner.class);
     }
+
+    // --------------------------------------------------------------------- //
+
+    private Blocks() {
+    }
 }
