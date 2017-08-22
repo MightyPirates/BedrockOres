@@ -112,31 +112,6 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
         updateExtraction(bedrockOre);
     }
 
-    private void updateEffects() {
-        if (!isWorkingClient) {
-            return;
-        }
-
-        final Random rng = getWorld().rand;
-        for (final EnumFacing facing : EnumFacing.HORIZONTALS) {
-            final Vec3i direction = facing.getDirectionVec();
-
-            final Vec3d up = new Vec3d(0, 1, 0);
-            final Vec3d right = new Vec3d(direction).crossProduct(up);
-            final float dx = (rng.nextFloat() - 0.5f) * 0.3f;
-            final float dy = (rng.nextFloat() - 0.5f) * 0.3f;
-
-            final Vec3d origin = new Vec3d(getPos()).
-                    addVector(0.5, 0.5, 0.5).
-                    add(new Vec3d(direction).scale(0.5)).
-                    add(right.scale(dx)).
-                    add(up.scale(dy));
-            final Vec3d velocity = new Vec3d(direction).scale(0.05);
-
-            getWorld().spawnParticle(EnumParticleTypes.SMOKE_NORMAL, origin.x, origin.y, origin.z, velocity.x, velocity.y, velocity.z);
-        }
-    }
-
     // --------------------------------------------------------------------- //
     // LookAtInfoProvider
 
@@ -221,10 +196,10 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
     @Nullable
     @Override
     public <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing != EnumFacing.DOWN) {
             return (T) inventory;
         }
-        if (capability == CapabilityEnergy.ENERGY) {
+        if (capability == CapabilityEnergy.ENERGY && facing != EnumFacing.UP && facing != EnumFacing.DOWN) {
             return (T) energyStorage;
         }
         return super.getCapability(capability, facing);
@@ -277,6 +252,31 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
 
     private void readFromNBTForClient(final NBTTagCompound compound) {
         isWorkingClient = compound.getBoolean(TAG_WORKING);
+    }
+
+    private void updateEffects() {
+        if (!isWorkingClient) {
+            return;
+        }
+
+        final Random rng = getWorld().rand;
+        for (final EnumFacing facing : EnumFacing.HORIZONTALS) {
+            final Vec3i direction = facing.getDirectionVec();
+
+            final Vec3d up = new Vec3d(0, 1, 0);
+            final Vec3d right = new Vec3d(direction).crossProduct(up);
+            final float dx = (rng.nextFloat() - 0.5f) * 0.3f;
+            final float dy = (rng.nextFloat() - 0.5f) * 0.3f;
+
+            final Vec3d origin = new Vec3d(getPos()).
+                    addVector(0.5, 0.5, 0.5).
+                    add(new Vec3d(direction).scale(0.5)).
+                    add(right.scale(dx)).
+                    add(up.scale(dy));
+            final Vec3d velocity = new Vec3d(direction).scale(0.05);
+
+            getWorld().spawnParticle(EnumParticleTypes.SMOKE_NORMAL, origin.x, origin.y, origin.z, velocity.x, velocity.y, velocity.z);
+        }
     }
 
     private void updateClientState() {
