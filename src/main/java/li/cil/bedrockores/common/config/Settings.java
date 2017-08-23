@@ -27,7 +27,7 @@ public final class Settings {
 
     @Config.Comment("The distance from spawn at which to begin starting to scale up vein size and yield.")
     @Config.RangeDouble(min = 0)
-    public static float veinDistanceScaleStart = 500;
+    public static float veinDistanceScaleStart = 300;
 
     @Config.Comment("A constant scaling factor applied to distance based vein scaling. The final range based\n" +
                     "scaling is computed as 'logn((distanceToSpawn-veinYieldDistanceScaleStart)/10)*veinYieldDistanceScaleMultiplier'.")
