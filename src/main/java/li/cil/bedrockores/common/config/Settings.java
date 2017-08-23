@@ -18,7 +18,7 @@ public final class Settings {
     @Config.Comment("The probability that a bedrock vein spawns in a chunk. In other words, the relative\n" +
                     "amount of chunks a vein spawns in.")
     @Config.RangeDouble(min = 0, max = 1)
-    public static float veinChance = 0.25f;
+    public static float veinChance = 0.5f;
 
     @Config.Comment("A constant scaling factor applied to all yields. Intended to allow easily changing\n" +
                     "yields in general, while not messing with the balancing of ores against each other.")
