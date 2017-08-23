@@ -44,7 +44,7 @@ public final class WrappedBlockState {
                     if (Objects.equals(property.getName(), serializedKey)) {
                         final Comparable originalValue = state.getValue(property);
                         do {
-                            if (Objects.equals(property.getName(originalValue), serializedValue)) {
+                            if (Objects.equals(property.getName(state.getValue(property)), serializedValue)) {
                                 continue outer;
                             }
                             state = state.cycleProperty(property);

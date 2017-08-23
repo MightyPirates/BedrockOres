@@ -5,6 +5,8 @@ tooltip.bedrockores.bedrock_miner=§7Mines the 5x3x5 area below it for bedrock o
 commands.bedrockores.usage=Master command for all commands in the Architect mod. Use tab-completion to explore sub-commands.
 commands.bedrockores.wrap.usage=Call while looking at a block to convert it to a bedrock ore. Optionally specify yield of created bedrock ore.
 commands.bedrockores.unwrap.usage=Call while looking at a bedrock ore block to convert it back to the block it wraps.
+commands.bedrockores.list=All ores we may embed in bedrock:
+commands.bedrockores.list_item= - %s
 
 gui.bedrockores.expected_yield=Expected yield: %s
 gui.bedrockores.exhausted=Exhausted
