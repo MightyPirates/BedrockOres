@@ -26,7 +26,11 @@
       "  yield*    -- the min and max amount of actual resources contained in a vein.",
       "               This is the number of times a player can harvest the bedrock ores",
       "               in the vein/the miner can pull a block from the vein. The actual",
-      "               yields will be distributed across all the blocks in the vein."
+      "               yields will be distributed across all the blocks in the vein.",
+      "",
+      "As for modded ores, they're right below the vanilla ones. Order in which the",
+      "default config tries to use ores from mods if multiple are present:",
+      "Thermal Foundation, then IC2, then Immersive Engineering."
     ],
     "enabled": false,
     "state": {
@@ -164,6 +168,9 @@
     "yieldMax": 1500
   },
   {
+    "comment": [
+      "---------- Thermal Foundation ores -----------------------------------"
+    ],
     "state": {
       "name": "thermalfoundation:ore",
       "properties": {
@@ -179,7 +186,9 @@
     "countMin": 10,
     "countMax": 16,
     "yieldMin": 1000,
-    "yieldMax": 1500
+    "yieldMax": 1500,
+    "group": "copper",
+    "groupOrder": 0
   },
   {
     "state": {
@@ -197,7 +206,9 @@
     "countMin": 10,
     "countMax": 16,
     "yieldMin": 1000,
-    "yieldMax": 1500
+    "yieldMax": 1500,
+    "group": "tin",
+    "groupOrder": 0
   },
   {
     "state": {
@@ -215,7 +226,9 @@
     "countMin": 8,
     "countMax": 12,
     "yieldMin": 500,
-    "yieldMax": 750
+    "yieldMax": 750,
+    "group": "silver",
+    "groupOrder": 0
   },
   {
     "state": {
@@ -233,25 +246,9 @@
     "countMin": 8,
     "countMax": 12,
     "yieldMin": 500,
-    "yieldMax": 750
-  },
-  {
-    "state": {
-      "name": "thermalfoundation:ore",
-      "properties": {
-        "type": "aluminum"
-      }
-    },
-    "dimension": "overworld",
-    "weight": 3,
-    "widthMin": 3,
-    "widthMax": 5,
-    "heightMin": 2,
-    "heightMax": 4,
-    "countMin": 8,
-    "countMax": 12,
-    "yieldMin": 500,
-    "yieldMax": 750
+    "yieldMax": 750,
+    "group": "lead",
+    "groupOrder": 0
   },
   {
     "state": {
@@ -269,9 +266,39 @@
     "countMin": 4,
     "countMax": 8,
     "yieldMin": 100,
-    "yieldMax": 150
+    "yieldMax": 150,
+    "group": "nickel",
+    "groupOrder": 0
   },
   {
+    "comment": [
+      "---------- Non-standard Thermal Foundation ores ----------------------",
+      "",
+      "The following Thermal Foundation ores are not enabled in regular TF",
+      "oregen settings, so disabled here, too. At least according to https://git.io/v5k95"
+    ],
+    "enabled": false,
+    "state": {
+      "name": "thermalfoundation:ore",
+      "properties": {
+        "type": "aluminum"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 3,
+    "widthMin": 3,
+    "widthMax": 5,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 8,
+    "countMax": 12,
+    "yieldMin": 500,
+    "yieldMax": 750,
+    "group": "aluminum",
+    "groupOrder": 0
+  },
+  {
+    "enabled": false,
     "state": {
       "name": "thermalfoundation:ore",
       "properties": {
@@ -287,9 +314,12 @@
     "countMin": 4,
     "countMax": 8,
     "yieldMin": 100,
-    "yieldMax": 150
+    "yieldMax": 150,
+    "group": "platinum",
+    "groupOrder": 0
   },
   {
+    "enabled": false,
     "state": {
       "name": "thermalfoundation:ore",
       "properties": {
@@ -305,9 +335,12 @@
     "countMin": 2,
     "countMax": 4,
     "yieldMin": 50,
-    "yieldMax": 75
+    "yieldMax": 75,
+    "group": "iridium",
+    "groupOrder": 0
   },
   {
+    "enabled": false,
     "state": {
       "name": "thermalfoundation:ore",
       "properties": {
@@ -323,6 +356,214 @@
     "countMin": 2,
     "countMax": 4,
     "yieldMin": 50,
-    "yieldMax": 75
+    "yieldMax": 75,
+    "group": "mithril",
+    "groupOrder": 0
+  },
+  {
+    "comment": [
+      "---------- IndustrialCraft 2 ores ------------------------------------"
+    ],
+    "state": {
+      "name": "ic2:resource",
+      "properties": {
+        "type": "copper_ore"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 4,
+    "widthMin": 4,
+    "widthMax": 6,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 10,
+    "countMax": 16,
+    "yieldMin": 1000,
+    "yieldMax": 1500,
+    "group": "copper",
+    "groupOrder": 5
+  },
+  {
+    "state": {
+      "name": "ic2:resource",
+      "properties": {
+        "type": "lead_ore"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 3,
+    "widthMin": 3,
+    "widthMax": 5,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 8,
+    "countMax": 12,
+    "yieldMin": 500,
+    "yieldMax": 750,
+    "group": "lead",
+    "groupOrder": 5
+  },
+  {
+    "state": {
+      "name": "ic2:resource",
+      "properties": {
+        "type": "tin_ore"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 4,
+    "widthMin": 4,
+    "widthMax": 6,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 10,
+    "countMax": 16,
+    "yieldMin": 1000,
+    "yieldMax": 1500,
+    "group": "tin",
+    "groupOrder": 5
+  },
+  {
+    "state": {
+      "name": "ic2:resource",
+      "properties": {
+        "type": "uranium_ore"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 1,
+    "widthMin": 2,
+    "widthMax": 3,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 2,
+    "countMax": 4,
+    "yieldMin": 50,
+    "yieldMax": 75,
+    "group": "uranium",
+    "groupOrder": 5
+  },
+  {
+    "comment": [
+      "---------- Immersive Engineering ores --------------------------------"
+    ],
+    "state": {
+      "name": "immersiveengineering:ore",
+      "properties": {
+        "type": "copper"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 4,
+    "widthMin": 4,
+    "widthMax": 6,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 10,
+    "countMax": 16,
+    "yieldMin": 1000,
+    "yieldMax": 1500,
+    "group": "copper",
+    "groupOrder": 10
+  },
+  {
+    "state": {
+      "name": "immersiveengineering:ore",
+      "properties": {
+        "type": "aluminum"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 3,
+    "widthMin": 3,
+    "widthMax": 5,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 8,
+    "countMax": 12,
+    "yieldMin": 500,
+    "yieldMax": 750,
+    "group": "aluminum",
+    "groupOrder": 10
+  },
+  {
+    "state": {
+      "name": "immersiveengineering:ore",
+      "properties": {
+        "type": "lead"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 3,
+    "widthMin": 3,
+    "widthMax": 5,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 8,
+    "countMax": 12,
+    "yieldMin": 500,
+    "yieldMax": 750,
+    "group": "lead",
+    "groupOrder": 10
+  },
+  {
+    "state": {
+      "name": "immersiveengineering:ore",
+      "properties": {
+        "type": "silver"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 3,
+    "widthMin": 3,
+    "widthMax": 5,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 8,
+    "countMax": 12,
+    "yieldMin": 500,
+    "yieldMax": 750,
+    "group": "silver",
+    "groupOrder": 10
+  },
+  {
+    "state": {
+      "name": "immersiveengineering:ore",
+      "properties": {
+        "type": "nickel"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 2,
+    "widthMin": 2,
+    "widthMax": 4,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 100,
+    "yieldMax": 150,
+    "group": "nickel",
+    "groupOrder": 10
+  },
+  {
+    "state": {
+      "name": "immersiveengineering:ore",
+      "properties": {
+        "type": "uranium"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 1,
+    "widthMin": 2,
+    "widthMax": 3,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 2,
+    "countMax": 4,
+    "yieldMin": 50,
+    "yieldMax": 75,
+    "group": "uranium",
+    "groupOrder": 10
   }
 ]
