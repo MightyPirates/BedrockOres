@@ -32,7 +32,7 @@ public final class Settings {
     @Config.Comment("A constant scaling factor applied to distance based vein scaling. The final range based\n" +
                     "scaling is computed as 'logn((distanceToSpawn-veinYieldDistanceScaleStart)/10)*veinYieldDistanceScaleMultiplier'.")
     @Config.RangeDouble(min = 0)
-    public static float veinDistanceScaleMultiplier = 1f;
+    public static float veinDistanceScaleMultiplier = 2f;
 
     @Config.Comment("Whether to only show the floating UI indicating ore yield when sneaking.")
     public static boolean uiOnlyWhenSneaking = false;

@@ -88,8 +88,12 @@ public final class VeinConfig {
         loadDefaultOres(gson);
         loadOres(configDirectory, gson);
 
+        BedrockOres.getLog().info("Done loading ore config, got {} ores. Filtering...", allOres.size());
+
         // Remove entries where block state could not be loaded ore have no weight.
         allOres.removeIf(ore -> !ore.enabled || ore.weight < 1 || ore.state.getBlockState().getBlock() == Blocks.AIR);
+
+        BedrockOres.getLog().info("After removing disabled and unavailable ores, got {} ores.", allOres.size());
 
         // Remove grouped entries where a group entry with a lower order exists.
         for (int i = allOres.size() - 1; i >= 0; i--) {
@@ -111,7 +115,7 @@ public final class VeinConfig {
             }
         }
 
-        BedrockOres.getLog().info("Done loading ore config, got a total of {} ores to choose from.", allOres.size());
+        BedrockOres.getLog().info("After removing duplicate ores, got {} ores.", allOres.size());
 
         // Order by weight
         allOres.sort(Comparator.comparingInt(a -> a.weight));
