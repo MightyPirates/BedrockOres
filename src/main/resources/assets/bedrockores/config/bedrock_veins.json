@@ -26,99 +26,108 @@
       "  yield*    -- the min and max amount of actual resources contained in a vein.",
       "               This is the number of times a player can harvest the bedrock ores",
       "               in the vein/the miner can pull a block from the vein. The actual",
-      "               yields will be distributed across all the blocks in the vein."
+      "               yields will be distributed across all the blocks in the vein.",
+      "",
+      "As for modded ores, they're right below the vanilla ones. Order in which the",
+      "default config tries to use ores from mods if multiple are present:",
+      "Thermal Foundation, then IC2, then Immersive Engineering."
     ],
     "enabled": false,
     "state": {
       "name": "minecraft:coal_ore"
     },
     "dimension": "overworld",
-    "weight": 5,
+    "weight": 1,
     "widthMin": 5,
     "widthMax": 7,
     "heightMin": 2,
     "heightMax": 4,
     "countMin": 12,
     "countMax": 20,
-    "yieldMin": 2000,
-    "yieldMax": 2500
+    "yieldMin": 340,
+    "yieldMax": 425
   },
   {
     "state": {
       "name": "minecraft:iron_ore"
     },
     "dimension": "overworld",
-    "weight": 4,
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "heightMin": 2,
     "heightMax": 4,
     "countMin": 10,
     "countMax": 16,
-    "yieldMin": 1000,
-    "yieldMax": 1500
+    "yieldMin": 180,
+    "yieldMax": 225
   },
   {
     "state": {
       "name": "minecraft:gold_ore"
     },
     "dimension": "overworld",
-    "weight": 3,
+    "weight": 1,
     "widthMin": 3,
     "widthMax": 5,
     "heightMin": 2,
     "heightMax": 4,
     "countMin": 8,
     "countMax": 12,
-    "yieldMin": 500,
-    "yieldMax": 750
+    "yieldMin": 18,
+    "yieldMax": 22
   },
   {
     "state": {
       "name": "minecraft:diamond_ore"
     },
     "dimension": "overworld",
-    "weight": 2,
+    "weight": 1,
     "widthMin": 2,
     "widthMax": 4,
     "heightMin": 2,
     "heightMax": 4,
     "countMin": 4,
     "countMax": 8,
-    "yieldMin": 100,
-    "yieldMax": 150
+    "yieldMin": 8,
+    "yieldMax": 10
   },
   {
     "state": {
       "name": "minecraft:redstone_ore"
     },
     "dimension": "overworld",
-    "weight": 3,
+    "weight": 1,
     "widthMin": 3,
     "widthMax": 5,
     "heightMin": 2,
     "heightMax": 4,
     "countMin": 8,
     "countMax": 10,
-    "yieldMin": 400,
-    "yieldMax": 600
+    "yieldMin": 64,
+    "yieldMax": 80
   },
   {
     "state": {
       "name": "minecraft:lapis_ore"
     },
     "dimension": "overworld",
-    "weight": 3,
+    "weight": 1,
     "widthMin": 2,
     "widthMax": 3,
     "heightMin": 2,
     "heightMax": 4,
     "countMin": 4,
     "countMax": 6,
-    "yieldMin": 300,
-    "yieldMax": 400
+    "yieldMin": 7,
+    "yieldMax": 9
   },
   {
+    "comment": [
+      "Usually emeralds only generate in hills biomes, and there any number",
+      "between 3 and 8 can pop up. Since we can anywhere, we lean towards the",
+      "lower end for our default."
+    ],
     "state": {
       "name": "minecraft:emerald_ore"
     },
@@ -130,25 +139,38 @@
     "heightMax": 4,
     "countMin": 2,
     "countMax": 4,
-    "yieldMin": 50,
-    "yieldMax": 75
+    "yieldMin": 4,
+    "yieldMax": 5
   },
   {
     "state": {
       "name": "minecraft:quartz_ore"
     },
     "dimension": "nether",
-    "weight": 2,
+    "weight": 1,
     "widthMin": 2,
     "widthMax": 5,
     "heightMin": 2,
     "heightMax": 4,
     "countMin": 8,
     "countMax": 10,
-    "yieldMin": 800,
-    "yieldMax": 1200
+    "yieldMin": 224,
+    "yieldMax": 280
   },
   {
+    "comment": [
+      "Glowstone... now glowstone is such a precious snowflake. How it is",
+      "generated is honestly kinda nuts. So there's one 'seed' glowstone,",
+      "right. After that it uses a distribution favoring the column going",
+      "straight down from there to sample random positions 1500 bloody times",
+      "(not even kidding) and converts the sampled position to glowstone if",
+      "it already has a glowstone neighbor.",
+      "The sample area is 15x12x15, and the distribution is basically like",
+      "rolling two dice, but I have no idea how to model the 'if next to",
+      "existing glowstone', soooo let's ballpark it to ~1/64 of that area",
+      "getting filled, so 42 blocks. And there's 1-10 of those per chunk.",
+      "Yeah, this is random af... let's go with 42*5."
+    ],
     "state": {
       "name": "minecraft:glowstone"
     },
@@ -160,10 +182,13 @@
     "heightMax": 4,
     "countMin": 10,
     "countMax": 14,
-    "yieldMin": 1000,
-    "yieldMax": 1500
+    "yieldMin": 210,
+    "yieldMax": 262
   },
   {
+    "comment": [
+      "---------- Thermal Foundation ores -----------------------------------"
+    ],
     "state": {
       "name": "thermalfoundation:ore",
       "properties": {
@@ -171,15 +196,17 @@
       }
     },
     "dimension": "overworld",
-    "weight": 4,
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "heightMin": 2,
     "heightMax": 4,
     "countMin": 10,
     "countMax": 16,
-    "yieldMin": 1000,
-    "yieldMax": 1500
+    "yieldMin": 64,
+    "yieldMax": 80,
+    "group": "copper",
+    "groupOrder": 0
   },
   {
     "state": {
@@ -189,15 +216,17 @@
       }
     },
     "dimension": "overworld",
-    "weight": 4,
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "heightMin": 2,
     "heightMax": 4,
     "countMin": 10,
     "countMax": 16,
-    "yieldMin": 1000,
-    "yieldMax": 1500
+    "yieldMin": 56,
+    "yieldMax": 70,
+    "group": "tin",
+    "groupOrder": 0
   },
   {
     "state": {
@@ -207,15 +236,17 @@
       }
     },
     "dimension": "overworld",
-    "weight": 3,
+    "weight": 1,
     "widthMin": 3,
     "widthMax": 5,
     "heightMin": 2,
     "heightMax": 4,
     "countMin": 8,
     "countMax": 12,
-    "yieldMin": 500,
-    "yieldMax": 750
+    "yieldMin": 32,
+    "yieldMax": 40,
+    "group": "silver",
+    "groupOrder": 0
   },
   {
     "state": {
@@ -225,33 +256,17 @@
       }
     },
     "dimension": "overworld",
-    "weight": 3,
+    "weight": 1,
     "widthMin": 3,
     "widthMax": 5,
     "heightMin": 2,
     "heightMax": 4,
     "countMin": 8,
     "countMax": 12,
-    "yieldMin": 500,
-    "yieldMax": 750
-  },
-  {
-    "state": {
-      "name": "thermalfoundation:ore",
-      "properties": {
-        "type": "aluminum"
-      }
-    },
-    "dimension": "overworld",
-    "weight": 3,
-    "widthMin": 3,
-    "widthMax": 5,
-    "heightMin": 2,
-    "heightMax": 4,
-    "countMin": 8,
-    "countMax": 12,
-    "yieldMin": 500,
-    "yieldMax": 750
+    "yieldMin": 32,
+    "yieldMax": 40,
+    "group": "lead",
+    "groupOrder": 0
   },
   {
     "state": {
@@ -261,17 +276,47 @@
       }
     },
     "dimension": "overworld",
-    "weight": 2,
+    "weight": 1,
     "widthMin": 2,
     "widthMax": 4,
     "heightMin": 2,
     "heightMax": 4,
     "countMin": 4,
     "countMax": 8,
-    "yieldMin": 100,
-    "yieldMax": 150
+    "yieldMin": 8,
+    "yieldMax": 10,
+    "group": "nickel",
+    "groupOrder": 0
   },
   {
+    "comment": [
+      "---------- Non-standard Thermal Foundation ores ----------------------",
+      "",
+      "The following Thermal Foundation ores are not enabled in regular TF",
+      "oregen settings, so disabled here, too. At least according to https://git.io/v5k95"
+    ],
+    "enabled": false,
+    "state": {
+      "name": "thermalfoundation:ore",
+      "properties": {
+        "type": "aluminum"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 1,
+    "widthMin": 3,
+    "widthMax": 5,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 8,
+    "countMax": 12,
+    "yieldMin": 64,
+    "yieldMax": 80,
+    "group": "aluminum",
+    "groupOrder": 0
+  },
+  {
+    "enabled": false,
     "state": {
       "name": "thermalfoundation:ore",
       "properties": {
@@ -279,17 +324,20 @@
       }
     },
     "dimension": "overworld",
-    "weight": 2,
+    "weight": 1,
     "widthMin": 2,
     "widthMax": 4,
     "heightMin": 2,
     "heightMax": 4,
     "countMin": 4,
     "countMax": 8,
-    "yieldMin": 100,
-    "yieldMax": 150
+    "yieldMin": 8,
+    "yieldMax": 10,
+    "group": "platinum",
+    "groupOrder": 0
   },
   {
+    "enabled": false,
     "state": {
       "name": "thermalfoundation:ore",
       "properties": {
@@ -304,10 +352,13 @@
     "heightMax": 4,
     "countMin": 2,
     "countMax": 4,
-    "yieldMin": 50,
-    "yieldMax": 75
+    "yieldMin": 8,
+    "yieldMax": 10,
+    "group": "iridium",
+    "groupOrder": 0
   },
   {
+    "enabled": false,
     "state": {
       "name": "thermalfoundation:ore",
       "properties": {
@@ -322,7 +373,215 @@
     "heightMax": 4,
     "countMin": 2,
     "countMax": 4,
-    "yieldMin": 50,
-    "yieldMax": 75
+    "yieldMin": 8,
+    "yieldMax": 10,
+    "group": "mithril",
+    "groupOrder": 0
+  },
+  {
+    "comment": [
+      "---------- IndustrialCraft 2 ores ------------------------------------"
+    ],
+    "state": {
+      "name": "ic2:resource",
+      "properties": {
+        "type": "copper_ore"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 10,
+    "countMax": 16,
+    "yieldMin": 64,
+    "yieldMax": 80,
+    "group": "copper",
+    "groupOrder": 5
+  },
+  {
+    "state": {
+      "name": "ic2:resource",
+      "properties": {
+        "type": "lead_ore"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 1,
+    "widthMin": 3,
+    "widthMax": 5,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 8,
+    "countMax": 12,
+    "yieldMin": 32,
+    "yieldMax": 40,
+    "group": "lead",
+    "groupOrder": 5
+  },
+  {
+    "state": {
+      "name": "ic2:resource",
+      "properties": {
+        "type": "tin_ore"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 10,
+    "countMax": 16,
+    "yieldMin": 56,
+    "yieldMax": 70,
+    "group": "tin",
+    "groupOrder": 5
+  },
+  {
+    "state": {
+      "name": "ic2:resource",
+      "properties": {
+        "type": "uranium_ore"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 1,
+    "widthMin": 2,
+    "widthMax": 3,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 2,
+    "countMax": 4,
+    "yieldMin": 8,
+    "yieldMax": 10,
+    "group": "uranium",
+    "groupOrder": 5
+  },
+  {
+    "comment": [
+      "---------- Immersive Engineering ores --------------------------------"
+    ],
+    "state": {
+      "name": "immersiveengineering:ore",
+      "properties": {
+        "type": "copper"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 10,
+    "countMax": 16,
+    "yieldMin": 64,
+    "yieldMax": 80,
+    "group": "copper",
+    "groupOrder": 10
+  },
+  {
+    "state": {
+      "name": "immersiveengineering:ore",
+      "properties": {
+        "type": "aluminum"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 1,
+    "widthMin": 3,
+    "widthMax": 5,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 8,
+    "countMax": 12,
+    "yieldMin": 64,
+    "yieldMax": 80,
+    "group": "aluminum",
+    "groupOrder": 10
+  },
+  {
+    "state": {
+      "name": "immersiveengineering:ore",
+      "properties": {
+        "type": "lead"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 1,
+    "widthMin": 3,
+    "widthMax": 5,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 8,
+    "countMax": 12,
+    "yieldMin": 32,
+    "yieldMax": 40,
+    "group": "lead",
+    "groupOrder": 10
+  },
+  {
+    "state": {
+      "name": "immersiveengineering:ore",
+      "properties": {
+        "type": "silver"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 1,
+    "widthMin": 3,
+    "widthMax": 5,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 8,
+    "countMax": 12,
+    "yieldMin": 32,
+    "yieldMax": 40,
+    "group": "silver",
+    "groupOrder": 10
+  },
+  {
+    "state": {
+      "name": "immersiveengineering:ore",
+      "properties": {
+        "type": "nickel"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 1,
+    "widthMin": 2,
+    "widthMax": 4,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 8,
+    "yieldMax": 10,
+    "group": "nickel",
+    "groupOrder": 10
+  },
+  {
+    "state": {
+      "name": "immersiveengineering:ore",
+      "properties": {
+        "type": "uranium"
+      }
+    },
+    "dimension": "overworld",
+    "weight": 1,
+    "widthMin": 2,
+    "widthMax": 3,
+    "heightMin": 2,
+    "heightMax": 4,
+    "countMin": 2,
+    "countMax": 4,
+    "yieldMin": 8,
+    "yieldMax": 10,
+    "group": "uranium",
+    "groupOrder": 10
   }
 ]

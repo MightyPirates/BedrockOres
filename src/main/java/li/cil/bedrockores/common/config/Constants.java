@@ -40,4 +40,6 @@ public class Constants {
 
     public static final String COMMAND_USAGE = "commands.bedrockores.usage";
     public static final String COMMAND_SUB_USAGE = "commands.bedrockores.%s.usage";
+    public static final String COMMAND_LIST = "commands.bedrockores.list";
+    public static final String COMMAND_LIST_ITEM = "commands.bedrockores.list_item";
 }

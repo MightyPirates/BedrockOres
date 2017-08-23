@@ -1,5 +1,6 @@
 package li.cil.bedrockores.common.config;
 
+import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -26,6 +27,7 @@ import java.lang.reflect.Type;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 public final class VeinConfig {
@@ -34,6 +36,10 @@ public final class VeinConfig {
     private static ArrayList<OreConfig> netherOres = new ArrayList<>();
     private static int overworldOreWeightSum;
     private static int netherOreWeightSum;
+
+    public static List<OreConfig> getOres() {
+        return ImmutableList.copyOf(allOres);
+    }
 
     @Nullable
     public static OreConfig getOre(final DimensionType dimensionType, final float r) {
@@ -82,29 +88,34 @@ public final class VeinConfig {
         loadDefaultOres(gson);
         loadOres(configDirectory, gson);
 
+        BedrockOres.getLog().info("Done loading ore config, got {} ores. Filtering...", allOres.size());
+
         // Remove entries where block state could not be loaded ore have no weight.
         allOres.removeIf(ore -> !ore.enabled || ore.weight < 1 || ore.state.getBlockState().getBlock() == Blocks.AIR);
 
+        BedrockOres.getLog().info("After removing disabled and unavailable ores, got {} ores.", allOres.size());
+
         // Remove grouped entries where a group entry with a lower order exists.
-        allOres.removeIf(ore -> {
+        for (int i = allOres.size() - 1; i >= 0; i--) {
+            final OreConfig ore = allOres.get(i);
             if (Strings.isNullOrEmpty(ore.group)) {
-                return false;
+                continue;
             }
-            for (final OreConfig otherOre : allOres) {
-                if (ore == otherOre) {
-                    continue;
-                }
+            for (int j = 0; j < i; j++) {
+                final OreConfig otherOre = allOres.get(j);
 
                 if (!Objects.equals(ore.group, otherOre.group)) {
                     continue;
                 }
 
                 if (otherOre.groupOrder <= ore.groupOrder) {
-                    return true;
+                    allOres.remove(i);
+                    break;
                 }
             }
-            return false;
-        });
+        }
+
+        BedrockOres.getLog().info("After removing duplicate ores, got {} ores.", allOres.size());
 
         // Order by weight
         allOres.sort(Comparator.comparingInt(a -> a.weight));
@@ -131,6 +142,8 @@ public final class VeinConfig {
                 reduce((a, b) -> a + b).
                 orElse(0);
     }
+
+    // --------------------------------------------------------------------- //
 
     private static void loadDefaultOres(final Gson gson) {
         try {
@@ -184,6 +197,8 @@ public final class VeinConfig {
             BedrockOres.getLog().warn("Failed writing " + path.toString() + ".", e);
         }
     }
+
+    // --------------------------------------------------------------------- //
 
     private VeinConfig() {
     }
