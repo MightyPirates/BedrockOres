@@ -31,6 +31,13 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
 
     @Override
     public void generate(final Random random, final int chunkX, final int chunkZ, final World world, final IChunkGenerator chunkGenerator, final IChunkProvider chunkProvider) {
+        if (Retrogen.INSTANCE.markChunkGenerated(world.provider.getDimension(), chunkX, chunkZ)) {
+            generateImpl(random, chunkX, chunkZ, world);
+        }
+        world.getChunkFromChunkCoords(chunkX, chunkZ).markDirty();
+    }
+
+    private void generateImpl(final Random random, final int chunkX, final int chunkZ, final World world) {
         if (random.nextFloat() >= Settings.veinChance) {
             return;
         }
@@ -50,6 +57,10 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
         final int veinMaxYield = Math.max(veinMinYield, ore.yieldMax);
 
         final int veinCount = veinMinCount == veinMaxCount ? veinMinCount : (veinMinCount + random.nextInt(veinMaxCount - veinMinCount));
+        if (veinCount == 0) {
+            return;
+        }
+
         final int veinYield = Math.max(0, Math.round((veinMinYield == veinMaxYield ? veinMinYield : (veinMinYield + random.nextInt(veinMaxYield - veinMinYield))) * Settings.veinYieldBaseScale));
         if (veinYield == 0) {
             return;
@@ -100,6 +111,7 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
                     for (int y = Settings.veinBaseY; y >= 0; y--) {
                         final BlockPos pos = new BlockPos(x, y, z);
                         final IBlockState state = world.getBlockState(pos);
+                        assert state.getBlock() != Blocks.bedrockOre;
                         if (state.getBlock().isReplaceableOreGen(state, world, pos, predicate)) {
                             if (y > maxY) {
                                 maxY = y;
@@ -115,6 +127,10 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
             // to use the full height.
             final int minY = maxY - h;
             candidates.removeIf(pos -> pos.getY() <= minY);
+
+            if (candidates.size() == 0) {
+                return;
+            }
 
             // Inside the ellipsoid we pick a number of actually used blocks
             // in a uniform random fashion.

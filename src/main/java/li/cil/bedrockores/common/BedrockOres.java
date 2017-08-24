@@ -2,11 +2,13 @@ package li.cil.bedrockores.common;
 
 import li.cil.bedrockores.common.command.CommandBedrockOres;
 import li.cil.bedrockores.common.config.Constants;
+import li.cil.bedrockores.common.world.Retrogen;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.Logger;
 
@@ -36,6 +38,11 @@ public final class BedrockOres {
     @Mod.EventHandler
     public void onPostInit(final FMLPostInitializationEvent event) {
         proxy.onPostInit(event);
+    }
+
+    @Mod.EventHandler
+    public void serverAboutToStart(final FMLServerAboutToStartEvent evt) {
+        Retrogen.INSTANCE.clear();
     }
 
     @Mod.EventHandler
