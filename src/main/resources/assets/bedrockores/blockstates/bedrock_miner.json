@@ -6,7 +6,7 @@
             "side": "bedrockores:blocks/bedrock_miner_side",
             "bottom": "bedrockores:blocks/bedrock_miner_bottom"
         },
-        "model": "cube_bottom_top"
+        "model": "bedrockores:bedrock_miner"
     },
     "variants": {
         "normal": [{}],
