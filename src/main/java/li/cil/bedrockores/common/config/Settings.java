@@ -37,6 +37,11 @@ public final class Settings {
     @Config.Comment("Whether to only show the floating UI indicating ore yield when sneaking.")
     public static boolean uiOnlyWhenSneaking = false;
 
+    @Config.Comment("Maximum number of chunks to perform retrogen for per tick. 0 to disable retrogen.")
+    @Config.RangeInt(min = 0)
+    @Config.RequiresWorldRestart
+    public static int retrogenSpeed = 10;
+
     // --------------------------------------------------------------------- //
 
     private Settings() {

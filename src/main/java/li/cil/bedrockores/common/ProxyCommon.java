@@ -1,15 +1,18 @@
 package li.cil.bedrockores.common;
 
 import li.cil.bedrockores.common.config.Constants;
+import li.cil.bedrockores.common.config.Settings;
 import li.cil.bedrockores.common.config.VeinConfig;
 import li.cil.bedrockores.common.init.Blocks;
 import li.cil.bedrockores.common.init.Items;
 import li.cil.bedrockores.common.network.Network;
+import li.cil.bedrockores.common.world.Retrogen;
 import li.cil.bedrockores.common.world.WorldGeneratorBedrockOre;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -32,6 +35,10 @@ public class ProxyCommon {
         Network.INSTANCE.init();
 
         GameRegistry.registerWorldGenerator(WorldGeneratorBedrockOre.INSTANCE, 10);
+
+        if (Settings.retrogenSpeed > 0) {
+            MinecraftForge.EVENT_BUS.register(Retrogen.INSTANCE);
+        }
     }
 
     public void onPostInit(final FMLPostInitializationEvent event) {
