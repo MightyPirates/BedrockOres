@@ -58,10 +58,10 @@ public enum Retrogen {
     @SubscribeEvent
     public void handleChunkLoadEvent(final ChunkDataEvent.Load event) {
         final int dimension = event.getWorld().provider.getDimension();
-        final ChunkPos chunkPos = event.getChunk().getPos();
+        final ChunkPos chunkPos = event.getChunk().getChunkCoordIntPair();
 
         if (event.getData().getCompoundTag(BEDROCKORES_TAG).getBoolean(GENERATED_TAG)) {
-            markChunkGenerated(dimension, chunkPos.x, chunkPos.z); // Store for next save.
+            markChunkGenerated(dimension, chunkPos.chunkXPos, chunkPos.chunkZPos); // Store for next save.
             return;
         }
 
@@ -71,7 +71,7 @@ public enum Retrogen {
     @SubscribeEvent
     public void handleChunkSaveEvent(final ChunkDataEvent.Save event) {
         final int dimension = event.getWorld().provider.getDimension();
-        final ChunkPos chunkPos = event.getChunk().getPos();
+        final ChunkPos chunkPos = event.getChunk().getChunkCoordIntPair();
 
         if (!isComplete(dimension, chunkPos)) {
             return;
@@ -100,8 +100,8 @@ public enum Retrogen {
             final Iterable<ChunkPos> chunks = ImmutableList.copyOf(Iterables.limit(pending, Settings.retrogenSpeed));
             for (final ChunkPos chunkPos : chunks) {
                 // Seeding chunk RNG, see GameRegistry.generateWorld.
-                final int chunkX = chunkPos.x;
-                final int chunkZ = chunkPos.z;
+                final int chunkX = chunkPos.chunkXPos;
+                final int chunkZ = chunkPos.chunkZPos;
                 final long worldSeed = world.getSeed();
                 final Random random = new Random(worldSeed);
                 final long xSeed = random.nextLong() >> 2 + 1L;

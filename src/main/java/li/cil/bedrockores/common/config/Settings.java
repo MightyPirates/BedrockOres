@@ -39,7 +39,6 @@ public final class Settings {
 
     @Config.Comment("Maximum number of chunks to perform retrogen for per tick. 0 to disable retrogen.")
     @Config.RangeInt(min = 0)
-    @Config.RequiresWorldRestart
     public static int retrogenSpeed = 10;
 
     // --------------------------------------------------------------------- //
