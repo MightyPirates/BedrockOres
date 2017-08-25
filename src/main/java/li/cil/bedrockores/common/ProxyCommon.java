@@ -5,6 +5,7 @@ import li.cil.bedrockores.common.config.VeinConfig;
 import li.cil.bedrockores.common.init.Blocks;
 import li.cil.bedrockores.common.init.Items;
 import li.cil.bedrockores.common.network.Network;
+import li.cil.bedrockores.common.sound.Sounds;
 import li.cil.bedrockores.common.world.Retrogen;
 import li.cil.bedrockores.common.world.WorldGeneratorBedrockOre;
 import net.minecraft.block.Block;
@@ -27,6 +28,7 @@ public class ProxyCommon {
     }
 
     public void onInit(final FMLInitializationEvent event) {
+        Sounds.init();
         Network.INSTANCE.init();
 
         GameRegistry.registerWorldGenerator(WorldGeneratorBedrockOre.INSTANCE, 10);

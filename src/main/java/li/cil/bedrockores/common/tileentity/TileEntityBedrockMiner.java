@@ -4,6 +4,7 @@ import cofh.redstoneflux.api.IEnergyReceiver;
 import li.cil.bedrockores.common.config.Constants;
 import li.cil.bedrockores.common.config.Settings;
 import li.cil.bedrockores.common.integration.ModIDs;
+import li.cil.bedrockores.common.sound.Sounds;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -15,6 +16,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -64,7 +66,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
     private static final String TAG_EXTRACTION_COOLDOWN = "extractionCooldown";
     private static final String TAG_WORKING = "working";
 
-    private static final int SEND_DELAY = 20;
+    private static final int SEND_DELAY = 20; // in ticks
 
     private static final int SLOT_FUEL = 0;
     private static final int SLOT_OUTPUT = 1;
@@ -74,6 +76,8 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
 
     private static final float BURN_TIME_PER_RF = 0.05f;
 
+    private static final int SOUND_INTERVAL = 30; // in ticks
+
     @Nullable
     private BlockPos currentOrePos = null;
     private boolean isExhausted = false;
@@ -82,6 +86,8 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
     // hiccups causing unnecessary update packets being sent.
     private boolean isWorkingServer, isWorkingClient;
     private long sendStateAt;
+
+    private int soundCooldown;
 
     // --------------------------------------------------------------------- //
 
@@ -268,6 +274,14 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
             return;
         }
 
+        if (soundCooldown > 0) {
+            soundCooldown--;
+        }
+        if (soundCooldown <= 0) {
+            soundCooldown = SOUND_INTERVAL;
+            getWorld().playSound(getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, Sounds.bedrockMiner, SoundCategory.BLOCKS, 1, 0.5f, false);
+        }
+
         final Random rng = getWorld().rand;
         for (final EnumFacing facing : EnumFacing.HORIZONTALS) {
             final Vec3i direction = facing.getDirectionVec();
@@ -423,6 +437,8 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
 
         extractionCooldown = Settings.minerExtractionCooldown;
         transferCooldown = 0;
+
+        bedrockOre.playBreakSound();
     }
 
     private static int getCoalEnergyValue() {
