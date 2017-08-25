@@ -39,8 +39,25 @@ public class BlockBedrockMiner extends Block {
         return new TileEntityBedrockMiner();
     }
 
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        TileEntity tileentity = world.getTileEntity(pos);
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean hasComparatorInputOverride(final IBlockState state) {
+        return true;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public int getComparatorInputOverride(final IBlockState blockState, final World world, final BlockPos pos) {
+        final TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileEntityBedrockMiner) {
+            return ((TileEntityBedrockMiner) tileEntity).isWorking() ? 15 : 0;
+        }
+        return super.getComparatorInputOverride(blockState, world, pos);
+    }
+
+    @Override
+    public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
+        final TileEntity tileentity = world.getTileEntity(pos);
         if (tileentity != null) {
             final IItemHandler itemHandler = tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
             if (itemHandler != null) {
