@@ -42,6 +42,10 @@ public final class Settings {
     @Config.RequiresWorldRestart
     public static int retrogenSpeed = 10;
 
+    @Config.Comment("Whether to allow players to directly mine bedrock ores.\n" +
+                    "Disabling this will force players to use the bedrock miner.")
+    public static boolean allowPlayerMining = true;
+
     // --------------------------------------------------------------------- //
 
     private Settings() {

@@ -1,6 +1,7 @@
 package li.cil.bedrockores.common.block;
 
 import li.cil.bedrockores.common.block.property.PropertyBlockState;
+import li.cil.bedrockores.common.config.Settings;
 import li.cil.bedrockores.common.tileentity.TileEntityBedrockOre;
 import li.cil.bedrockores.util.WorldUtils;
 import net.minecraft.block.Block;
@@ -95,6 +96,10 @@ public final class BlockBedrockOre extends Block {
             return super.removedByPlayer(state, world, pos, player, willHarvest);
         }
 
+        if (!Settings.allowPlayerMining) {
+            return false;
+        }
+
         final TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileEntityBedrockOre) {
             final TileEntityBedrockOre tileEntityBedrockOre = (TileEntityBedrockOre) tileEntity;
@@ -107,6 +112,7 @@ public final class BlockBedrockOre extends Block {
                 oreBlockState.getBlock().onBlockHarvested(world, pos, oreBlockState, player);
             }
         }
+
         return true;
     }
 
@@ -124,9 +130,11 @@ public final class BlockBedrockOre extends Block {
     @SuppressWarnings("deprecation")
     @Override
     public float getBlockHardness(final IBlockState state, final World world, final BlockPos pos) {
-        final IBlockState oreBlockState = getOreBlockState(world.getTileEntity(pos));
-        if (oreBlockState != null) {
-            return oreBlockState.getBlockHardness(world, pos);
+        if (Settings.allowPlayerMining) {
+            final IBlockState oreBlockState = getOreBlockState(world.getTileEntity(pos));
+            if (oreBlockState != null) {
+                return oreBlockState.getBlockHardness(world, pos);
+            }
         }
         return super.getBlockHardness(state, world, pos);
     }
@@ -134,45 +142,55 @@ public final class BlockBedrockOre extends Block {
     @SuppressWarnings("deprecation")
     @Override
     public float getPlayerRelativeBlockHardness(final IBlockState state, final EntityPlayer player, final World world, final BlockPos pos) {
-        final IBlockState oreBlockState = getOreBlockState(world.getTileEntity(pos));
-        if (oreBlockState != null) {
-            return oreBlockState.getPlayerRelativeBlockHardness(player, world, pos);
+        if (Settings.allowPlayerMining) {
+            final IBlockState oreBlockState = getOreBlockState(world.getTileEntity(pos));
+            if (oreBlockState != null) {
+                return oreBlockState.getPlayerRelativeBlockHardness(player, world, pos);
+            }
         }
         return super.getPlayerRelativeBlockHardness(state, player, world, pos);
     }
 
     @Override
     public boolean canHarvestBlock(final IBlockAccess world, final BlockPos pos, final EntityPlayer player) {
-        final IBlockState oreBlockState = getOreBlockState(world.getTileEntity(pos));
-        if (oreBlockState != null) {
-            return oreBlockState.getBlock().canHarvestBlock(world, pos, player);
+        if (Settings.allowPlayerMining) {
+            final IBlockState oreBlockState = getOreBlockState(world.getTileEntity(pos));
+            if (oreBlockState != null) {
+                return oreBlockState.getBlock().canHarvestBlock(world, pos, player);
+            }
         }
         return super.canHarvestBlock(world, pos, player);
     }
 
     @Override
     public boolean canSilkHarvest(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player) {
-        final IBlockState oreBlockState = getOreBlockState(world.getTileEntity(pos));
-        if (oreBlockState != null) {
-            return oreBlockState.getBlock().canSilkHarvest(world, pos, oreBlockState, player);
+        if (Settings.allowPlayerMining) {
+            final IBlockState oreBlockState = getOreBlockState(world.getTileEntity(pos));
+            if (oreBlockState != null) {
+                return oreBlockState.getBlock().canSilkHarvest(world, pos, oreBlockState, player);
+            }
         }
         return super.canSilkHarvest(world, pos, state, player);
     }
 
     @Override
     public int getExpDrop(final IBlockState state, final IBlockAccess world, final BlockPos pos, final int fortune) {
-        final IBlockState oreBlockState = getOreBlockState(world.getTileEntity(pos));
-        if (oreBlockState != null) {
-            return oreBlockState.getBlock().getExpDrop(oreBlockState, world, pos, fortune);
+        if (Settings.allowPlayerMining) {
+            final IBlockState oreBlockState = getOreBlockState(world.getTileEntity(pos));
+            if (oreBlockState != null) {
+                return oreBlockState.getBlock().getExpDrop(oreBlockState, world, pos, fortune);
+            }
         }
         return super.getExpDrop(state, world, pos, fortune);
     }
 
     @Override
     public void harvestBlock(final World world, final EntityPlayer player, final BlockPos pos, final IBlockState state, @Nullable final TileEntity te, final ItemStack stack) {
-        final IBlockState oreBlockState = getOreBlockState(te);
-        if (oreBlockState != null) {
-            oreBlockState.getBlock().harvestBlock(world, player, pos, oreBlockState, null, stack);
+        if (Settings.allowPlayerMining) {
+            final IBlockState oreBlockState = getOreBlockState(te);
+            if (oreBlockState != null) {
+                oreBlockState.getBlock().harvestBlock(world, player, pos, oreBlockState, null, stack);
+            }
         }
     }
 
