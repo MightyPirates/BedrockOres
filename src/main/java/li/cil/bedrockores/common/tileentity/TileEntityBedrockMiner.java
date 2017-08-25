@@ -187,8 +187,8 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
 
     @Override
     public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing) {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ||
-               capability == CapabilityEnergy.ENERGY ||
+        return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing != EnumFacing.DOWN) ||
+               (capability == CapabilityEnergy.ENERGY && facing != EnumFacing.UP && facing != EnumFacing.DOWN) ||
                super.hasCapability(capability, facing);
     }
 
