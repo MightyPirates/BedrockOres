@@ -185,7 +185,7 @@ public final class BlockBedrockOre extends Block {
     }
 
     @Override
-    public void harvestBlock(final World world, final EntityPlayer player, final BlockPos pos, final IBlockState state, @Nullable final TileEntity te, final ItemStack stack) {
+    public void harvestBlock(final World world, final EntityPlayer player, final BlockPos pos, final IBlockState state, @Nullable final TileEntity te, @Nullable final ItemStack stack) {
         if (Settings.allowPlayerMining) {
             final IBlockState oreBlockState = getOreBlockState(te);
             if (oreBlockState != null) {
