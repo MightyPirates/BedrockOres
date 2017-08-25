@@ -29,7 +29,7 @@ public enum LookAtInfoRenderer {
             return;
         }
 
-        if (mc.objectMouseOver.typeOfHit != RayTraceResult.Type.BLOCK) {
+        if (mc.objectMouseOver == null || mc.objectMouseOver.typeOfHit != RayTraceResult.Type.BLOCK) {
             return;
         }
 
