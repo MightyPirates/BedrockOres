@@ -1,0 +1,12 @@
+{
+  "bedrock_miner": {
+    "category": "block",
+    "sounds": [
+      "bedrockores:bedrock_miner1",
+      "bedrockores:bedrock_miner2",
+      "bedrockores:bedrock_miner3",
+      "bedrockores:bedrock_miner4",
+      "bedrockores:bedrock_miner5"
+    ]
+  }
+}
