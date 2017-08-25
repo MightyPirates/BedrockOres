@@ -2,12 +2,14 @@ package li.cil.bedrockores.common.tileentity;
 
 import li.cil.bedrockores.common.config.Constants;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 
@@ -79,6 +81,14 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
         }
 
         return stack != null ? stack.copy() : null;
+    }
+
+    public void playBreakSound() {
+        final IBlockState state = getOreBlockState();
+        if (state != null) {
+            final SoundType soundtype = state.getBlock().getSoundType(state, getWorld(), getPos(), null);
+            getWorld().playSound(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, soundtype.getBreakSound(), SoundCategory.BLOCKS, soundtype.getVolume(), soundtype.getPitch());
+        }
     }
 
     // --------------------------------------------------------------------- //
