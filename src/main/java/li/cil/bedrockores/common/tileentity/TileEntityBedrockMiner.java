@@ -84,6 +84,12 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
     private long sendStateAt;
 
     // --------------------------------------------------------------------- //
+
+    public boolean isWorking() {
+        return isWorkingServer;
+    }
+
+    // --------------------------------------------------------------------- //
     // ITickable
 
     @Override
@@ -339,7 +345,12 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
         markDirty();
 
         transferCooldown = 10;
-        return remainder.isEmpty();
+        if (remainder.isEmpty()) {
+            return true;
+        } else {
+            setWorking(false);
+            return false;
+        }
     }
 
     @Nullable
@@ -421,6 +432,8 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
     private static Stream<TileEntityBedrockOre> findBedrockOres(final World world, final BlockPos center) {
         return StreamSupport.stream(new ScanAreaSpliterator(world, center.down()), false);
     }
+
+    // --------------------------------------------------------------------- //
 
     private static final class ScanAreaSpliterator extends Spliterators.AbstractSpliterator<TileEntityBedrockOre> {
         private final World world;
