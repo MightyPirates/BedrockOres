@@ -4,6 +4,7 @@ import cofh.api.energy.IEnergyReceiver;
 import li.cil.bedrockores.common.config.Constants;
 import li.cil.bedrockores.common.config.Settings;
 import li.cil.bedrockores.common.integration.ModIDs;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,6 +15,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -34,6 +36,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 import java.util.Spliterators;
 import java.util.function.Consumer;
@@ -49,7 +52,8 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
     private final EnergyStorageMiner energyStorage = new EnergyStorageMiner();
 
     private int remainingBurnTime = 0;
-    private int extractionCooldown = 0;
+    private int extractionCooldown = Settings.minerExtractionCooldown;
+    private int transferCooldown = 20;
 
     // --------------------------------------------------------------------- //
     // Computed data
@@ -92,7 +96,6 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
         updateClientState();
 
         if (!tryTransferOutput()) {
-            setWorking(false);
             return;
         }
 
@@ -122,7 +125,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
                 map(TileEntityBedrockOre::getAmount).
                 reduce((a, b) -> a + b).
                 orElse(0);
-        ITextComponent textComponent;
+        final ITextComponent textComponent;
         if (yield > 0) {
             textComponent = new TextComponentTranslation(Constants.GUI_EXPECTED_YIELD, yield);
         } else {
@@ -302,16 +305,39 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
             return true;
         }
 
-        final BlockPos blockPos = getPos().up();
-        final TileEntity tileEntity = getWorld().getTileEntity(blockPos);
-        if (tileEntity == null) {
+        if (transferCooldown > 0) {
+            --transferCooldown;
+        }
+        if (transferCooldown > 0) {
             return false;
         }
 
-        final IItemHandler itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+        IItemHandler itemHandler = null;
+
+        final BlockPos blockPos = getPos().up();
+        final TileEntity tileEntity = getWorld().getTileEntity(blockPos);
+        if (tileEntity != null) {
+            itemHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+        }
+
+        if (itemHandler == null) {
+            final List<Entity> entities = getWorld().getEntitiesInAABBexcluding(null, new AxisAlignedBB(blockPos), entity -> entity != null && entity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null));
+            if (!entities.isEmpty()) {
+                final Entity entity = entities.get(getWorld().rand.nextInt(entities.size()));
+                itemHandler = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            }
+        }
+
+        if (itemHandler == null) {
+            setWorking(false);
+            transferCooldown = 20;
+            return false;
+        }
+
         final ItemStack remainder = ItemHandlerHelper.insertItem(itemHandler, stack, false);
         inventory.setStackInSlot(SLOT_OUTPUT, remainder);
 
+        transferCooldown = 10;
         return remainder.isEmpty();
     }
 
@@ -350,6 +376,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
         final int energyBurnTime = energyStorage.consumeEnergyForBurnTime();
         if (energyBurnTime > 0) {
             remainingBurnTime = energyBurnTime;
+            transferCooldown = 0;
             return true;
         }
 
@@ -360,6 +387,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
         inventory.setStackInSlot(SLOT_FUEL, ItemStack.EMPTY);
         if (burnTime > 0) {
             remainingBurnTime = burnTime;
+            transferCooldown = 0;
             return true;
         }
 
@@ -369,12 +397,16 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
     private void updateExtraction(final TileEntityBedrockOre bedrockOre) {
         if (extractionCooldown > 0) {
             extractionCooldown--;
-        } else {
-            extractionCooldown = Settings.minerExtractionCooldown;
-
-            final ItemStack stack = bedrockOre.extract();
-            inventory.setStackInSlot(SLOT_OUTPUT, stack);
         }
+        if (extractionCooldown > 0) {
+            return;
+        }
+
+        final ItemStack stack = bedrockOre.extract();
+        inventory.setStackInSlot(SLOT_OUTPUT, stack);
+
+        extractionCooldown = Settings.minerExtractionCooldown;
+        transferCooldown = 0;
     }
 
     private static Stream<TileEntityBedrockOre> findBedrockOres(final World world, final BlockPos center) {
