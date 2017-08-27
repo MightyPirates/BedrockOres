@@ -18,6 +18,8 @@ import java.util.Objects;
 public final class WrappedBlockState {
     public static final List<WrappedBlockState> ERRORED = new ArrayList<>();
 
+    // --------------------------------------------------------------------- //
+
     @Nullable
     private final ResourceLocation name;
     @Nullable
@@ -25,6 +27,8 @@ public final class WrappedBlockState {
 
     @Nullable
     private IBlockState resolved;
+
+    // --------------------------------------------------------------------- //
 
     public WrappedBlockState(@Nullable final ResourceLocation name, @Nullable final Map<String, String> properties) {
         this.name = name;
@@ -49,46 +53,8 @@ public final class WrappedBlockState {
         return resolved;
     }
 
-    @SuppressWarnings("unchecked")
-    private IBlockState resolveBlockState() {
-        final Block block = ForgeRegistries.BLOCKS.getValue(name);
-        if (block == null || block == Blocks.AIR) {
-            return Blocks.AIR.getDefaultState();
-        }
-
-        IBlockState state = block.getDefaultState();
-        if (properties != null) {
-            final Collection<IProperty<?>> blockProperties = state.getPropertyKeys();
-            outer:
-            for (final Map.Entry<String, String> entry : properties.entrySet()) {
-                final String serializedKey = entry.getKey();
-                final String serializedValue = entry.getValue();
-
-                for (final IProperty property : blockProperties) {
-                    if (Objects.equals(property.getName(), serializedKey)) {
-                        final Comparable originalValue = state.getValue(property);
-
-                        do {
-                            if (Objects.equals(property.getName(state.getValue(property)), serializedValue)) {
-                                continue outer;
-                            }
-                            state = state.cycleProperty(property);
-                        }
-                        while (!Objects.equals(state.getValue(property), originalValue));
-
-                        BedrockOres.getLog().warn("Cannot parse property value '{}' for property '{}' of block {}.", serializedValue, serializedKey, name);
-                        ERRORED.add(this);
-                        return Blocks.AIR.getDefaultState();
-                    }
-                }
-
-                BedrockOres.getLog().warn("Block {} has no property '{}'.", name, serializedKey);
-                ERRORED.add(this);
-                return Blocks.AIR.getDefaultState();
-            }
-        }
-        return state;
-    }
+    // --------------------------------------------------------------------- //
+    // Object
 
     @Override
     public boolean equals(final Object o) {
@@ -138,5 +104,48 @@ public final class WrappedBlockState {
             s.append(']');
         }
         return s.toString();
+    }
+
+    // --------------------------------------------------------------------- //
+
+    @SuppressWarnings("unchecked")
+    private IBlockState resolveBlockState() {
+        final Block block = ForgeRegistries.BLOCKS.getValue(name);
+        if (block == null || block == Blocks.AIR) {
+            return Blocks.AIR.getDefaultState();
+        }
+
+        IBlockState state = block.getDefaultState();
+        if (properties != null) {
+            final Collection<IProperty<?>> blockProperties = state.getPropertyKeys();
+            outer:
+            for (final Map.Entry<String, String> entry : properties.entrySet()) {
+                final String serializedKey = entry.getKey();
+                final String serializedValue = entry.getValue();
+
+                for (final IProperty property : blockProperties) {
+                    if (Objects.equals(property.getName(), serializedKey)) {
+                        final Comparable originalValue = state.getValue(property);
+
+                        do {
+                            if (Objects.equals(property.getName(state.getValue(property)), serializedValue)) {
+                                continue outer;
+                            }
+                            state = state.cycleProperty(property);
+                        }
+                        while (!Objects.equals(state.getValue(property), originalValue));
+
+                        BedrockOres.getLog().warn("Cannot parse property value '{}' for property '{}' of block {}.", serializedValue, serializedKey, name);
+                        ERRORED.add(this);
+                        return Blocks.AIR.getDefaultState();
+                    }
+                }
+
+                BedrockOres.getLog().warn("Block {} has no property '{}'.", name, serializedKey);
+                ERRORED.add(this);
+                return Blocks.AIR.getDefaultState();
+            }
+        }
+        return state;
     }
 }

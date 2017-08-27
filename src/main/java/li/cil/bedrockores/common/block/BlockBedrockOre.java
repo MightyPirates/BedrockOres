@@ -38,6 +38,8 @@ import javax.annotation.Nullable;
 public final class BlockBedrockOre extends Block {
     public static final PropertyBlockState ORE_BLOCK_STATE = new PropertyBlockState("ore");
 
+    // --------------------------------------------------------------------- //
+
     public BlockBedrockOre() {
         super(Material.ROCK);
         setBlockUnbreakable();
@@ -45,6 +47,9 @@ public final class BlockBedrockOre extends Block {
         setSoundType(SoundType.STONE);
         disableStats();
     }
+
+    // --------------------------------------------------------------------- //
+    // Block
 
     @Override
     protected BlockStateContainer createBlockState() {
@@ -117,7 +122,7 @@ public final class BlockBedrockOre extends Block {
     }
 
     // --------------------------------------------------------------------- //
-    // Forwarding to actual ore
+    // Forwarding to actual ore's Block
 
     @Override
     public int getMetaFromState(final IBlockState state) {

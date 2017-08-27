@@ -19,7 +19,12 @@ import java.util.Collection;
 public enum ModelBedrockOre implements IModel {
     INSTANCE;
 
+    // --------------------------------------------------------------------- //
+
     public static final ResourceLocation BEDROCK_LOCATION = new ResourceLocation("blocks/bedrock");
+
+    // --------------------------------------------------------------------- //
+    // IModel
 
     @Override
     public Collection<ResourceLocation> getDependencies() {

@@ -20,6 +20,8 @@ import org.lwjgl.opengl.GL11;
 public enum LookAtInfoRenderer {
     INSTANCE;
 
+    // --------------------------------------------------------------------- //
+
     @SubscribeEvent
     public void onWorldRender(final RenderWorldLastEvent event) {
         final Minecraft mc = Minecraft.getMinecraft();
@@ -44,8 +46,8 @@ public enum LookAtInfoRenderer {
         doPositionPrologue(event);
         doOverlayPrologue();
 
-        float entityYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * event.getPartialTicks();
-        float entityPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * event.getPartialTicks();
+        final float entityYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * event.getPartialTicks();
+        final float entityPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * event.getPartialTicks();
         drawNameplateOnTop(mc.fontRendererObj,
                            infoProvider.getLookAtInfo(),
                            blockPos.getX() + 0.5f,
@@ -58,6 +60,8 @@ public enum LookAtInfoRenderer {
         doOverlayEpilogue();
         doPositionEpilogue();
     }
+
+    // --------------------------------------------------------------------- //
 
     private static void doPositionPrologue(final RenderWorldLastEvent event) {
         final EntityPlayer player = Minecraft.getMinecraft().player;
@@ -90,7 +94,7 @@ public enum LookAtInfoRenderer {
 
     }
 
-    private static void setLightmapDisabled(boolean disabled) {
+    private static void setLightmapDisabled(final boolean disabled) {
         GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
 
         if (disabled) {
@@ -102,19 +106,19 @@ public enum LookAtInfoRenderer {
         GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 
-    public static void drawNameplateOnTop(FontRenderer fontRenderer, String value, float x, float y, float z, int verticalShift, float viewerYaw, float viewerPitch) {
+    public static void drawNameplateOnTop(final FontRenderer fontRenderer, final String value, final float x, final float y, final float z, final int verticalShift, final float viewerYaw, final float viewerPitch) {
         GlStateManager.translate(x, y, z);
         GlStateManager.glNormal3f(0, 1, 0);
         GlStateManager.rotate(-viewerYaw, 0, 1, 0);
         GlStateManager.rotate(viewerPitch, 1, 0, 0);
         GlStateManager.scale(-0.025f, -0.025f, 0.025f);
 
-        int halfWidth = fontRenderer.getStringWidth(value) / 2;
+        final int halfWidth = fontRenderer.getStringWidth(value) / 2;
 
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         GlStateManager.disableTexture2D();
-        Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer buffer = tessellator.getBuffer();
+        final Tessellator tessellator = Tessellator.getInstance();
+        final VertexBuffer buffer = tessellator.getBuffer();
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
         buffer.pos(-halfWidth - 1, -1 + verticalShift, 0).color(0, 0, 0, 0.25f).endVertex();
         buffer.pos(-halfWidth - 1, 8 + verticalShift, 0).color(0, 0, 0, 0.25f).endVertex();

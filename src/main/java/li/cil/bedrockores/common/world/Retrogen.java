@@ -21,12 +21,16 @@ import java.util.Set;
 public enum Retrogen {
     INSTANCE;
 
-    private static final String BEDROCKORES_TAG = Constants.MOD_ID;
+    // --------------------------------------------------------------------- //
+
+    private static final String BEDROCK_ORES_TAG = Constants.MOD_ID;
     private static final String GENERATED_TAG = "generated";
 
     private final TIntObjectMap<Set<ChunkPos>> worldGenPending = new TIntObjectHashMap<>(3);
     private final TIntObjectMap<Set<ChunkPos>> worldGenComplete = new TIntObjectHashMap<>(3);
     private final Object lock = new Object();
+
+    // --------------------------------------------------------------------- //
 
     public void clear() {
         worldGenPending.clear();
@@ -37,30 +41,14 @@ public enum Retrogen {
         return put(worldGenComplete, dimension, new ChunkPos(chunkX, chunkZ));
     }
 
-    private boolean put(final TIntObjectMap<Set<ChunkPos>> map, final int dimension, final ChunkPos chunkPos) {
-        synchronized (lock) {
-            Set<ChunkPos> complete = map.get(dimension);
-            if (complete == null) {
-                complete = new HashSet<>(128);
-                map.put(dimension, complete);
-            }
-            return complete.add(chunkPos);
-        }
-    }
-
-    private boolean isComplete(final int dimension, final ChunkPos chunkPos) {
-        synchronized (lock) {
-            final Set<ChunkPos> complete = worldGenComplete.get(dimension);
-            return complete != null && complete.contains(chunkPos);
-        }
-    }
+    // --------------------------------------------------------------------- //
 
     @SubscribeEvent
     public void handleChunkLoadEvent(final ChunkDataEvent.Load event) {
         final int dimension = event.getWorld().provider.getDimension();
         final ChunkPos chunkPos = event.getChunk().getChunkCoordIntPair();
 
-        if (event.getData().getCompoundTag(BEDROCKORES_TAG).getBoolean(GENERATED_TAG)) {
+        if (event.getData().getCompoundTag(BEDROCK_ORES_TAG).getBoolean(GENERATED_TAG)) {
             markChunkGenerated(dimension, chunkPos.chunkXPos, chunkPos.chunkZPos); // Store for next save.
             return;
         }
@@ -77,9 +65,9 @@ public enum Retrogen {
             return;
         }
 
-        final NBTTagCompound compound = event.getData().getCompoundTag(BEDROCKORES_TAG);
+        final NBTTagCompound compound = event.getData().getCompoundTag(BEDROCK_ORES_TAG);
         compound.setBoolean(GENERATED_TAG, true);
-        event.getData().setTag(BEDROCKORES_TAG, compound);
+        event.getData().setTag(BEDROCK_ORES_TAG, compound);
     }
 
     @SubscribeEvent
@@ -117,6 +105,26 @@ public enum Retrogen {
             if (pending.isEmpty()) {
                 worldGenPending.remove(dimension);
             }
+        }
+    }
+
+    // --------------------------------------------------------------------- //
+
+    private boolean put(final TIntObjectMap<Set<ChunkPos>> map, final int dimension, final ChunkPos chunkPos) {
+        synchronized (lock) {
+            Set<ChunkPos> complete = map.get(dimension);
+            if (complete == null) {
+                complete = new HashSet<>(128);
+                map.put(dimension, complete);
+            }
+            return complete.add(chunkPos);
+        }
+    }
+
+    private boolean isComplete(final int dimension, final ChunkPos chunkPos) {
+        synchronized (lock) {
+            final Set<ChunkPos> complete = worldGenComplete.get(dimension);
+            return complete != null && complete.contains(chunkPos);
         }
     }
 }

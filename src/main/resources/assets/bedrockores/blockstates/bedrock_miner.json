@@ -1,15 +1,15 @@
 {
-    "forge_marker": 1,
-    "defaults": {
-        "textures": {
-            "top": "bedrockores:blocks/bedrock_miner_top",
-            "side": "bedrockores:blocks/bedrock_miner_side",
-            "bottom": "bedrockores:blocks/bedrock_miner_bottom"
-        },
-        "model": "bedrockores:bedrock_miner"
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "top": "bedrockores:blocks/bedrock_miner_top",
+      "side": "bedrockores:blocks/bedrock_miner_side",
+      "bottom": "bedrockores:blocks/bedrock_miner_bottom"
     },
-    "variants": {
-        "normal": [{}],
-        "inventory": [{}]
-    }
+    "model": "bedrockores:bedrock_miner"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}]
+  }
 }

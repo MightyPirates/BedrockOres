@@ -11,6 +11,8 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 public final class Items {
     public static Item bedrockMiner;
 
+    // --------------------------------------------------------------------- //
+
     public static void register(final ProxyCommon proxy) {
         bedrockMiner = proxy.registerItem(Constants.NAME_BEDROCK_MINER, () -> new ItemBlock(Blocks.bedrockMiner));
     }

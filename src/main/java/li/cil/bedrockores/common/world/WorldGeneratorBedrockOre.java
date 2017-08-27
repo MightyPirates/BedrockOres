@@ -26,8 +26,12 @@ import java.util.Random;
 public enum WorldGeneratorBedrockOre implements IWorldGenerator {
     INSTANCE;
 
+    // --------------------------------------------------------------------- //
+
     private static final ThreadLocal<List<BlockPos>> candidates = ThreadLocal.withInitial(ArrayList::new);
     private static final ThreadLocal<TFloatList> distribution = ThreadLocal.withInitial(TFloatArrayList::new);
+
+    // --------------------------------------------------------------------- //
 
     @Override
     public void generate(final Random random, final int chunkX, final int chunkZ, final World world, final IChunkGenerator chunkGenerator, final IChunkProvider chunkProvider) {
@@ -36,6 +40,8 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
         }
         world.getChunkFromChunkCoords(chunkX, chunkZ).setChunkModified();
     }
+
+    // --------------------------------------------------------------------- //
 
     private static void generateImpl(final Random random, final int chunkX, final int chunkZ, final World world) {
         if (random.nextFloat() >= Settings.veinChance) {
