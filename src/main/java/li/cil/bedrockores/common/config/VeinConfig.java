@@ -115,7 +115,11 @@ public enum VeinConfig {
             if (Strings.isNullOrEmpty(ore.group)) {
                 continue;
             }
-            for (int j = 0; j < i; j++) {
+            for (int j = 0; j < allOres.size(); j++) {
+                if (i == j) {
+                    continue;
+                }
+
                 final OreConfig otherOre = allOres.get(j);
 
                 if (!Objects.equals(ore.group, otherOre.group)) {
