@@ -1,5 +1,5 @@
 {
-  "parent": "block/cube_all",
+  "parent": "block/cube_mirrored_all",
   "textures": {
     "all": "bedrockores:blocks/bedrock_ore_mask"
   }
