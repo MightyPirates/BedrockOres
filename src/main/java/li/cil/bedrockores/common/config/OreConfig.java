@@ -10,18 +10,23 @@ public final class OreConfig {
     public String dimension = "overworld";
     public int weight = 1;
 
-    public int widthMin = 4;
-    public int widthMax = 6;
+    public int widthMin = 2;
+    public int widthMax = 4;
 
     public int heightMin = 2;
     public int heightMax = 4;
 
-    public int countMin = 8;
-    public int countMax = 12;
+    public int countMin = 5;
+    public int countMax = 10;
 
-    public int yieldMin = 2000;
-    public int yieldMax = 3000;
+    public int yieldMin = 100;
+    public int yieldMax = 125;
 
     public String group;
     public int groupOrder;
+
+    @Override
+    public String toString() {
+        return state.toString();
+    }
 }

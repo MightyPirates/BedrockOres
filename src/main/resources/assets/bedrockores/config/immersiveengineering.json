@@ -1,0 +1,98 @@
+[
+  {
+    "state": {
+      "name": "immersiveengineering:ore",
+      "properties": {
+        "type": "copper"
+      }
+    },
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 10,
+    "countMax": 16,
+    "yieldMin": 64,
+    "yieldMax": 80,
+    "group": "copper",
+    "groupOrder": 10
+  },
+  {
+    "state": {
+      "name": "immersiveengineering:ore",
+      "properties": {
+        "type": "aluminum"
+      }
+    },
+    "widthMin": 3,
+    "widthMax": 5,
+    "countMin": 8,
+    "countMax": 12,
+    "yieldMin": 64,
+    "yieldMax": 80,
+    "group": "aluminum",
+    "groupOrder": 10
+  },
+  {
+    "state": {
+      "name": "immersiveengineering:ore",
+      "properties": {
+        "type": "lead"
+      }
+    },
+    "widthMin": 3,
+    "widthMax": 5,
+    "countMin": 8,
+    "countMax": 12,
+    "yieldMin": 32,
+    "yieldMax": 40,
+    "group": "lead",
+    "groupOrder": 10
+  },
+  {
+    "state": {
+      "name": "immersiveengineering:ore",
+      "properties": {
+        "type": "silver"
+      }
+    },
+    "widthMin": 3,
+    "widthMax": 5,
+    "countMin": 8,
+    "countMax": 12,
+    "yieldMin": 32,
+    "yieldMax": 40,
+    "group": "silver",
+    "groupOrder": 10
+  },
+  {
+    "state": {
+      "name": "immersiveengineering:ore",
+      "properties": {
+        "type": "nickel"
+      }
+    },
+    "widthMin": 2,
+    "widthMax": 4,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 8,
+    "yieldMax": 10,
+    "group": "nickel",
+    "groupOrder": 10
+  },
+  {
+    "state": {
+      "name": "immersiveengineering:ore",
+      "properties": {
+        "type": "uranium"
+      }
+    },
+    "widthMin": 2,
+    "widthMax": 3,
+    "countMin": 2,
+    "countMax": 4,
+    "yieldMin": 8,
+    "yieldMax": 10,
+    "group": "uranium",
+    "groupOrder": 10
+  }
+]
