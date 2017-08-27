@@ -31,11 +31,6 @@ public class Constants {
     public static final String TOOLTIP_BEDROCK_MINER = "tooltip.bedrockores.bedrock_miner";
 
     // --------------------------------------------------------------------- //
-    // Config files
-
-    public static final String BEDROCK_VEINS_FILENAME = "bedrock_veins.json";
-
-    // --------------------------------------------------------------------- //
     // Commands
 
     public static final String COMMAND_USAGE = "commands.bedrockores.usage";

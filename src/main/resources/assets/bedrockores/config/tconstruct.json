@@ -1,0 +1,32 @@
+[
+  {
+    "state": {
+      "name": "tconstruct:ore",
+      "properties": {
+        "type": "cobalt"
+      }
+    },
+    "dimension": "nether",
+    "widthMin": 4,
+    "widthMax": 5,
+    "countMin": 4,
+    "countMax": 7,
+    "yieldMin": 20,
+    "yieldMax": 25
+  },
+  {
+    "state": {
+      "name": "tconstruct:ore",
+      "properties": {
+        "type": "ardite"
+      }
+    },
+    "dimension": "nether",
+    "widthMin": 3,
+    "widthMax": 5,
+    "countMin": 4,
+    "countMax": 7,
+    "yieldMin": 20,
+    "yieldMax": 25
+  }
+]

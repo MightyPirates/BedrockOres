@@ -1,0 +1,31 @@
+[
+  {
+    "state": {
+      "name": "deepresonance:resonating_ore",
+      "properties": {
+        "oretype": "overworld"
+      }
+    },
+    "widthMin": 3,
+    "widthMax": 5,
+    "countMin": 3,
+    "countMax": 5,
+    "yieldMin": 10,
+    "yieldMax": 20
+  },
+  {
+    "state": {
+      "name": "deepresonance:resonating_ore",
+      "properties": {
+        "oretype": "nether"
+      }
+    },
+    "dimension": "nether",
+    "widthMin": 3,
+    "widthMax": 5,
+    "countMin": 3,
+    "countMax": 5,
+    "yieldMin": 10,
+    "yieldMax": 20
+  }
+]
