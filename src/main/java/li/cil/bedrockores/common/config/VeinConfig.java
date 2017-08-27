@@ -1,6 +1,5 @@
 package li.cil.bedrockores.common.config;
 
-import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -166,7 +166,7 @@ public enum VeinConfig {
         try (final InputStream stream = getConfigFileStreamFromJar(INDEX_JSON)) {
             fileNames = gson.fromJson(new InputStreamReader(stream), Types.LIST_STRING);
         } catch (final IOException e) {
-            throw Throwables.propagate(e);
+            throw new RuntimeException(e);
         }
 
         // Load built-in ore listings.
@@ -188,13 +188,13 @@ public enum VeinConfig {
                 shouldReuseOreConfigs = false;
                 final List<OreConfig> oreList = loadFromJar(EXAMPLE_JSON, Types.LIST_ORE, gson);
                 try {
-                    FileUtils.writeStringToFile(file, gson.toJson(oreList));
+                    FileUtils.writeStringToFile(file, gson.toJson(oreList), Charset.defaultCharset());
                 } catch (final IOException e) {
                     BedrockOres.getLog().warn("Failed writing '" + file.getName() + "'.", e);
                 }
             }
         } catch (final IOException e) {
-            throw Throwables.propagate(e);
+            throw new RuntimeException(e);
         }
     }
 
