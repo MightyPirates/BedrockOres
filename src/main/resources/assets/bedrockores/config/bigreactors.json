@@ -1,0 +1,31 @@
+[
+  {
+    "state": {
+      "name": "bigreactors:brore",
+      "properties": {
+        "ore": "yellorite"
+      }
+    },
+    "widthMin": 3,
+    "widthMax": 5,
+    "countMin": 4,
+    "countMax": 7,
+    "yieldMin": 10,
+    "yieldMax": 12
+  },
+  {
+    "state": {
+      "name": "bigreactors:brore",
+      "properties": {
+        "ore": "benitoite"
+      }
+    },
+    "dimension": "nether",
+    "widthMin": 3,
+    "widthMax": 5,
+    "countMin": 4,
+    "countMax": 7,
+    "yieldMin": 10,
+    "yieldMax": 12
+  }
+]
