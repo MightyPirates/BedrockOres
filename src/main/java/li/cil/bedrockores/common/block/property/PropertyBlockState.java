@@ -6,9 +6,14 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 public final class PropertyBlockState implements IUnlistedProperty<IBlockState> {
     private final String name;
 
+    // --------------------------------------------------------------------- //
+
     public PropertyBlockState(final String name) {
         this.name = name;
     }
+
+    // --------------------------------------------------------------------- //
+    // IUnlistedProperty
 
     @Override
     public String getName() {

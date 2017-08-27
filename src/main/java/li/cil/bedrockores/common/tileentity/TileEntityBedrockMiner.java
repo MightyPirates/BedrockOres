@@ -5,6 +5,7 @@ import li.cil.bedrockores.common.config.Constants;
 import li.cil.bedrockores.common.config.Settings;
 import li.cil.bedrockores.common.integration.ModIDs;
 import li.cil.bedrockores.common.sound.Sounds;
+import li.cil.bedrockores.util.WorldUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -279,7 +280,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
         }
         if (soundCooldown <= 0) {
             soundCooldown = SOUND_INTERVAL;
-            getWorld().playSound(getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, Sounds.bedrockMiner, SoundCategory.BLOCKS, 1, 0.5f, false);
+            getWorld().playSound(getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, Sounds.INSTANCE.bedrockMiner, SoundCategory.BLOCKS, 1, 0.5f, false);
         }
 
         final Random rng = getWorld().rand;
@@ -438,7 +439,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
         extractionCooldown = Settings.minerExtractionCooldown;
         transferCooldown = 0;
 
-        bedrockOre.playBreakSound();
+        WorldUtils.playBreakSound(bedrockOre.getWorld(), bedrockOre.getPos());
     }
 
     private static int getCoalEnergyValue() {

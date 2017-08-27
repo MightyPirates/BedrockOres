@@ -32,10 +32,10 @@ public class ProxyCommon {
 
     public void onInit(final FMLInitializationEvent event) {
         Items.addRecipes();
-        Sounds.init();
+        Sounds.INSTANCE.init();
         Network.INSTANCE.init();
 
-        GameRegistry.registerWorldGenerator(WorldGeneratorBedrockOre.INSTANCE, 10);
+        GameRegistry.registerWorldGenerator(WorldGeneratorBedrockOre.INSTANCE, Settings.worldGeneratorWeight);
 
         if (Settings.retrogenSpeed > 0) {
             MinecraftForge.EVENT_BUS.register(Retrogen.INSTANCE);
@@ -50,18 +50,19 @@ public class ProxyCommon {
 
     public Block registerBlock(final String name, final Supplier<Block> constructor, final Class<? extends TileEntity> tileEntity) {
         final Block block = constructor.get().
-                setUnlocalizedName(Constants.MOD_ID + "." + name).
+                setUnlocalizedName(Constants.MOD_ID + '.' + name).
                 setCreativeTab(CreativeTabs.MISC).
                 setRegistryName(name);
         GameRegistry.register(block);
-        GameRegistry.registerTileEntity(tileEntity, Constants.MOD_ID + ": " + name);
+        GameRegistry.registerTileEntityWithAlternatives(tileEntity, Constants.MOD_ID + ':' + name,
+                                                        Constants.MOD_ID + ": " + name); // Herp derp, typo in early version -.-
 
         return block;
     }
 
     public Item registerItem(final String name, final Supplier<Item> constructor) {
         final Item item = constructor.get().
-                setUnlocalizedName(Constants.MOD_ID + "." + name).
+                setUnlocalizedName(Constants.MOD_ID + '.' + name).
                 setCreativeTab(CreativeTabs.MISC).
                 setRegistryName(name);
         GameRegistry.register(item);

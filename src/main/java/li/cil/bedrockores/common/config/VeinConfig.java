@@ -41,6 +41,8 @@ import java.util.Objects;
 public enum VeinConfig {
     INSTANCE;
 
+    // --------------------------------------------------------------------- //
+
     private static final String ANY_DIMENSION = "*";
 
     private static final String INDEX_JSON = "_index.json";
@@ -50,6 +52,8 @@ public enum VeinConfig {
     private final Map<DimensionType, List<OreConfig>> oresByDimensionType = new EnumMap<>(DimensionType.class);
     private final TObjectIntMap<DimensionType> oreWeightSumByDimensionType = new TObjectIntHashMap<>(3);
     private boolean shouldReuseOreConfigs;
+
+    // --------------------------------------------------------------------- //
 
     // !!! BEWARE !!!
     // Dark magic code: we merge deserialized ore configs into the already

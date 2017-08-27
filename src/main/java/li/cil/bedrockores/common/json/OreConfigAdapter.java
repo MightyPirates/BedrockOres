@@ -15,7 +15,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
-// Reflection based adapter fail when trying to look up an adapter for runtime
+// Reflection based adapter fails when trying to look up an adapter for runtime
 // type of state, so we do it manually... also allows some other custom logic,
 // so that's nice.
 public class OreConfigAdapter implements JsonSerializer<OreConfig>, JsonDeserializer<OreConfig> {

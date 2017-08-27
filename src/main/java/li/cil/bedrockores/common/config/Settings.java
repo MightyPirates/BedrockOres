@@ -46,6 +46,11 @@ public final class Settings {
                     "Disabling this will force players to use the bedrock miner.")
     public static boolean allowPlayerMining = true;
 
+    @Config.Comment("The 'weight' of the world generator placing bedrock ores. This is used when Forge\n" +
+                    "sorts generators to know in what order they run. Higher weights run later.")
+    @Config.RequiresMcRestart
+    public static int worldGeneratorWeight = 10;
+
     // --------------------------------------------------------------------- //
 
     private Settings() {

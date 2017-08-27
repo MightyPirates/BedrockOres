@@ -3,7 +3,7 @@ package li.cil.bedrockores.common.config;
 /**
  * Collection of constants used throughout the mod.
  */
-public class Constants {
+public final class Constants {
     // --------------------------------------------------------------------- //
     // Mod data
 
@@ -45,4 +45,9 @@ public class Constants {
     // Sounds
 
     public static final String SOUND_BEDROCK_MINER = "bedrock_miner";
+
+    // --------------------------------------------------------------------- //
+
+    private Constants() {
+    }
 }

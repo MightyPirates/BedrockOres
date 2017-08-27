@@ -40,7 +40,7 @@ import java.util.Comparator;
  * Use the static "sort" method from the java.util.Collections class:
  * Collections.sort(your list, new AlphanumComparator());
  */
-public class AlphanumComparator implements Comparator<String> {
+public final class AlphanumComparator implements Comparator<String> {
     public static final Comparator<String> INSTANCE = new AlphanumComparator();
 
     private static boolean isDigit(final char ch) {
@@ -95,7 +95,7 @@ public class AlphanumComparator implements Comparator<String> {
             thatMarker += thatChunk.length();
 
             // If both chunks contain numeric characters, sort them numerically
-            int result = 0;
+            int result;
             if (isDigit(thisChunk.charAt(0)) && isDigit(thatChunk.charAt(0))) {
                 // Simple chunk comparison by length.
                 final int thisChunkLength = thisChunk.length();
