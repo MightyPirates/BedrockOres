@@ -47,7 +47,6 @@ public final class Settings {
 
     @Config.Comment("The 'weight' of the world generator placing bedrock ores. This is used when Forge\n" +
                     "sorts generators to know in what order they run. Higher weights run later.")
-    @Config.RequiresMcRestart
     public static int worldGeneratorWeight = 10;
 
     // --------------------------------------------------------------------- //
