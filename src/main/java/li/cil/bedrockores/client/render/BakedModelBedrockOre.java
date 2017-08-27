@@ -1,6 +1,7 @@
 package li.cil.bedrockores.client.render;
 
 import com.google.common.collect.ImmutableList;
+import li.cil.bedrockores.common.BedrockOres;
 import li.cil.bedrockores.common.block.BlockBedrockOre;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -25,10 +26,15 @@ public final class BakedModelBedrockOre implements IBakedModel {
     private final IBakedModel mask;
     private final TextureAtlasSprite particleTexture;
 
+    // --------------------------------------------------------------------- //
+
     BakedModelBedrockOre(final IBakedModel mask, final TextureAtlasSprite particleTexture) {
         this.mask = mask;
         this.particleTexture = particleTexture;
     }
+
+    // --------------------------------------------------------------------- //
+    // IBakedModel
 
     @Override
     public List<BakedQuad> getQuads(@Nullable final IBlockState state, @Nullable final EnumFacing side, final long rand) {
@@ -52,7 +58,8 @@ public final class BakedModelBedrockOre implements IBakedModel {
             builder.addAll(oreQuads);
             builder.addAll(maskQuads);
             return builder.build();
-        } catch (final Throwable ignored) {
+        } catch (final Throwable e) {
+            BedrockOres.getLog().warn(e);
             return ImmutableList.of();
         }
     }
