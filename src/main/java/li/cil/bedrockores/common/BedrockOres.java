@@ -24,6 +24,8 @@ public final class BedrockOres {
     @SidedProxy(clientSide = Constants.PROXY_CLIENT, serverSide = Constants.PROXY_COMMON)
     public static ProxyCommon proxy;
 
+    // --------------------------------------------------------------------- //
+
     @Mod.EventHandler
     public void onPreInit(final FMLPreInitializationEvent event) {
         log = event.getModLog();

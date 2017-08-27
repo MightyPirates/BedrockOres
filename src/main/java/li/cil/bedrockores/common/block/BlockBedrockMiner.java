@@ -21,13 +21,16 @@ import net.minecraftforge.items.IItemHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockBedrockMiner extends Block {
+public final class BlockBedrockMiner extends Block {
     public BlockBedrockMiner() {
         super(Material.IRON);
         setHardness(5);
         setResistance(10);
         setSoundType(SoundType.METAL);
     }
+
+    // --------------------------------------------------------------------- //
+    // Block
 
     @Override
     public boolean hasTileEntity(final IBlockState state) {

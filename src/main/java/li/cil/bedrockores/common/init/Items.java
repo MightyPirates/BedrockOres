@@ -12,6 +12,8 @@ public final class Items {
     @GameRegistry.ObjectHolder(Constants.NAME_BEDROCK_MINER)
     public static final Item bedrockMiner = null;
 
+    // --------------------------------------------------------------------- //
+
     public static void register(final IForgeRegistry<Item> registry) {
         registerItem(registry, new ItemBlock(Blocks.bedrockMiner), Constants.NAME_BEDROCK_MINER);
     }

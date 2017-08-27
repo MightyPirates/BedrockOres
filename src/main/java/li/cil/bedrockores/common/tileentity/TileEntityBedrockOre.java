@@ -2,16 +2,16 @@ package li.cil.bedrockores.common.tileentity;
 
 import li.cil.bedrockores.common.config.Constants;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -82,17 +82,10 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
         return stack.copy();
     }
 
-    public void playBreakSound() {
-        final IBlockState state = getOreBlockState();
-        if (state != null) {
-            final SoundType soundtype = state.getBlock().getSoundType(state, getWorld(), getPos(), null);
-            getWorld().playSound(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, soundtype.getBreakSound(), SoundCategory.BLOCKS, soundtype.getVolume(), soundtype.getPitch());
-        }
-    }
-
     // --------------------------------------------------------------------- //
     // LookAtInfoProvider
 
+    @SideOnly(Side.CLIENT)
     @Override
     protected String getLookAtInfoImpl() {
         return new TextComponentTranslation(Constants.GUI_EXPECTED_YIELD, amount).getFormattedText();

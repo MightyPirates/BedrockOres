@@ -18,6 +18,8 @@ public final class Blocks {
     @GameRegistry.ObjectHolder(Constants.NAME_BEDROCK_MINER)
     public static final Block bedrockMiner = null;
 
+    // --------------------------------------------------------------------- //
+
     public static void register(final IForgeRegistry<Block> registry) {
         registerBlock(registry, new BlockBedrockOre(), Constants.NAME_BEDROCK_ORE, TileEntityBedrockOre.class);
         registerBlock(registry, new BlockBedrockMiner(), Constants.NAME_BEDROCK_MINER, TileEntityBedrockMiner.class);

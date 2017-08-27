@@ -7,9 +7,9 @@ import net.minecraft.util.SoundEvent;
 public enum Sounds {
     INSTANCE;
 
-    public static SoundEvent bedrockMiner;
+    public SoundEvent bedrockMiner;
 
-    public static void init() {
+    public void init() {
         bedrockMiner = new SoundEvent(new ResourceLocation(Constants.MOD_ID, Constants.SOUND_BEDROCK_MINER));
     }
 }

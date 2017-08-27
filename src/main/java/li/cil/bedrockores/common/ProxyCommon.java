@@ -28,10 +28,10 @@ public class ProxyCommon {
     }
 
     public void onInit(final FMLInitializationEvent event) {
-        Sounds.init();
+        Sounds.INSTANCE.init();
         Network.INSTANCE.init();
 
-        GameRegistry.registerWorldGenerator(WorldGeneratorBedrockOre.INSTANCE, 10);
+        GameRegistry.registerWorldGenerator(WorldGeneratorBedrockOre.INSTANCE, Settings.worldGeneratorWeight);
 
         if (Settings.retrogenSpeed > 0) {
             MinecraftForge.EVENT_BUS.register(Retrogen.INSTANCE);
