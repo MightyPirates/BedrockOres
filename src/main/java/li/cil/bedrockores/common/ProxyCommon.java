@@ -39,7 +39,7 @@ public class ProxyCommon {
     }
 
     public void onPostInit(final FMLPostInitializationEvent event) {
-        VeinConfig.load();
+        VeinConfig.INSTANCE.load();
     }
 
     // --------------------------------------------------------------------- //

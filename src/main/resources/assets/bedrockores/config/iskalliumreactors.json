@@ -1,0 +1,19 @@
+[
+  {
+    "comment": [
+      "Iskallium ore has a 1:10 chance to spawn in a chunk, and by default may",
+      "spawn one ore two blocks of Iskallium ore. That's not a lot... but hey,",
+      "if there's enough other mods the chance for it to spawn will be pretty",
+      "low, right? This is be fine."
+    ],
+    "state": {
+      "name": "iskalliumreactors:iskallium_stone_ore"
+    },
+    "widthMin": 2,
+    "widthMax": 3,
+    "countMin": 2,
+    "countMax": 4,
+    "yieldMin": 1,
+    "yieldMax": 2
+  }
+]

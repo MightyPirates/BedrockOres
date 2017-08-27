@@ -42,7 +42,7 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
             return;
         }
 
-        final OreConfig ore = VeinConfig.getOre(world.provider.getDimensionType(), random.nextFloat());
+        final OreConfig ore = VeinConfig.INSTANCE.getOre(world.provider.getDimensionType(), random.nextFloat());
         if (ore == null) {
             return;
         }

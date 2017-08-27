@@ -8,6 +8,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import li.cil.bedrockores.common.config.OreConfig;
+import li.cil.bedrockores.common.config.VeinConfig;
+import li.cil.bedrockores.common.config.WrappedBlockState;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -46,8 +48,26 @@ public class OreConfigAdapter implements JsonSerializer<OreConfig>, JsonDeserial
 
     @Override
     public OreConfig deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context) throws JsonParseException {
-        final OreConfig dst = new OreConfig();
+        OreConfig dst = new OreConfig();
         final JsonObject jsonObject = json.getAsJsonObject();
+
+        if (VeinConfig.INSTANCE.shouldReuseOreConfigs()) {
+            // Stuff with no block state def gets stripped out anyway.
+            if (!jsonObject.has("state")) {
+                return dst;
+            }
+
+            // See if we have an entry for this exact block state already, if so we
+            // want to patch it. Yes, this is pretty evil, but whatever works.
+            final WrappedBlockState state = context.deserialize(jsonObject.get("state"), WrappedBlockState.class);
+            for (final OreConfig oreConfig : VeinConfig.INSTANCE.getOres()) {
+                if (oreConfig.state.equals(state)) {
+                    dst = oreConfig;
+                    break;
+                }
+            }
+        }
+
         for (final Field field : OreConfig.class.getFields()) {
             final JsonElement jsonElement = jsonObject.get(field.getName());
             if (jsonElement == null) {
@@ -55,9 +75,11 @@ public class OreConfigAdapter implements JsonSerializer<OreConfig>, JsonDeserial
             }
             try {
                 field.set(dst, context.deserialize(jsonElement, field.getType()));
-            } catch (final IllegalAccessException ignored) {
+            } catch (final IllegalAccessException e) {
+                assert false : "OreConfig contains non-accessible field: " + field.getName();
             }
         }
+
         return dst;
     }
 }

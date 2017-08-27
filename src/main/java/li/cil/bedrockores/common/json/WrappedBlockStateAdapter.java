@@ -11,6 +11,7 @@ import li.cil.bedrockores.common.config.WrappedBlockState;
 import net.minecraft.util.ResourceLocation;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 
 public class WrappedBlockStateAdapter implements JsonSerializer<WrappedBlockState>, JsonDeserializer<WrappedBlockState> {
     private static final String KEY_NAME = "name";
@@ -23,9 +24,10 @@ public class WrappedBlockStateAdapter implements JsonSerializer<WrappedBlockStat
     public JsonElement serialize(final WrappedBlockState src, final Type typeOfSrc, final JsonSerializationContext context) {
         final JsonObject result = new JsonObject();
 
-        result.add(KEY_NAME, context.serialize(src.name));
-        if (!src.properties.isEmpty()) {
-            result.add(KEY_PROPERTIES, context.serialize(src.properties, Types.MAP_STRING_STRING));
+        result.add(KEY_NAME, context.serialize(src.getName()));
+        final Map<String, String> properties = src.getProperties();
+        if (properties != null && !properties.isEmpty()) {
+            result.add(KEY_PROPERTIES, context.serialize(properties, Types.MAP_STRING_STRING));
         }
 
         return result;
@@ -38,13 +40,15 @@ public class WrappedBlockStateAdapter implements JsonSerializer<WrappedBlockStat
     public WrappedBlockState deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context) throws JsonParseException {
         final JsonObject jsonObject = json.getAsJsonObject();
 
-        final WrappedBlockState result = new WrappedBlockState();
-        result.name = context.deserialize(jsonObject.get(KEY_NAME), ResourceLocation.class);
+        final ResourceLocation name = context.deserialize(jsonObject.get(KEY_NAME), ResourceLocation.class);
 
+        final Map<String, String> properties;
         if (jsonObject.has(KEY_PROPERTIES)) {
-            result.properties = context.deserialize(jsonObject.get(KEY_PROPERTIES), Types.MAP_STRING_STRING);
+            properties = context.deserialize(jsonObject.get(KEY_PROPERTIES), Types.MAP_STRING_STRING);
+        } else {
+            properties = null;
         }
 
-        return result;
+        return new WrappedBlockState(name, properties);
     }
 }
