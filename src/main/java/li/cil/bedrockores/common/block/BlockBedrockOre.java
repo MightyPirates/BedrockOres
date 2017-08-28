@@ -62,7 +62,7 @@ public final class BlockBedrockOre extends Block {
         // When rendering we want to use our own baked model for masked
         // rendering of the underlying ore; in all other instances we want to
         // behave like the underlying ore itself (e.g. for canHarvest checks).
-        if (MinecraftForgeClient.getRenderLayer() == null) {
+        if (!world.isRemote || MinecraftForgeClient.getRenderLayer() == null) {
             final IBlockState oreBlockState = getOreBlockState(WorldUtils.getTileEntityThreadsafe(world, pos));
             if (oreBlockState != null) {
                 return oreBlockState;
