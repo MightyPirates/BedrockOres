@@ -97,8 +97,8 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
         // Make sure we stay in bounds of the chunk so as not to trigger further generation.
         final int minX = Math.max(chunkX * 16, centerX - maxWidth);
         final int maxX = Math.min(chunkX * 16 + 15, centerX + maxWidth);
-        final int minZ = Math.max(chunkX * 16, centerZ - maxWidth);
-        final int maxZ = Math.min(chunkX * 16 + 15, centerZ + maxWidth);
+        final int minZ = Math.max(chunkZ * 16, centerZ - maxWidth);
+        final int maxZ = Math.min(chunkZ * 16 + 15, centerZ + maxWidth);
 
         final List<BlockPos> candidates = WorldGeneratorBedrockOre.candidates.get();
         final TFloatList distribution = WorldGeneratorBedrockOre.distribution.get();
