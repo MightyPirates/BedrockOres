@@ -29,11 +29,11 @@ public final class Blocks {
 
     private static void registerBlock(final IForgeRegistry<Block> registry, final Block block, final String name, final Class<? extends TileEntity> tileEntity) {
         registry.register(block.
-                setUnlocalizedName(Constants.MOD_ID + "." + name).
+                setUnlocalizedName(Constants.MOD_ID + '.' + name).
                 setCreativeTab(CreativeTabs.MISC).
                 setRegistryName(name));
 
-        GameRegistry.registerTileEntity(tileEntity, Constants.MOD_ID + ": " + name);
+        GameRegistry.registerTileEntity(tileEntity, Constants.MOD_ID + ':' + name);
     }
 
     // --------------------------------------------------------------------- //

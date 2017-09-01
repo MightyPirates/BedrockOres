@@ -8,6 +8,7 @@ import li.cil.bedrockores.common.network.Network;
 import li.cil.bedrockores.common.sound.Sounds;
 import li.cil.bedrockores.common.world.Retrogen;
 import li.cil.bedrockores.common.world.WorldGeneratorBedrockOre;
+import li.cil.bedrockores.util.datafix.Fixes;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -30,6 +31,7 @@ public class ProxyCommon {
     public void onInit(final FMLInitializationEvent event) {
         Sounds.INSTANCE.init();
         Network.INSTANCE.init();
+        Fixes.init();
 
         GameRegistry.registerWorldGenerator(WorldGeneratorBedrockOre.INSTANCE, Settings.worldGeneratorWeight);
 
@@ -53,4 +55,5 @@ public class ProxyCommon {
     public static void handleRegisterItemsEvent(final RegistryEvent.Register<Item> event) {
         Items.register(event.getRegistry());
     }
+
 }
