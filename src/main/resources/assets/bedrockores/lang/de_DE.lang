@@ -1,4 +1,5 @@
 tile.bedrockores.bedrock_miner.name=Grundgesteinbohrer
+tile.bedrockores.bedrock_ore.name=Grundgesteinerz
 
 commands.bedrockores.usage=Hauptbefehl für alle Befehle in der Bedrock Ores mod. Nutze Tabkomplettierung, um Unterbefehle zu sehen.
 commands.bedrockores.wrap.usage=Während du auf einen Block blickt aufrufen, um den Block in ein Grundgesteinerz umzuwandeln. Optional kann die Ausbeute spezifiziert werden.

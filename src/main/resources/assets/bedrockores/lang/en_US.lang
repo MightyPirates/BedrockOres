@@ -1,4 +1,5 @@
 tile.bedrockores.bedrock_miner.name=Bedrock Miner
+tile.bedrockores.bedrock_ore.name=Bedrock Ore
 
 commands.bedrockores.usage=Master command for all commands in the Bedrock Ores mod. Use tab-completion to explore sub-commands.
 commands.bedrockores.wrap.usage=Call while looking at a block to convert it to a bedrock ore. Optionally specify yield of created bedrock ore.
