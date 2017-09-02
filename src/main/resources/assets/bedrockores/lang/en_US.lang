@@ -11,5 +11,17 @@ commands.bedrockores.list_errors=§cThere were errors parsing these blocks:
 commands.bedrockores.list_error_item=§7 - §f%s
 commands.bedrockores.list_errors_epilogue=§cPlease check your log for warnings for more information.
 
+config.bedrockores.miner_extraction_cooldown=Miner extraction cooldown
+config.bedrockores.miner_efficiency=Miner efficiency
+config.bedrockores.vein_base_y=Vein base y-level
+config.bedrockores.vein_chance=Vein chance
+config.bedrockores.vein_yield_base_scale=Yield scale
+config.bedrockores.vein_distance_scale_start=Vein scale base distance
+config.bedrockores.vein_distance_scale_multiplier=Vein scale multiplier
+config.bedrockores.ui_only_when_sneaking=UI only when sneaking
+config.bedrockores.retrogen_speed=Retrogen chunks/tick
+config.bedrockores.allow_player_mining=Allow player mining
+config.bedrockores.world_generator_weight=World generator weight
+
 gui.bedrockores.expected_yield=Expected yield: %s
 gui.bedrockores.exhausted=Exhausted

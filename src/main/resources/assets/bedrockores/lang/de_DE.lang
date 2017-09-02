@@ -11,5 +11,17 @@ commands.bedrockores.list_errors=§cEs gab Fehler beim Einlesen dieser Blöcke:
 commands.bedrockores.list_error_item=§7 - §f%s
 commands.bedrockores.list_errors_epilogue=§cBitte siehe in deinem Log nach Warnungen für weiteren Informationen.
 
+config.bedrockores.miner_extraction_cooldown=Bohrerarbeitsintervall
+config.bedrockores.miner_efficiency=Bohrereffizienz
+config.bedrockores.vein_base_y=Erzvenengrundhöhe
+config.bedrockores.vein_chance=Erzvenenwahrscheinlichkeit
+config.bedrockores.vein_yield_base_scale=Ergiebigkeitsskalierung
+config.bedrockores.vein_distance_scale_start=Erzvenenskalierungsgrunddistanz
+config.bedrockores.vein_distance_scale_multiplier=Erzvenenskalierungsmultiplikator
+config.bedrockores.ui_only_when_sneaking=UI nur wenn schleichend
+config.bedrockores.retrogen_speed=Retrogen chunks/tick
+config.bedrockores.allow_player_mining=Spieler dürfen Erze abbauen
+config.bedrockores.world_generator_weight=Weltgeneratorgewichtung
+
 gui.bedrockores.expected_yield=Erwartete Ausbeute: %s
 gui.bedrockores.exhausted=Erschöpft
