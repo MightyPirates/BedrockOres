@@ -1,7 +1,5 @@
 tile.bedrockores.bedrock_miner.name=Grundgesteinbohrer
 
-tooltip.bedrockores.bedrock_miner=§7Gräbt Grundgesteinerze in einem Bereich von 5x3x5 unter sich aus.
-
 commands.bedrockores.usage=Hauptbefehl für alle Befehle in der Bedrock Ores mod. Nutze Tabkomplettierung, um Unterbefehle zu sehen.
 commands.bedrockores.wrap.usage=Während du auf einen Block blickt aufrufen, um den Block in ein Grundgesteinerz umzuwandeln. Optional kann die Ausbeute spezifiziert werden.
 commands.bedrockores.unwrap.usage=Während du auf einen Block blickst aufrufen, um einen Grundgesteinerzblock zurück in den Block umzuwandeln, den er umschließt.
@@ -25,3 +23,5 @@ config.bedrockores.world_generator_weight=Weltgeneratorgewichtung
 
 gui.bedrockores.expected_yield=Erwartete Ausbeute: %s
 gui.bedrockores.exhausted=Erschöpft
+
+tooltip.bedrockores.bedrock_miner=§7Gräbt Grundgesteinerze in einem Bereich von 5x3x5 unter sich aus.

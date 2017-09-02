@@ -20,15 +20,9 @@ public final class Constants {
     public static final String NAME_BEDROCK_MINER = "bedrock_miner";
 
     // --------------------------------------------------------------------- //
-    // GUI
+    // Sounds
 
-    public static final String GUI_EXPECTED_YIELD = "gui.bedrockores.expected_yield";
-    public static final String GUI_EXHAUSTED = "gui.bedrockores.exhausted";
-
-    // --------------------------------------------------------------------- //
-    // Tooltips
-
-    public static final String TOOLTIP_BEDROCK_MINER = "tooltip.bedrockores.bedrock_miner";
+    public static final String SOUND_BEDROCK_MINER = NAME_BEDROCK_MINER;
 
     // --------------------------------------------------------------------- //
     // Commands
@@ -57,9 +51,15 @@ public final class Constants {
     public static final String CONFIG_WORLD_GENERATOR_WEIGHT = "config.bedrockores.world_generator_weight";
 
     // --------------------------------------------------------------------- //
-    // Sounds
+    // GUI
 
-    public static final String SOUND_BEDROCK_MINER = NAME_BEDROCK_MINER;
+    public static final String GUI_EXPECTED_YIELD = "gui.bedrockores.expected_yield";
+    public static final String GUI_EXHAUSTED = "gui.bedrockores.exhausted";
+
+    // --------------------------------------------------------------------- //
+    // Tooltips
+
+    public static final String TOOLTIP_BEDROCK_MINER = "tooltip.bedrockores.bedrock_miner";
 
     // --------------------------------------------------------------------- //
 
