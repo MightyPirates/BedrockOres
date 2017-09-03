@@ -1,6 +1,5 @@
 package li.cil.bedrockores.common.world;
 
-import com.google.common.base.Predicate;
 import gnu.trove.list.TFloatList;
 import gnu.trove.list.array.TFloatArrayList;
 import li.cil.bedrockores.common.config.OreConfig;
@@ -8,6 +7,7 @@ import li.cil.bedrockores.common.config.Settings;
 import li.cil.bedrockores.common.config.VeinConfig;
 import li.cil.bedrockores.common.init.Blocks;
 import li.cil.bedrockores.common.tileentity.TileEntityBedrockOre;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -18,7 +18,9 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.fml.common.IWorldGenerator;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +33,14 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
 
     private static final ThreadLocal<List<BlockPos>> candidates = ThreadLocal.withInitial(ArrayList::new);
     private static final ThreadLocal<TFloatList> distribution = ThreadLocal.withInitial(TFloatArrayList::new);
+
+    @Nullable
+    @GameRegistry.ObjectHolder("minecraft:bedrock")
+    public static final Block bedrock = null;
+
+    @Nullable
+    @GameRegistry.ObjectHolder("bedrockbgone:better_bedrock")
+    public static final Block betterBedrock = null;
 
     // --------------------------------------------------------------------- //
 
@@ -120,9 +130,6 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
         assert distribution.isEmpty();
 
         try {
-            // Only replace bedrock blocks.
-            final Predicate<IBlockState> predicate = input -> input != null && input.getBlock() == net.minecraft.init.Blocks.BEDROCK;
-
             // Pick all candidate positions in the target bounds, those positions
             // being the ones that fall inside our ellipsoid.
             int maxY = 0;
@@ -135,7 +142,7 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
                         final BlockPos pos = new BlockPos(x, y, z);
                         final IBlockState state = world.getBlockState(pos);
                         assert state.getBlock() != Blocks.bedrockOre;
-                        if (state.getBlock().isReplaceableOreGen(state, world, pos, predicate)) {
+                        if (state.getBlock().isReplaceableOreGen(state, world, pos, WorldGeneratorBedrockOre::isBedrockBlock)) {
                             if (y > maxY) {
                                 maxY = y;
                             }
@@ -218,5 +225,14 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
         final float right = (rightTop * rightTop) / (eb * eb);
 
         return left + right <= 1;
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private static boolean isBedrockBlock(@Nullable final IBlockState input) {
+        if (input == null) {
+            return false;
+        }
+        final Block block = input.getBlock();
+        return block == bedrock || block == betterBedrock;
     }
 }
