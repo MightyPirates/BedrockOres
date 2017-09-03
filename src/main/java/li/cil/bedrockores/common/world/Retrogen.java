@@ -79,6 +79,10 @@ public enum Retrogen {
 
     @SubscribeEvent
     public void tickEnd(final TickEvent.WorldTickEvent event) {
+        if (Settings.retrogenSpeed < 1) {
+            return;
+        }
+
         if (event.side != Side.SERVER) {
             return;
         }

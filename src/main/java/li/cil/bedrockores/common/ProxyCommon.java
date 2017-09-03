@@ -37,9 +37,7 @@ public class ProxyCommon {
 
         GameRegistry.registerWorldGenerator(WorldGeneratorBedrockOre.INSTANCE, Settings.worldGeneratorWeight);
 
-        if (Settings.retrogenSpeed > 0) {
-            MinecraftForge.EVENT_BUS.register(Retrogen.INSTANCE);
-        }
+        MinecraftForge.EVENT_BUS.register(Retrogen.INSTANCE);
     }
 
     public void onPostInit(final FMLPostInitializationEvent event) {
