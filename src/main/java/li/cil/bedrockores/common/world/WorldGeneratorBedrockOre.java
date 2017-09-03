@@ -1,6 +1,5 @@
 package li.cil.bedrockores.common.world;
 
-import com.google.common.base.Predicate;
 import gnu.trove.list.TFloatList;
 import gnu.trove.list.array.TFloatArrayList;
 import li.cil.bedrockores.common.config.OreConfig;
@@ -8,16 +7,20 @@ import li.cil.bedrockores.common.config.Settings;
 import li.cil.bedrockores.common.config.VeinConfig;
 import li.cil.bedrockores.common.init.Blocks;
 import li.cil.bedrockores.common.tileentity.TileEntityBedrockOre;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +33,14 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
 
     private static final ThreadLocal<List<BlockPos>> candidates = ThreadLocal.withInitial(ArrayList::new);
     private static final ThreadLocal<TFloatList> distribution = ThreadLocal.withInitial(TFloatArrayList::new);
+
+    @Nullable
+    @GameRegistry.ObjectHolder("minecraft:bedrock")
+    public static final Block bedrock = null;
+
+    @Nullable
+    @GameRegistry.ObjectHolder("bedrockbgone:better_bedrock")
+    public static final Block betterBedrock = null;
 
     // --------------------------------------------------------------------- //
 
@@ -82,8 +93,18 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
         final int centerX = chunkX * 16 + 8 - maxWidth + random.nextInt(maxWidth * 2);
         final int centerZ = chunkZ * 16 + 8 - maxWidth + random.nextInt(maxWidth * 2);
 
-        final BlockPos spawnPoint = world.getSpawnPoint();
-        final double distanceToSpawn = new Vec3i(spawnPoint.getX(), 0, spawnPoint.getZ()).getDistance(centerX, 0, centerZ);
+        final double distanceToSpawn;
+        if (world instanceof WorldServer && ((WorldServer) world).findingSpawnPoint) {
+            // If this is called *while* we're looking for a valid spawn pos, the reported
+            // spawn pos will be BlockPos.ORIGIN. So we're almost guaranteed to be far enough
+            // away from it for scaling to kick in. Inversely, if we're looking for a spawn pos,
+            // we assume we're close enough to the spawn for scaling *not* to kick in.
+            distanceToSpawn = 0;
+        } else {
+            final BlockPos spawnPoint = world.getSpawnPoint();
+            distanceToSpawn = new Vec3i(spawnPoint.getX(), 0, spawnPoint.getZ()).getDistance(centerX, 0, centerZ);
+        }
+
         final float veinScale;
         if (distanceToSpawn > Settings.veinDistanceScaleStart) {
             veinScale = Math.max(1, (float) Math.log((distanceToSpawn - Settings.veinDistanceScaleStart) / 10) * Settings.veinDistanceScaleMultiplier);
@@ -91,14 +112,16 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
             veinScale = 1;
         }
 
-        final int adjustedCount = Math.round(veinCount * veinScale);
+        final int adjustedCount = Math.round(veinCount * Math.max(1, veinScale * 0.5f));
         final int adjustedYield = Math.round(veinYield * veinScale);
 
         // Make sure we stay in bounds of the chunk so as not to trigger further generation.
-        final int minX = Math.max(chunkX * 16, centerX - maxWidth);
-        final int maxX = Math.min(chunkX * 16 + 15, centerX + maxWidth);
-        final int minZ = Math.max(chunkZ * 16, centerZ - maxWidth);
-        final int maxZ = Math.min(chunkZ * 16 + 15, centerZ + maxWidth);
+        // Actually, stay in *reduced* bounds because setting a blockstate will also trigger
+        // loading of its neighboring chunk if it's on the edge of a chunk... thanks Minecraft.
+        final int minX = Math.max(chunkX * 16 + 1, centerX - maxWidth);
+        final int maxX = Math.min((chunkX + 1) * 16 - 2, centerX + maxWidth);
+        final int minZ = Math.max(chunkZ * 16 + 1, centerZ - maxWidth);
+        final int maxZ = Math.min((chunkZ + 1) * 16 - 2, centerZ + maxWidth);
 
         final List<BlockPos> candidates = WorldGeneratorBedrockOre.candidates.get();
         final TFloatList distribution = WorldGeneratorBedrockOre.distribution.get();
@@ -107,9 +130,6 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
         assert distribution.isEmpty();
 
         try {
-            // Only replace bedrock blocks.
-            final Predicate<IBlockState> predicate = input -> input != null && input.getBlock() == net.minecraft.init.Blocks.BEDROCK;
-
             // Pick all candidate positions in the target bounds, those positions
             // being the ones that fall inside our ellipsoid.
             int maxY = 0;
@@ -122,7 +142,7 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
                         final BlockPos pos = new BlockPos(x, y, z);
                         final IBlockState state = world.getBlockState(pos);
                         assert state.getBlock() != Blocks.bedrockOre;
-                        if (state.getBlock().isReplaceableOreGen(state, world, pos, predicate)) {
+                        if (state.getBlock().isReplaceableOreGen(state, world, pos, WorldGeneratorBedrockOre::isBedrockBlock)) {
                             if (y > maxY) {
                                 maxY = y;
                             }
@@ -205,5 +225,14 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
         final float right = (rightTop * rightTop) / (eb * eb);
 
         return left + right <= 1;
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private static boolean isBedrockBlock(@Nullable final IBlockState input) {
+        if (input == null) {
+            return false;
+        }
+        final Block block = input.getBlock();
+        return block == bedrock || block == betterBedrock;
     }
 }
