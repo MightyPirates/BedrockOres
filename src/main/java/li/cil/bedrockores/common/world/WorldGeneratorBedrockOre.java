@@ -102,7 +102,7 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
             veinScale = 1;
         }
 
-        final int adjustedCount = Math.round(veinCount * veinScale);
+        final int adjustedCount = Math.round(veinCount * Math.max(1, veinScale * 0.5f));
         final int adjustedYield = Math.round(veinYield * veinScale);
 
         // Make sure we stay in bounds of the chunk so as not to trigger further generation.
