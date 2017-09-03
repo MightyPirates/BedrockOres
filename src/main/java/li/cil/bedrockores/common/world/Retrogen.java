@@ -9,14 +9,19 @@ import li.cil.bedrockores.common.config.Settings;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkGenerator;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.WeakHashMap;
 
 public enum Retrogen {
     INSTANCE;
@@ -28,6 +33,7 @@ public enum Retrogen {
 
     private final TIntObjectMap<Set<ChunkPos>> worldGenPending = new TIntObjectHashMap<>(3);
     private final TIntObjectMap<Set<ChunkPos>> worldGenComplete = new TIntObjectHashMap<>(3);
+    private final Map<World, IChunkGenerator> worldToChunkGenerator = new WeakHashMap<>(3);
     private final Object lock = new Object();
 
     // --------------------------------------------------------------------- //
@@ -35,6 +41,7 @@ public enum Retrogen {
     public void clear() {
         worldGenPending.clear();
         worldGenComplete.clear();
+        worldToChunkGenerator.clear();
     }
 
     boolean markChunkGenerated(final int dimension, final int chunkX, final int chunkZ) {
@@ -72,6 +79,10 @@ public enum Retrogen {
 
     @SubscribeEvent
     public void tickEnd(final TickEvent.WorldTickEvent event) {
+        if (Settings.retrogenSpeed < 1) {
+            return;
+        }
+
         if (event.side != Side.SERVER) {
             return;
         }
@@ -83,6 +94,17 @@ public enum Retrogen {
             final Set<ChunkPos> pending = worldGenPending.get(dimension);
             if (pending == null) {
                 return;
+            }
+
+            final IChunkProvider chunkProvider = world.getChunkProvider();
+            IChunkGenerator chunkGenerator = worldToChunkGenerator.get(world);
+            if (chunkGenerator == null) {
+                if (chunkProvider instanceof ChunkProviderServer) {
+                    chunkGenerator = ((ChunkProviderServer) chunkProvider).chunkGenerator;
+                } else {
+                    chunkGenerator = world.provider.createChunkGenerator();
+                }
+                worldToChunkGenerator.put(world, chunkGenerator);
             }
 
             final Iterable<ChunkPos> chunks = ImmutableList.copyOf(Iterables.limit(pending, Settings.retrogenSpeed));
@@ -97,7 +119,8 @@ public enum Retrogen {
                 final long chunkSeed = (xSeed * chunkX + zSeed * chunkZ) ^ worldSeed;
 
                 random.setSeed(chunkSeed);
-                WorldGeneratorBedrockOre.INSTANCE.generate(random, chunkX, chunkZ, world, world.provider.createChunkGenerator(), world.getChunkProvider());
+
+                WorldGeneratorBedrockOre.INSTANCE.generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
 
                 pending.remove(chunkPos);
             }
