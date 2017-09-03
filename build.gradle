@@ -79,6 +79,12 @@ processResources {
     rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
+jar {
+    manifest {
+        attributes FMLAT: "bedrockores_at.cfg"
+    }
+}
+
 // this is needed for IntelliJ so we don't have to copy over the assets manually every time
 idea {
     module {
