@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -187,12 +188,14 @@ public enum VeinConfig {
 
         // Extract example user ore-listing to config dir if it doesn't exist.
         try {
-            final int jsonFileCount = FileUtils.listFiles(Paths.get(configDirectory, Constants.MOD_ID).toFile(), new String[]{"json"}, false).size();
+            final Path directory = Paths.get(configDirectory, Constants.MOD_ID);
+            directory.toFile().mkdirs();
+            final int jsonFileCount = FileUtils.listFiles(directory.toFile(), new String[]{"json"}, false).size();
             if (jsonFileCount == 0) {
                 BedrockOres.getLog().info("No JSON config files found, extracting example file.");
                 shouldReuseOreConfigs = false;
                 final List<OreConfig> oreList = loadFromJar(EXAMPLE_JSON, Types.LIST_ORE, gson);
-                final File file = Paths.get(configDirectory, Constants.MOD_ID, EXAMPLE_JSON).toFile();
+                final File file = directory.resolve(EXAMPLE_JSON).toFile();
                 try {
                     FileUtils.writeStringToFile(file, gson.toJson(oreList), Charset.defaultCharset());
                 } catch (final IOException e) {
