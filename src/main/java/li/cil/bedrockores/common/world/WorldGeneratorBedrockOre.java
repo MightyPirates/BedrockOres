@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.fml.common.IWorldGenerator;
@@ -82,8 +83,18 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
         final int centerX = chunkX * 16 + 8 - maxWidth + random.nextInt(maxWidth * 2);
         final int centerZ = chunkZ * 16 + 8 - maxWidth + random.nextInt(maxWidth * 2);
 
-        final BlockPos spawnPoint = world.getSpawnPoint();
-        final double distanceToSpawn = new Vec3i(spawnPoint.getX(), 0, spawnPoint.getZ()).getDistance(centerX, 0, centerZ);
+        final double distanceToSpawn;
+        if (world instanceof WorldServer && ((WorldServer) world).findingSpawnPoint) {
+            // If this is called *while* we're looking for a valid spawn pos, the reported
+            // spawn pos will be BlockPos.ORIGIN. So we're almost guaranteed to be far enough
+            // away from it for scaling to kick in. Inversely, if we're looking for a spawn pos,
+            // we assume we're close enough to the spawn for scaling *not* to kick in.
+            distanceToSpawn = 0;
+        } else {
+            final BlockPos spawnPoint = world.getSpawnPoint();
+            distanceToSpawn = new Vec3i(spawnPoint.getX(), 0, spawnPoint.getZ()).getDistance(centerX, 0, centerZ);
+        }
+
         final float veinScale;
         if (distanceToSpawn > Settings.veinDistanceScaleStart) {
             veinScale = Math.max(1, (float) Math.log((distanceToSpawn - Settings.veinDistanceScaleStart) / 10) * Settings.veinDistanceScaleMultiplier);

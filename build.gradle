@@ -74,6 +74,9 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+
+    // Move access transformer to META-INF
+    rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
 // this is needed for IntelliJ so we don't have to copy over the assets manually every time
