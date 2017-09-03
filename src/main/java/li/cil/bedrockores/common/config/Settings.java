@@ -4,48 +4,61 @@ import net.minecraftforge.common.config.Config;
 
 @Config(modid = Constants.MOD_ID)
 public final class Settings {
+    @Config.LangKey(Constants.CONFIG_MINER_EXTRACTION_COOLDOWN)
     @Config.Comment("The time in ticks between extraction operations performed by the miner.")
+    @Config.RangeInt(min = 0)
     public static int minerExtractionCooldown = 100;
 
-    @Config.Comment("The fuel efficiency of the miner. Actual burn time is original burn time times this.\n" +
+    @Config.LangKey(Constants.CONFIG_MINER_EFFICIENCY)
+    @Config.Comment("The fuel efficiency of the miner. Actual burn time is original burn time times this. " +
                     "Applies to both internal power generation as well as power supplied externally.")
+    @Config.RangeDouble(min = 0)
     public static float minerEfficiency = 0.5f;
 
+    @Config.LangKey(Constants.CONFIG_VEIN_BASE_Y)
     @Config.Comment("The y level at which to start looking for bedrock to generate veins in, searching down.")
     @Config.RangeInt(min = 0, max = 255)
     public static int veinBaseY = 5;
 
-    @Config.Comment("The probability that a bedrock vein spawns in a chunk. In other words, the relative\n" +
+    @Config.LangKey(Constants.CONFIG_VEIN_CHANCE)
+    @Config.Comment("The probability that a bedrock vein spawns in a chunk. In other words, the relative " +
                     "amount of chunks a vein spawns in.")
     @Config.RangeDouble(min = 0, max = 1)
     public static float veinChance = 0.5f;
 
-    @Config.Comment("A constant scaling factor applied to all yields. Intended to allow easily changing\n" +
+    @Config.LangKey(Constants.CONFIG_VEIN_YIELD_BASE_SCALE)
+    @Config.Comment("A constant scaling factor applied to all yields. Intended to allow easily changing " +
                     "yields in general, while not messing with the balancing of ores against each other.")
     @Config.RangeDouble(min = 0, max = 10000)
     public static float veinYieldBaseScale = 10f;
 
-    @Config.Comment("The distance from spawn at which to begin starting to scale up vein size and yield.")
+    @Config.LangKey(Constants.CONFIG_VEIN_DISTANCE_SCALE_START)
+    @Config.Comment("The distance from spawn at which to start scaling up vein size and yield.")
     @Config.RangeDouble(min = 0)
     public static float veinDistanceScaleStart = 300;
 
-    @Config.Comment("A constant scaling factor applied to distance based vein scaling. The final range based\n" +
+    @Config.LangKey(Constants.CONFIG_VEIN_DISTANCE_SCALE_MULTIPLIER)
+    @Config.Comment("A constant scaling factor applied to distance based vein scaling. The final range based " +
                     "scaling is computed as 'logn((distanceToSpawn-veinYieldDistanceScaleStart)/10)*veinYieldDistanceScaleMultiplier'.")
     @Config.RangeDouble(min = 0)
     public static float veinDistanceScaleMultiplier = 2f;
 
+    @Config.LangKey(Constants.CONFIG_UI_ONLY_WHEN_SNEAKING)
     @Config.Comment("Whether to only show the floating UI indicating ore yield when sneaking.")
     public static boolean uiOnlyWhenSneaking = false;
 
+    @Config.LangKey(Constants.CONFIG_RETROGEN_SPEED)
     @Config.Comment("Maximum number of chunks to perform retrogen for per tick. 0 to disable retrogen.")
     @Config.RangeInt(min = 0)
     public static int retrogenSpeed = 10;
 
-    @Config.Comment("Whether to allow players to directly mine bedrock ores.\n" +
+    @Config.LangKey(Constants.CONFIG_ALLOW_PLAYER_MINING)
+    @Config.Comment("Whether to allow players to directly mine bedrock ores. " +
                     "Disabling this will force players to use the bedrock miner.")
     public static boolean allowPlayerMining = true;
 
-    @Config.Comment("The 'weight' of the world generator placing bedrock ores. This is used when Forge\n" +
+    @Config.LangKey(Constants.CONFIG_WORLD_GENERATOR_WEIGHT)
+    @Config.Comment("The 'weight' of the world generator placing bedrock ores. This is used when Forge " +
                     "sorts generators to know in what order they run. Higher weights run later.")
     public static int worldGeneratorWeight = 10;
 

@@ -187,15 +187,19 @@ public enum VeinConfig {
 
         // Extract example user ore-listing to config dir if it doesn't exist.
         try {
-            final File file = Paths.get(configDirectory, Constants.MOD_ID, "_example.json").toFile();
-            if (!file.exists()) {
+            final int jsonFileCount = FileUtils.listFiles(Paths.get(configDirectory, Constants.MOD_ID).toFile(), new String[]{"json"}, false).size();
+            if (jsonFileCount == 0) {
+                BedrockOres.getLog().info("No JSON config files found, extracting example file.");
                 shouldReuseOreConfigs = false;
                 final List<OreConfig> oreList = loadFromJar(EXAMPLE_JSON, Types.LIST_ORE, gson);
+                final File file = Paths.get(configDirectory, Constants.MOD_ID, EXAMPLE_JSON).toFile();
                 try {
                     FileUtils.writeStringToFile(file, gson.toJson(oreList), Charset.defaultCharset());
                 } catch (final IOException e) {
-                    BedrockOres.getLog().warn("Failed writing '" + file.getName() + "'.", e);
+                    BedrockOres.getLog().warn("Failed writing '" + EXAMPLE_JSON + "'.", e);
                 }
+            } else {
+                BedrockOres.getLog().info("Found JSON config files, skipping extraction of example file.");
             }
         } catch (final IOException e) {
             throw new RuntimeException(e);
