@@ -121,6 +121,11 @@ public final class BlockBedrockOre extends Block {
         return true;
     }
 
+    @Override
+    public boolean canEntityDestroy(final IBlockState state, final IBlockAccess world, final BlockPos pos, final Entity entity) {
+        return false;
+    }
+
     // --------------------------------------------------------------------- //
     // Forwarding to actual ore's Block
 
