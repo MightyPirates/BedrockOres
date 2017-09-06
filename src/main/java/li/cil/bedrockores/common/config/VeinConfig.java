@@ -77,9 +77,11 @@ public enum VeinConfig {
     public OreConfig getOre(final DimensionType dimensionType, final float r) {
         final List<OreConfig> list = oresByDimensionType.get(dimensionType);
         final int oreWeightSum = oreWeightSumByDimensionType.get(dimensionType);
-        if (list == null || list.isEmpty() || oreWeightSum == 0) {
+        if (list == null || list.isEmpty()) {
             return null;
         }
+
+        assert oreWeightSum > 0;
 
         final int wantWeightSum = (int) (r * oreWeightSum);
         int weightSum = 0;
@@ -91,6 +93,14 @@ public enum VeinConfig {
         }
 
         return null;
+    }
+
+    public int getOreTypeCount(final DimensionType dimensionType) {
+        final List<OreConfig> list = oresByDimensionType.get(dimensionType);
+        if (list == null) {
+            return 0; // Won't happen because we call getOre first, but just to be safe.
+        }
+        return list.size();
     }
 
     public void load() {

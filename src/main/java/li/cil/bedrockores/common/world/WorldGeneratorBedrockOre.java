@@ -13,6 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.IChunkGenerator;
@@ -59,7 +60,9 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
             return;
         }
 
-        final OreConfig ore = VeinConfig.INSTANCE.getOre(world.provider.getDimensionType(), random.nextFloat());
+        final DimensionType dimensionType = world.provider.getDimensionType();
+
+        final OreConfig ore = VeinConfig.INSTANCE.getOre(dimensionType, random.nextFloat());
         if (ore == null) {
             return;
         }
@@ -78,7 +81,8 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
             return;
         }
 
-        final int veinYield = Math.max(0, Math.round((veinMinYield == veinMaxYield ? veinMinYield : (veinMinYield + random.nextInt(veinMaxYield - veinMinYield))) * Settings.veinYieldBaseScale));
+        final float yieldScale = Settings.veinYieldConstScale * VeinConfig.INSTANCE.getOreTypeCount(dimensionType);
+        final int veinYield = Math.max(0, Math.round((veinMinYield == veinMaxYield ? veinMinYield : (veinMinYield + random.nextInt(veinMaxYield - veinMinYield))) * yieldScale));
         if (veinYield == 0) {
             return;
         }
