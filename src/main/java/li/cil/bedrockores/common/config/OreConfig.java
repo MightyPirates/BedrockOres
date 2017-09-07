@@ -8,7 +8,7 @@ public final class OreConfig {
     public WrappedBlockState state;
 
     public String dimension = "overworld";
-    public int weight = 1;
+    public int weight = 10;
 
     public int widthMin = 2;
     public int widthMax = 4;

@@ -7,6 +7,7 @@
       }
     },
     "dimension": "nether",
+    "weight": 5,
     "widthMin": 4,
     "widthMax": 5,
     "countMin": 4,
@@ -22,6 +23,7 @@
       }
     },
     "dimension": "nether",
+    "weight": 5,
     "widthMin": 3,
     "widthMax": 5,
     "countMin": 4,

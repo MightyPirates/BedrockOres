@@ -38,6 +38,7 @@
         "resource": "apatite"
       }
     },
+    "weight": 3,
     "widthMin": 5,
     "widthMax": 7,
     "countMin": 10,

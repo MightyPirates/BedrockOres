@@ -6,6 +6,7 @@
         "gem": "ruby"
       }
     },
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -22,6 +23,7 @@
         "gem": "garnet"
       }
     },
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -38,6 +40,7 @@
         "gem": "topaz"
       }
     },
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -54,6 +57,7 @@
         "gem": "amber"
       }
     },
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -70,6 +74,7 @@
         "gem": "heliodor"
       }
     },
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -86,6 +91,7 @@
         "gem": "peridot"
       }
     },
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -102,6 +108,7 @@
         "gem": "beryl"
       }
     },
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -118,6 +125,7 @@
         "gem": "indicolite"
       }
     },
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -134,6 +142,7 @@
         "gem": "aquamarine"
       }
     },
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -150,6 +159,7 @@
         "gem": "sapphire"
       }
     },
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -166,6 +176,7 @@
         "gem": "iolite"
       }
     },
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -182,6 +193,7 @@
         "gem": "amethyst"
       }
     },
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -198,6 +210,7 @@
         "gem": "agate"
       }
     },
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -214,6 +227,7 @@
         "gem": "morganite"
       }
     },
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -230,6 +244,7 @@
         "gem": "onyx"
       }
     },
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -246,6 +261,7 @@
         "gem": "opal"
       }
     },
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -262,6 +278,7 @@
         "gem": "chaos"
       }
     },
+    "weight": 1,
     "widthMin": 2,
     "widthMax": 4,
     "countMin": 3,
@@ -279,6 +296,7 @@
       }
     },
     "dimension": "nether",
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -296,6 +314,7 @@
       }
     },
     "dimension": "nether",
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -313,6 +332,7 @@
       }
     },
     "dimension": "nether",
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -330,6 +350,7 @@
       }
     },
     "dimension": "nether",
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -347,6 +368,7 @@
       }
     },
     "dimension": "nether",
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -364,6 +386,7 @@
       }
     },
     "dimension": "nether",
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -381,6 +404,7 @@
       }
     },
     "dimension": "nether",
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -398,6 +422,7 @@
       }
     },
     "dimension": "nether",
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -415,6 +440,7 @@
       }
     },
     "dimension": "nether",
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -432,6 +458,7 @@
       }
     },
     "dimension": "nether",
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -449,6 +476,7 @@
       }
     },
     "dimension": "nether",
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -466,6 +494,7 @@
       }
     },
     "dimension": "nether",
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -483,6 +512,7 @@
       }
     },
     "dimension": "nether",
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -500,6 +530,7 @@
       }
     },
     "dimension": "nether",
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -517,6 +548,7 @@
       }
     },
     "dimension": "nether",
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
@@ -534,6 +566,7 @@
       }
     },
     "dimension": "nether",
+    "weight": 1,
     "widthMin": 4,
     "widthMax": 6,
     "countMin": 4,
