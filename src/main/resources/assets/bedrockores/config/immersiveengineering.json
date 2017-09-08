@@ -86,6 +86,7 @@
         "type": "uranium"
       }
     },
+    "weight": 5,
     "widthMin": 2,
     "widthMax": 3,
     "countMin": 2,

@@ -54,6 +54,7 @@
         "type": "uranium_ore"
       }
     },
+    "weight": 5,
     "widthMin": 2,
     "widthMax": 3,
     "countMin": 2,

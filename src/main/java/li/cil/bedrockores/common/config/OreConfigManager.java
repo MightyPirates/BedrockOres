@@ -4,7 +4,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import gnu.trove.map.TIntFloatMap;
 import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TIntFloatHashMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import joptsimple.internal.Strings;
 import li.cil.bedrockores.common.BedrockOres;
@@ -13,6 +15,7 @@ import li.cil.bedrockores.common.json.ResourceLocationAdapter;
 import li.cil.bedrockores.common.json.Types;
 import li.cil.bedrockores.common.json.WrappedBlockStateAdapter;
 import li.cil.bedrockores.util.AlphanumComparator;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
@@ -39,7 +42,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-public enum VeinConfig {
+public enum OreConfigManager {
     INSTANCE;
 
     // --------------------------------------------------------------------- //
@@ -50,6 +53,7 @@ public enum VeinConfig {
     private static final String EXAMPLE_JSON = "_example.json";
 
     private final ArrayList<OreConfig> allOres = new ArrayList<>();
+    private final TIntFloatMap oreExtractionCooldownScale = new TIntFloatHashMap();
     private final Map<DimensionType, List<OreConfig>> oresByDimensionType = new EnumMap<>(DimensionType.class);
     private final TObjectIntMap<DimensionType> oreWeightSumByDimensionType = new TObjectIntHashMap<>(3);
     private boolean shouldReuseOreConfigs;
@@ -73,13 +77,25 @@ public enum VeinConfig {
         return ImmutableList.copyOf(allOres);
     }
 
+    public float getOreExtractionCooldownScale(@Nullable final IBlockState state) {
+        if (state != null) {
+            final int stateId = Block.getStateId(state);
+            if (oreExtractionCooldownScale.containsKey(stateId)) {
+                return oreExtractionCooldownScale.get(stateId);
+            }
+        }
+        return 1;
+    }
+
     @Nullable
     public OreConfig getOre(final DimensionType dimensionType, final float r) {
         final List<OreConfig> list = oresByDimensionType.get(dimensionType);
         final int oreWeightSum = oreWeightSumByDimensionType.get(dimensionType);
-        if (list == null || list.isEmpty() || oreWeightSum == 0) {
+        if (list == null || list.isEmpty()) {
             return null;
         }
+
+        assert oreWeightSum > 0;
 
         final int wantWeightSum = (int) (r * oreWeightSum);
         int weightSum = 0;
@@ -91,6 +107,14 @@ public enum VeinConfig {
         }
 
         return null;
+    }
+
+    public int getOreTypeCount(final DimensionType dimensionType) {
+        final List<OreConfig> list = oresByDimensionType.get(dimensionType);
+        if (list == null) {
+            return 0; // Won't happen because we call getOre first, but just to be safe.
+        }
+        return list.size();
     }
 
     public void load() {
@@ -109,8 +133,19 @@ public enum VeinConfig {
 
         BedrockOres.getLog().info("Done loading ore config, got {} ores. Filtering...", allOres.size());
 
-        // Remove entries where block state could not be loaded ore have no weight.
-        allOres.removeIf(ore -> !ore.enabled || ore.weight < 1 || ore.state.getBlockState().getBlock() == Blocks.AIR);
+        // Remove entries where block state could not be loaded.
+        allOres.removeIf(ore -> ore.state.getBlockState().getBlock() == Blocks.AIR);
+
+        // Grab extraction speeds for *all* ores we know, even disabled ones, in
+        // case of ores left from previous generation (disabled later on in an
+        // existing world).
+        for (final OreConfig ore : allOres) {
+            final int stateId = Block.getStateId(ore.state.getBlockState());
+            oreExtractionCooldownScale.put(stateId, Math.max(0, ore.extractionCooldownScale));
+        }
+
+        // Remove entries where ores are disabled or have no weight.
+        allOres.removeIf(ore -> !ore.enabled || ore.weight < 1);
 
         BedrockOres.getLog().info("After removing disabled and unavailable ores, got {} ores.", allOres.size());
 

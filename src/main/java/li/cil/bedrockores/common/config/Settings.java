@@ -30,7 +30,7 @@ public final class Settings {
     @Config.Comment("A constant scaling factor applied to all yields. Intended to allow easily changing " +
                     "yields in general, while not messing with the balancing of ores against each other.")
     @Config.RangeDouble(min = 0, max = 10000)
-    public static float veinYieldBaseScale = 10f;
+    public static float veinYieldConstScale = 2f;
 
     @Config.LangKey(Constants.CONFIG_VEIN_DISTANCE_SCALE_START)
     @Config.Comment("The distance from spawn at which to start scaling up vein size and yield.")

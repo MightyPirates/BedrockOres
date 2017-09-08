@@ -1,0 +1,579 @@
+[
+  {
+    "state": {
+      "name": "silentgems:gemore",
+      "properties": {
+        "gem": "ruby"
+      }
+    },
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 80,
+    "yieldMax": 100,
+    "group": "ruby",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemore",
+      "properties": {
+        "gem": "garnet"
+      }
+    },
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 80,
+    "yieldMax": 100,
+    "group": "garnet",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemore",
+      "properties": {
+        "gem": "topaz"
+      }
+    },
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 80,
+    "yieldMax": 100,
+    "group": "topaz",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemore",
+      "properties": {
+        "gem": "amber"
+      }
+    },
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 80,
+    "yieldMax": 100,
+    "group": "amber",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemore",
+      "properties": {
+        "gem": "heliodor"
+      }
+    },
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 80,
+    "yieldMax": 100,
+    "group": "heliodor",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemore",
+      "properties": {
+        "gem": "peridot"
+      }
+    },
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 80,
+    "yieldMax": 100,
+    "group": "peridot",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemore",
+      "properties": {
+        "gem": "beryl"
+      }
+    },
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 80,
+    "yieldMax": 100,
+    "group": "beryl",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemore",
+      "properties": {
+        "gem": "indicolite"
+      }
+    },
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 80,
+    "yieldMax": 100,
+    "group": "indicolite",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemore",
+      "properties": {
+        "gem": "aquamarine"
+      }
+    },
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 80,
+    "yieldMax": 100,
+    "group": "aquamarine",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemore",
+      "properties": {
+        "gem": "sapphire"
+      }
+    },
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 80,
+    "yieldMax": 100,
+    "group": "sapphire",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemore",
+      "properties": {
+        "gem": "iolite"
+      }
+    },
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 80,
+    "yieldMax": 100,
+    "group": "iolite",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemore",
+      "properties": {
+        "gem": "amethyst"
+      }
+    },
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 80,
+    "yieldMax": 100,
+    "group": "amethyst",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemore",
+      "properties": {
+        "gem": "agate"
+      }
+    },
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 80,
+    "yieldMax": 100,
+    "group": "agate",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemore",
+      "properties": {
+        "gem": "morganite"
+      }
+    },
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 80,
+    "yieldMax": 100,
+    "group": "morganite",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemore",
+      "properties": {
+        "gem": "onyx"
+      }
+    },
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 80,
+    "yieldMax": 100,
+    "group": "onyx",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemore",
+      "properties": {
+        "gem": "opal"
+      }
+    },
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 80,
+    "yieldMax": 100,
+    "group": "opal",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:essenceore",
+      "properties": {
+        "gem": "chaos"
+      }
+    },
+    "weight": 1,
+    "widthMin": 2,
+    "widthMax": 4,
+    "countMin": 3,
+    "countMax": 5,
+    "yieldMin": 28,
+    "yieldMax": 35,
+    "group": "chaos",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemoredark",
+      "properties": {
+        "gem": "ruby"
+      }
+    },
+    "dimension": "nether",
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 125,
+    "yieldMax": 156,
+    "group": "ruby",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemoredark",
+      "properties": {
+        "gem": "garnet"
+      }
+    },
+    "dimension": "nether",
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 125,
+    "yieldMax": 156,
+    "group": "garnet",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemoredark",
+      "properties": {
+        "gem": "topaz"
+      }
+    },
+    "dimension": "nether",
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 125,
+    "yieldMax": 156,
+    "group": "topaz",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemoredark",
+      "properties": {
+        "gem": "amber"
+      }
+    },
+    "dimension": "nether",
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 125,
+    "yieldMax": 156,
+    "group": "amber",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemoredark",
+      "properties": {
+        "gem": "heliodor"
+      }
+    },
+    "dimension": "nether",
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 125,
+    "yieldMax": 156,
+    "group": "heliodor",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemoredark",
+      "properties": {
+        "gem": "peridot"
+      }
+    },
+    "dimension": "nether",
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 125,
+    "yieldMax": 156,
+    "group": "peridot",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemoredark",
+      "properties": {
+        "gem": "beryl"
+      }
+    },
+    "dimension": "nether",
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 125,
+    "yieldMax": 156,
+    "group": "beryl",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemoredark",
+      "properties": {
+        "gem": "indicolite"
+      }
+    },
+    "dimension": "nether",
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 125,
+    "yieldMax": 156,
+    "group": "indicolite",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemoredark",
+      "properties": {
+        "gem": "aquamarine"
+      }
+    },
+    "dimension": "nether",
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 125,
+    "yieldMax": 156,
+    "group": "aquamarine",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemoredark",
+      "properties": {
+        "gem": "sapphire"
+      }
+    },
+    "dimension": "nether",
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 125,
+    "yieldMax": 156,
+    "group": "sapphire",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemoredark",
+      "properties": {
+        "gem": "iolite"
+      }
+    },
+    "dimension": "nether",
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 125,
+    "yieldMax": 156,
+    "group": "iolite",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemoredark",
+      "properties": {
+        "gem": "amethyst"
+      }
+    },
+    "dimension": "nether",
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 125,
+    "yieldMax": 156,
+    "group": "amethyst",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemoredark",
+      "properties": {
+        "gem": "agate"
+      }
+    },
+    "dimension": "nether",
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 125,
+    "yieldMax": 156,
+    "group": "agate",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemoredark",
+      "properties": {
+        "gem": "morganite"
+      }
+    },
+    "dimension": "nether",
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 125,
+    "yieldMax": 156,
+    "group": "morganite",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemoredark",
+      "properties": {
+        "gem": "onyx"
+      }
+    },
+    "dimension": "nether",
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 125,
+    "yieldMax": 156,
+    "group": "onyx",
+    "groupOrder": 35
+  },
+  {
+    "state": {
+      "name": "silentgems:gemoredark",
+      "properties": {
+        "gem": "opal"
+      }
+    },
+    "dimension": "nether",
+    "weight": 1,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 125,
+    "yieldMax": 156,
+    "group": "opal",
+    "groupOrder": 35
+  }
+]

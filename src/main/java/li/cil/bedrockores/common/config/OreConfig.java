@@ -8,7 +8,7 @@ public final class OreConfig {
     public WrappedBlockState state;
 
     public String dimension = "overworld";
-    public int weight = 1;
+    public int weight = 10;
 
     public int widthMin = 2;
     public int widthMax = 4;
@@ -22,8 +22,10 @@ public final class OreConfig {
     public int yieldMin = 100;
     public int yieldMax = 125;
 
-    public String group;
-    public int groupOrder;
+    public String group = "";
+    public int groupOrder = 0;
+
+    public float extractionCooldownScale = 1f;
 
     @Override
     public String toString() {

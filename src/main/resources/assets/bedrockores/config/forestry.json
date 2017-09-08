@@ -1,0 +1,51 @@
+[
+  {
+    "state": {
+      "name": "forestry:resources",
+      "properties": {
+        "resource": "copper"
+      }
+    },
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 10,
+    "countMax": 16,
+    "yieldMin": 64,
+    "yieldMax": 80,
+    "group": "copper",
+    "groupOrder": 30
+  },
+  {
+    "state": {
+      "name": "forestry:resources",
+      "properties": {
+        "resource": "tin"
+      }
+    },
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 10,
+    "countMax": 16,
+    "yieldMin": 56,
+    "yieldMax": 70,
+    "group": "tin",
+    "groupOrder": 30
+  },
+  {
+    "state": {
+      "name": "forestry:resources",
+      "properties": {
+        "resource": "apatite"
+      }
+    },
+    "weight": 3,
+    "widthMin": 5,
+    "widthMax": 7,
+    "countMin": 10,
+    "countMax": 14,
+    "yieldMin": 128,
+    "yieldMax": 160,
+    "group": "lead",
+    "groupOrder": 30
+  }
+]

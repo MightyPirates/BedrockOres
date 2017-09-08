@@ -53,7 +53,7 @@
       }
     },
     "dimension": "overworld",
-    "weight": 1,
+    "weight": 10,
     "widthMin": 2,
     "widthMax": 4,
     "heightMin": 2,
