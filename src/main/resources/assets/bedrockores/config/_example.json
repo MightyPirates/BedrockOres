@@ -43,7 +43,11 @@
       "  groupOder -- The order in the group of ores for this entry. Lower values are",
       "               preferred; imagine the list of grouped ores being sorted from low",
       "               to high using this number, the one with the lowest number is the",
-      "               one that'll be kept."
+      "               one that'll be kept.",
+      "  extractionCooldownScale -- A multiplier applied to the miner's extraction",
+      "               cooldown when mining this particular ore. For example, when this",
+      "               is set to 2, it will take it twice as long to extract an ore of",
+      "               this type, therefore also requiring twice as much fuel."
     ],
     "enabled": true,
     "state": {
@@ -63,6 +67,7 @@
     "yieldMin": 100,
     "yieldMax": 125,
     "group": "",
-    "groupOrder": 0
+    "groupOrder": 0,
+    "extractionCooldownScale": 1
   }
 ]
