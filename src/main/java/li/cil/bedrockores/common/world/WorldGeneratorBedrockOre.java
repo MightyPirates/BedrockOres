@@ -4,7 +4,7 @@ import gnu.trove.list.TFloatList;
 import gnu.trove.list.array.TFloatArrayList;
 import li.cil.bedrockores.common.config.OreConfig;
 import li.cil.bedrockores.common.config.Settings;
-import li.cil.bedrockores.common.config.VeinConfig;
+import li.cil.bedrockores.common.config.OreConfigManager;
 import li.cil.bedrockores.common.init.Blocks;
 import li.cil.bedrockores.common.tileentity.TileEntityBedrockOre;
 import net.minecraft.block.Block;
@@ -62,7 +62,7 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
 
         final DimensionType dimensionType = world.provider.getDimensionType();
 
-        final OreConfig ore = VeinConfig.INSTANCE.getOre(dimensionType, random.nextFloat());
+        final OreConfig ore = OreConfigManager.INSTANCE.getOre(dimensionType, random.nextFloat());
         if (ore == null) {
             return;
         }
@@ -81,7 +81,7 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
             return;
         }
 
-        final float yieldScale = Settings.veinYieldConstScale * VeinConfig.INSTANCE.getOreTypeCount(dimensionType);
+        final float yieldScale = Settings.veinYieldConstScale * OreConfigManager.INSTANCE.getOreTypeCount(dimensionType);
         final int veinYield = Math.max(0, Math.round((veinMinYield == veinMaxYield ? veinMinYield : (veinMinYield + random.nextInt(veinMaxYield - veinMinYield))) * yieldScale));
         if (veinYield == 0) {
             return;

@@ -2,6 +2,7 @@ package li.cil.bedrockores.common.tileentity;
 
 import cofh.api.energy.IEnergyReceiver;
 import li.cil.bedrockores.common.config.Constants;
+import li.cil.bedrockores.common.config.OreConfigManager;
 import li.cil.bedrockores.common.config.Settings;
 import li.cil.bedrockores.common.integration.ModIDs;
 import li.cil.bedrockores.common.sound.Sounds;
@@ -55,7 +56,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
     private final EnergyStorageMiner energyStorage = new EnergyStorageMiner();
 
     private int remainingBurnTime = 0;
-    private int extractionCooldown = Settings.minerExtractionCooldown;
+    private int extractionCooldown = -1;
     private int transferCooldown = 20;
 
     // --------------------------------------------------------------------- //
@@ -402,9 +403,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
 
         final int energyBurnTime = energyStorage.consumeEnergyForBurnTime();
         if (energyBurnTime > 0) {
-            markDirty();
-            remainingBurnTime = energyBurnTime;
-            transferCooldown = 0;
+            beginBurnTime(energyBurnTime);
             return true;
         }
 
@@ -415,9 +414,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
         inventory.setStackInSlot(SLOT_FUEL, ItemStack.EMPTY);
 
         if (burnTime > 0) {
-            markDirty();
-            remainingBurnTime = burnTime;
-            transferCooldown = 0;
+            beginBurnTime(burnTime);
             return true;
         }
 
@@ -425,21 +422,45 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
     }
 
     private void updateExtraction(final TileEntityBedrockOre bedrockOre) {
+        if (extractionCooldown < 0) {
+            // First init, use scaled extraction time based on ore type.
+            beginExtractionCooldown(bedrockOre);
+        }
+
         if (extractionCooldown > 0) {
             extractionCooldown--;
+            if (extractionCooldown > 0) {
+                return;
+            }
         }
-        if (extractionCooldown > 0) {
-            return;
-        }
+
+        assert extractionCooldown == 0;
 
         final ItemStack stack = bedrockOre.extract();
         inventory.setStackInSlot(SLOT_OUTPUT, stack);
         markDirty();
 
-        extractionCooldown = Settings.minerExtractionCooldown;
+        beginExtractionCooldown(bedrockOre);
         transferCooldown = 0;
 
         WorldUtils.playBreakSound(bedrockOre.getWorld(), bedrockOre.getPos());
+    }
+
+    private void beginBurnTime(final int value) {
+        markDirty();
+        remainingBurnTime = value - 1;
+        transferCooldown = 0;
+    }
+
+    private void beginExtractionCooldown(final TileEntityBedrockOre bedrockOre) {
+        if (!bedrockOre.isInvalid() && bedrockOre.getAmount() > 0) {
+            final float cooldownScale = OreConfigManager.INSTANCE.getOreExtractionCooldownScale(bedrockOre.getOreBlockState());
+            extractionCooldown = MathHelper.ceil(Settings.minerExtractionCooldown * cooldownScale);
+        } else {
+            // Exhausted this ore deposit, set to invalid to recompute based on
+            // new ore (if any) next tick.
+            extractionCooldown = -1;
+        }
     }
 
     private static int getCoalEnergyValue() {

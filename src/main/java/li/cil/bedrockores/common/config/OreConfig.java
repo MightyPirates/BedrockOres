@@ -22,8 +22,10 @@ public final class OreConfig {
     public int yieldMin = 100;
     public int yieldMax = 125;
 
-    public String group;
-    public int groupOrder;
+    public String group = "";
+    public int groupOrder = 0;
+
+    public float extractionCooldownScale = 1f;
 
     @Override
     public String toString() {
