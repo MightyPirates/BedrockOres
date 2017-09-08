@@ -8,7 +8,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import li.cil.bedrockores.common.config.OreConfig;
-import li.cil.bedrockores.common.config.VeinConfig;
+import li.cil.bedrockores.common.config.OreConfigManager;
 import li.cil.bedrockores.common.config.WrappedBlockState;
 
 import java.lang.reflect.Field;
@@ -51,7 +51,7 @@ public class OreConfigAdapter implements JsonSerializer<OreConfig>, JsonDeserial
         OreConfig dst = new OreConfig();
         final JsonObject jsonObject = json.getAsJsonObject();
 
-        if (VeinConfig.INSTANCE.shouldReuseOreConfigs()) {
+        if (OreConfigManager.INSTANCE.shouldReuseOreConfigs()) {
             // Stuff with no block state def gets stripped out anyway.
             if (!jsonObject.has("state")) {
                 return dst;
@@ -60,7 +60,7 @@ public class OreConfigAdapter implements JsonSerializer<OreConfig>, JsonDeserial
             // See if we have an entry for this exact block state already, if so we
             // want to patch it. Yes, this is pretty evil, but whatever works.
             final WrappedBlockState state = context.deserialize(jsonObject.get("state"), WrappedBlockState.class);
-            for (final OreConfig oreConfig : VeinConfig.INSTANCE.getOres()) {
+            for (final OreConfig oreConfig : OreConfigManager.INSTANCE.getOres()) {
                 if (oreConfig.state.equals(state)) {
                     dst = oreConfig;
                     break;

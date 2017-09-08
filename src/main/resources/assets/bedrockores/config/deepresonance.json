@@ -6,6 +6,7 @@
         "oretype": "overworld"
       }
     },
+    "weight": 3,
     "widthMin": 3,
     "widthMax": 5,
     "countMin": 3,
@@ -21,6 +22,7 @@
       }
     },
     "dimension": "nether",
+    "weight": 3,
     "widthMin": 3,
     "widthMax": 5,
     "countMin": 3,

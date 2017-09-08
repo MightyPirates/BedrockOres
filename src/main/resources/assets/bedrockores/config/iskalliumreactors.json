@@ -9,6 +9,7 @@
     "state": {
       "name": "iskalliumreactors:iskallium_stone_ore"
     },
+    "weight": 1,
     "widthMin": 2,
     "widthMax": 3,
     "countMin": 2,

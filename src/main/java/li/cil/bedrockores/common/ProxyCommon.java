@@ -1,7 +1,7 @@
 package li.cil.bedrockores.common;
 
 import li.cil.bedrockores.common.config.Settings;
-import li.cil.bedrockores.common.config.VeinConfig;
+import li.cil.bedrockores.common.config.OreConfigManager;
 import li.cil.bedrockores.common.init.Blocks;
 import li.cil.bedrockores.common.init.Items;
 import li.cil.bedrockores.common.network.Network;
@@ -39,7 +39,7 @@ public class ProxyCommon {
     }
 
     public void onPostInit(final FMLPostInitializationEvent event) {
-        VeinConfig.INSTANCE.load();
+        OreConfigManager.INSTANCE.load();
     }
 
     // --------------------------------------------------------------------- //
