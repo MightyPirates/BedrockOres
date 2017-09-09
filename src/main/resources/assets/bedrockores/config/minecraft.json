@@ -85,6 +85,7 @@
       "mutated_extreme_hills",
       "mutated_extreme_hills_with_trees"
     ],
+    "weight": 100,
     "widthMin": 2,
     "widthMax": 3,
     "countMin": 2,
