@@ -51,6 +51,7 @@ public final class Constants {
     public static final String CONFIG_ALLOW_PLAYER_MINING = "config.bedrockores.allow_player_mining";
     public static final String CONFIG_WORLD_GENERATOR_WEIGHT = "config.bedrockores.world_generator_weight";
     public static final String CONFIG_ORE_PRIORITY = "config.bedrockores.ore_priority";
+    public static final String CONFIG_ORE_MOD_BLACKLIST = "config.bedrockores.ore_mod_blacklist";
 
     // --------------------------------------------------------------------- //
     // GUI

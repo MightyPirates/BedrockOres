@@ -77,6 +77,14 @@ public final class Settings {
             "mekanism"
     };
 
+    @Config.LangKey(Constants.CONFIG_ORE_MOD_BLACKLIST)
+    @Config.Comment("A blacklist to easily disable ore generation for individual mods. Useful when you want " +
+                    "to disable ores with default configurations without adding an `enabled: false` entry " +
+                    "for each one to a JSON config. This must be the mod IDs of the mods to disable, i.e. " +
+                    "the bit in the block state name before the colon, e.g. `thermalfoundation`.")
+    @Config.RequiresMcRestart
+    public static String[] oreModBlacklist = {};
+
     // --------------------------------------------------------------------- //
 
     private Settings() {

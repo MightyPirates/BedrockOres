@@ -22,6 +22,8 @@ config.bedrockores.ui_only_when_sneaking=UI nur wenn schleichend
 config.bedrockores.retrogen_speed=Retrogen chunks/tick
 config.bedrockores.allow_player_mining=Spieler dürfen Erze abbauen
 config.bedrockores.world_generator_weight=Weltgeneratorgewichtung
+config.bedrockores.ore_priority=Erzpriorität
+config.bedrockores.ore_mod_blacklist=Mod-Schwarzliste
 
 gui.bedrockores.expected_yield=Erwartete Ausbeute: %s
 gui.bedrockores.exhausted=Erschöpft
