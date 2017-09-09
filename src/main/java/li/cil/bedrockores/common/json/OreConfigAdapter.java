@@ -7,9 +7,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import li.cil.bedrockores.common.config.ore.OreConfig;
+import li.cil.bedrockores.common.BedrockOres;
 import li.cil.bedrockores.common.config.OreConfigManager;
+import li.cil.bedrockores.common.config.Settings;
+import li.cil.bedrockores.common.config.ore.OreConfig;
 import li.cil.bedrockores.common.config.ore.WrappedBlockState;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -122,6 +125,20 @@ public final class OreConfigAdapter implements JsonSerializer<OreConfig>, JsonDe
                     dst.biome.add(dimension);
                 } else {
                     dst.biome.addAll(context.<List<String>>deserialize(jsonElement, Types.LIST_STRING));
+                }
+                continue;
+            }
+
+            if (Objects.equals("groupOrder", name)) {
+                try {
+                    dst.groupOrder = jsonElement.getAsInt();
+                } catch (final NumberFormatException e) {
+                    final int groupOrder = ArrayUtils.indexOf(Settings.orePriority, jsonElement.getAsString());
+                    if (groupOrder >= 0) {
+                        dst.groupOrder = groupOrder * 5;
+                    } else {
+                        BedrockOres.getLog().warn("Failed looking up group order for '{}', ignoring.", jsonElement.getAsString());
+                    }
                 }
                 continue;
             }

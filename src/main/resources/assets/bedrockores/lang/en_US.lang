@@ -22,6 +22,7 @@ config.bedrockores.ui_only_when_sneaking=UI only when sneaking
 config.bedrockores.retrogen_speed=Retrogen chunks/tick
 config.bedrockores.allow_player_mining=Allow player mining
 config.bedrockores.world_generator_weight=World generator weight
+config.bedrockores.ore_priority=Ore priority
 
 gui.bedrockores.expected_yield=Expected yield: %s
 gui.bedrockores.exhausted=Exhausted

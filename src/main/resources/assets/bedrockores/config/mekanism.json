@@ -13,7 +13,7 @@
     "yieldMin": 32,
     "yieldMax": 40,
     "group": "osmium",
-    "groupOrder": 40
+    "groupOrder": "mekanism"
   },
   {
     "state": {
@@ -29,7 +29,7 @@
     "yieldMin": 64,
     "yieldMax": 80,
     "group": "copper",
-    "groupOrder": 40
+    "groupOrder": "mekanism"
   },
   {
     "state": {
@@ -45,6 +45,6 @@
     "yieldMin": 56,
     "yieldMax": 70,
     "group": "tin",
-    "groupOrder": 40
+    "groupOrder": "mekanism"
   }
 ]

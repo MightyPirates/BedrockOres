@@ -64,6 +64,22 @@ public final class Settings {
     @Config.RequiresMcRestart
     public static int worldGeneratorWeight = 10;
 
+    @Config.LangKey(Constants.CONFIG_ORE_PRIORITY)
+    @Config.Comment("Controls the sort index the `groupOrder` field in a JSON config for ore gen evaluates " +
+                    "to; specifically, the sort index will be the index in this list times five. So by default " +
+                    "the sort index for ThermalFoundation ores will be 0 and the one for Immersive Engineering " +
+                    "will be 10.")
+    @Config.RequiresMcRestart
+    public static String[] orePriority = {
+            "thermalfoundation",
+            "ic2",
+            "immersiveengineering",
+            "techreborn",
+            "forestry",
+            "silentgems",
+            "mekanism"
+    };
+
     // --------------------------------------------------------------------- //
 
     private Settings() {
