@@ -31,6 +31,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -137,7 +138,7 @@ public enum OreConfigManager {
         BedrockOres.getLog().info("Done loading ore config, got {} ores. Filtering...", allOres.size());
 
         // Remove entries where block state could not be loaded.
-        allOres.removeIf(ore -> ore.state.getBlockState().getBlock() == Blocks.AIR);
+        allOres.removeIf(ore -> ore.state.getBlockState().getBlock() == Blocks.AIR || ArrayUtils.contains(Settings.oreModBlacklist, ore.state.getName().getResourceDomain()));
 
         // Grab extraction speeds for *all* ores we know, even disabled ones, in
         // case of ores left from previous generation (disabled later on in an
