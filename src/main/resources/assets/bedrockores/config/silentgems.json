@@ -14,7 +14,7 @@
     "yieldMin": 80,
     "yieldMax": 100,
     "group": "ruby",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -31,7 +31,7 @@
     "yieldMin": 80,
     "yieldMax": 100,
     "group": "garnet",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -48,7 +48,7 @@
     "yieldMin": 80,
     "yieldMax": 100,
     "group": "topaz",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -65,7 +65,7 @@
     "yieldMin": 80,
     "yieldMax": 100,
     "group": "amber",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -82,7 +82,7 @@
     "yieldMin": 80,
     "yieldMax": 100,
     "group": "heliodor",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -99,7 +99,7 @@
     "yieldMin": 80,
     "yieldMax": 100,
     "group": "peridot",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -116,7 +116,7 @@
     "yieldMin": 80,
     "yieldMax": 100,
     "group": "beryl",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -133,7 +133,7 @@
     "yieldMin": 80,
     "yieldMax": 100,
     "group": "indicolite",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -150,7 +150,7 @@
     "yieldMin": 80,
     "yieldMax": 100,
     "group": "aquamarine",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -167,7 +167,7 @@
     "yieldMin": 80,
     "yieldMax": 100,
     "group": "sapphire",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -184,7 +184,7 @@
     "yieldMin": 80,
     "yieldMax": 100,
     "group": "iolite",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -201,7 +201,7 @@
     "yieldMin": 80,
     "yieldMax": 100,
     "group": "amethyst",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -218,7 +218,7 @@
     "yieldMin": 80,
     "yieldMax": 100,
     "group": "agate",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -235,7 +235,7 @@
     "yieldMin": 80,
     "yieldMax": 100,
     "group": "morganite",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -252,7 +252,7 @@
     "yieldMin": 80,
     "yieldMax": 100,
     "group": "onyx",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -269,7 +269,7 @@
     "yieldMin": 80,
     "yieldMax": 100,
     "group": "opal",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -286,7 +286,7 @@
     "yieldMin": 28,
     "yieldMax": 35,
     "group": "chaos",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -304,7 +304,7 @@
     "yieldMin": 125,
     "yieldMax": 156,
     "group": "ruby",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -322,7 +322,7 @@
     "yieldMin": 125,
     "yieldMax": 156,
     "group": "garnet",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -340,7 +340,7 @@
     "yieldMin": 125,
     "yieldMax": 156,
     "group": "topaz",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -358,7 +358,7 @@
     "yieldMin": 125,
     "yieldMax": 156,
     "group": "amber",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -376,7 +376,7 @@
     "yieldMin": 125,
     "yieldMax": 156,
     "group": "heliodor",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -394,7 +394,7 @@
     "yieldMin": 125,
     "yieldMax": 156,
     "group": "peridot",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -412,7 +412,7 @@
     "yieldMin": 125,
     "yieldMax": 156,
     "group": "beryl",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -430,7 +430,7 @@
     "yieldMin": 125,
     "yieldMax": 156,
     "group": "indicolite",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -448,7 +448,7 @@
     "yieldMin": 125,
     "yieldMax": 156,
     "group": "aquamarine",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -466,7 +466,7 @@
     "yieldMin": 125,
     "yieldMax": 156,
     "group": "sapphire",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -484,7 +484,7 @@
     "yieldMin": 125,
     "yieldMax": 156,
     "group": "iolite",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -502,7 +502,7 @@
     "yieldMin": 125,
     "yieldMax": 156,
     "group": "amethyst",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -520,7 +520,7 @@
     "yieldMin": 125,
     "yieldMax": 156,
     "group": "agate",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -538,7 +538,7 @@
     "yieldMin": 125,
     "yieldMax": 156,
     "group": "morganite",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -556,7 +556,7 @@
     "yieldMin": 125,
     "yieldMax": 156,
     "group": "onyx",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   },
   {
     "state": {
@@ -574,6 +574,6 @@
     "yieldMin": 125,
     "yieldMax": 156,
     "group": "opal",
-    "groupOrder": 35
+    "groupOrder": "silentgems"
   }
 ]

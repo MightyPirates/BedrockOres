@@ -13,7 +13,7 @@
     "yieldMin": 64,
     "yieldMax": 80,
     "group": "copper",
-    "groupOrder": 30
+    "groupOrder": "forestry"
   },
   {
     "state": {
@@ -29,7 +29,7 @@
     "yieldMin": 56,
     "yieldMax": 70,
     "group": "tin",
-    "groupOrder": 30
+    "groupOrder": "forestry"
   },
   {
     "state": {
@@ -46,6 +46,6 @@
     "yieldMin": 128,
     "yieldMax": 160,
     "group": "lead",
-    "groupOrder": 30
+    "groupOrder": "forestry"
   }
 ]

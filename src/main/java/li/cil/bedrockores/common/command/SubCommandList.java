@@ -1,9 +1,9 @@
 package li.cil.bedrockores.common.command;
 
 import li.cil.bedrockores.common.config.Constants;
-import li.cil.bedrockores.common.config.OreConfig;
+import li.cil.bedrockores.common.config.ore.OreConfig;
 import li.cil.bedrockores.common.config.OreConfigManager;
-import li.cil.bedrockores.common.config.WrappedBlockState;
+import li.cil.bedrockores.common.config.ore.WrappedBlockState;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 

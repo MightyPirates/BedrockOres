@@ -13,7 +13,7 @@
     "yieldMin": 64,
     "yieldMax": 80,
     "group": "copper",
-    "groupOrder": 10
+    "groupOrder": "immersiveengineering"
   },
   {
     "state": {
@@ -29,7 +29,7 @@
     "yieldMin": 64,
     "yieldMax": 80,
     "group": "aluminum",
-    "groupOrder": 10
+    "groupOrder": "immersiveengineering"
   },
   {
     "state": {
@@ -45,7 +45,7 @@
     "yieldMin": 32,
     "yieldMax": 40,
     "group": "lead",
-    "groupOrder": 10
+    "groupOrder": "immersiveengineering"
   },
   {
     "state": {
@@ -61,7 +61,7 @@
     "yieldMin": 32,
     "yieldMax": 40,
     "group": "silver",
-    "groupOrder": 10
+    "groupOrder": "immersiveengineering"
   },
   {
     "state": {
@@ -77,7 +77,7 @@
     "yieldMin": 8,
     "yieldMax": 10,
     "group": "nickel",
-    "groupOrder": 10
+    "groupOrder": "immersiveengineering"
   },
   {
     "state": {
@@ -94,6 +94,6 @@
     "yieldMin": 8,
     "yieldMax": 10,
     "group": "uranium",
-    "groupOrder": 10
+    "groupOrder": "immersiveengineering"
   }
 ]

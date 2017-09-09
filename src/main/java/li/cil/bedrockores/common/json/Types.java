@@ -1,7 +1,7 @@
 package li.cil.bedrockores.common.json;
 
 import com.google.gson.reflect.TypeToken;
-import li.cil.bedrockores.common.config.OreConfig;
+import li.cil.bedrockores.common.config.ore.OreConfig;
 
 import java.lang.reflect.Type;
 import java.util.List;

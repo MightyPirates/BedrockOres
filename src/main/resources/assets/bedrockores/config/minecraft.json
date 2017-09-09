@@ -78,6 +78,14 @@
     "state": {
       "name": "minecraft:emerald_ore"
     },
+    "biome": [
+      "extreme_hills",
+      "smaller_extreme_hills",
+      "extreme_hills_with_trees",
+      "mutated_extreme_hills",
+      "mutated_extreme_hills_with_trees"
+    ],
+    "weight": 100,
     "widthMin": 2,
     "widthMax": 3,
     "countMin": 2,
