@@ -1,4 +1,4 @@
-package li.cil.bedrockores.common.config;
+package li.cil.bedrockores.common.config.ore;
 
 import li.cil.bedrockores.common.BedrockOres;
 import net.minecraft.block.Block;
