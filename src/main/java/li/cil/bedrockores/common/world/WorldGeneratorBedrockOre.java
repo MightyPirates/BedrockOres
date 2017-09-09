@@ -2,18 +2,18 @@ package li.cil.bedrockores.common.world;
 
 import gnu.trove.list.TFloatList;
 import gnu.trove.list.array.TFloatArrayList;
-import li.cil.bedrockores.common.config.OreConfig;
-import li.cil.bedrockores.common.config.Settings;
+import li.cil.bedrockores.common.config.ore.OreConfig;
 import li.cil.bedrockores.common.config.OreConfigManager;
+import li.cil.bedrockores.common.config.Settings;
 import li.cil.bedrockores.common.init.Blocks;
 import li.cil.bedrockores.common.tileentity.TileEntityBedrockOre;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.IChunkGenerator;
@@ -60,9 +60,9 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
             return;
         }
 
-        final DimensionType dimensionType = world.provider.getDimensionType();
+        final ChunkPos chunkPos = new ChunkPos(chunkX, chunkZ);
 
-        final OreConfig ore = OreConfigManager.INSTANCE.getOre(dimensionType, random.nextFloat());
+        final OreConfig ore = OreConfigManager.INSTANCE.getOre(world, chunkPos, random);
         if (ore == null) {
             return;
         }
@@ -81,7 +81,7 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
             return;
         }
 
-        final float yieldScale = Settings.veinYieldConstScale * OreConfigManager.INSTANCE.getOreTypeCount(dimensionType);
+        final float yieldScale = Settings.veinYieldConstScale * OreConfigManager.INSTANCE.getOres(world, chunkPos).size();
         final int veinYield = Math.max(0, Math.round((veinMinYield == veinMaxYield ? veinMinYield : (veinMinYield + random.nextInt(veinMaxYield - veinMinYield))) * yieldScale));
         if (veinYield == 0) {
             return;

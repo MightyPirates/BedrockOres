@@ -13,7 +13,7 @@
     "yieldMin": 64,
     "yieldMax": 80,
     "group": "copper",
-    "groupOrder": 15
+    "groupOrder": "techreborn"
   },
   {
     "state": {
@@ -29,7 +29,7 @@
     "yieldMin": 56,
     "yieldMax": 70,
     "group": "tin",
-    "groupOrder": 15
+    "groupOrder": "techreborn"
   },
   {
     "state": {
@@ -45,7 +45,7 @@
     "yieldMin": 32,
     "yieldMax": 40,
     "group": "silver",
-    "groupOrder": 15
+    "groupOrder": "techreborn"
   },
   {
     "state": {
@@ -61,7 +61,7 @@
     "yieldMin": 32,
     "yieldMax": 40,
     "group": "lead",
-    "groupOrder": 15
+    "groupOrder": "techreborn"
   },
   {
     "state": {
@@ -77,7 +77,7 @@
     "yieldMin": 32,
     "yieldMax": 40,
     "group": "galena",
-    "groupOrder": 15
+    "groupOrder": "techreborn"
   },
   {
     "state": {
@@ -93,7 +93,7 @@
     "yieldMin": 64,
     "yieldMax": 80,
     "group": "aluminum",
-    "groupOrder": 15
+    "groupOrder": "techreborn"
   },
   {
     "state": {
@@ -109,7 +109,7 @@
     "yieldMin": 8,
     "yieldMax": 10,
     "group": "iridium",
-    "groupOrder": 15
+    "groupOrder": "techreborn"
   },
   {
     "state": {
@@ -125,7 +125,7 @@
     "yieldMin": 16,
     "yieldMax": 20,
     "group": "sapphire",
-    "groupOrder": 15
+    "groupOrder": "techreborn"
   },
   {
     "state": {
@@ -141,7 +141,7 @@
     "yieldMin": 16,
     "yieldMax": 20,
     "group": "ruby",
-    "groupOrder": 15
+    "groupOrder": "techreborn"
   },
   {
     "state": {
@@ -158,7 +158,7 @@
     "yieldMin": 16,
     "yieldMax": 20,
     "group": "cinnabar",
-    "groupOrder": 15
+    "groupOrder": "techreborn"
   },
   {
     "state": {
@@ -175,7 +175,7 @@
     "yieldMin": 16,
     "yieldMax": 20,
     "group": "pyrite",
-    "groupOrder": 15
+    "groupOrder": "techreborn"
   },
   {
     "state": {
@@ -192,6 +192,6 @@
     "yieldMin": 16,
     "yieldMax": 20,
     "group": "sphalerite",
-    "groupOrder": 15
+    "groupOrder": "techreborn"
   }
 ]

@@ -34,6 +34,7 @@ public final class Constants {
     public static final String COMMAND_LIST_ERRORS = "commands.bedrockores.list_errors";
     public static final String COMMAND_LIST_ERROR_ITEM = "commands.bedrockores.list_error_item";
     public static final String COMMAND_LIST_ERRORS_EPILOGUE = "commands.bedrockores.list_errors_epilogue";
+    public static final String COMMAND_INFO = "commands.bedrockores.info";
 
     // --------------------------------------------------------------------- //
     // Config
@@ -49,6 +50,7 @@ public final class Constants {
     public static final String CONFIG_RETROGEN_SPEED = "config.bedrockores.retrogen_speed";
     public static final String CONFIG_ALLOW_PLAYER_MINING = "config.bedrockores.allow_player_mining";
     public static final String CONFIG_WORLD_GENERATOR_WEIGHT = "config.bedrockores.world_generator_weight";
+    public static final String CONFIG_ORE_PRIORITY = "config.bedrockores.ore_priority";
 
     // --------------------------------------------------------------------- //
     // GUI

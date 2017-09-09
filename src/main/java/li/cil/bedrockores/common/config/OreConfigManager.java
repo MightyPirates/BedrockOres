@@ -1,17 +1,25 @@
 package li.cil.bedrockores.common.config;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import gnu.trove.map.TIntFloatMap;
-import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TIntFloatHashMap;
-import gnu.trove.map.hash.TObjectIntHashMap;
 import joptsimple.internal.Strings;
 import li.cil.bedrockores.common.BedrockOres;
+import li.cil.bedrockores.common.config.ore.FilterType;
+import li.cil.bedrockores.common.config.ore.OreConfig;
+import li.cil.bedrockores.common.config.ore.OreFilterEntry;
+import li.cil.bedrockores.common.config.ore.OreFilterKey;
+import li.cil.bedrockores.common.config.ore.SelectorType;
+import li.cil.bedrockores.common.json.FilterTypeAdapter;
 import li.cil.bedrockores.common.json.OreConfigAdapter;
 import li.cil.bedrockores.common.json.ResourceLocationAdapter;
+import li.cil.bedrockores.common.json.SelectorTypeAdapter;
 import li.cil.bedrockores.common.json.Types;
 import li.cil.bedrockores.common.json.WrappedBlockStateAdapter;
 import li.cil.bedrockores.util.AlphanumComparator;
@@ -19,7 +27,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.DimensionType;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 import org.apache.commons.io.FileUtils;
 
@@ -36,26 +45,31 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 public enum OreConfigManager {
     INSTANCE;
 
     // --------------------------------------------------------------------- //
 
-    private static final String ANY_DIMENSION = "*";
-
     private static final String INDEX_JSON = "_index.json";
     private static final String EXAMPLE_JSON = "_example.json";
 
     private final ArrayList<OreConfig> allOres = new ArrayList<>();
     private final TIntFloatMap oreExtractionCooldownScale = new TIntFloatHashMap();
-    private final Map<DimensionType, List<OreConfig>> oresByDimensionType = new EnumMap<>(DimensionType.class);
-    private final TObjectIntMap<DimensionType> oreWeightSumByDimensionType = new TObjectIntHashMap<>(3);
+
+    private final LoadingCache<OreFilterKey, OreFilterEntry> oresByWorldAndBiomeCache = CacheBuilder.newBuilder().
+            maximumSize(32).
+            build(new CacheLoader<OreFilterKey, OreFilterEntry>() {
+                @Override
+                public OreFilterEntry load(final OreFilterKey key) throws Exception {
+                    return new OreFilterEntry(key, OreConfigManager.INSTANCE.getOres());
+                }
+            });
+
     private boolean shouldReuseOreConfigs;
 
     // --------------------------------------------------------------------- //
@@ -88,33 +102,20 @@ public enum OreConfigManager {
     }
 
     @Nullable
-    public OreConfig getOre(final DimensionType dimensionType, final float r) {
-        final List<OreConfig> list = oresByDimensionType.get(dimensionType);
-        final int oreWeightSum = oreWeightSumByDimensionType.get(dimensionType);
-        if (list == null || list.isEmpty()) {
-            return null;
+    public OreConfig getOre(final World world, final ChunkPos pos, final Random random) {
+        try {
+            return oresByWorldAndBiomeCache.get(new OreFilterKey(world, pos)).getOre(random);
+        } catch (final ExecutionException e) {
+            throw new RuntimeException(e);
         }
-
-        assert oreWeightSum > 0;
-
-        final int wantWeightSum = (int) (r * oreWeightSum);
-        int weightSum = 0;
-        for (final OreConfig ore : list) {
-            weightSum += ore.weight;
-            if (weightSum > wantWeightSum) {
-                return ore;
-            }
-        }
-
-        return null;
     }
 
-    public int getOreTypeCount(final DimensionType dimensionType) {
-        final List<OreConfig> list = oresByDimensionType.get(dimensionType);
-        if (list == null) {
-            return 0; // Won't happen because we call getOre first, but just to be safe.
+    public List<OreConfig> getOres(final World world, final ChunkPos pos) {
+        try {
+            return oresByWorldAndBiomeCache.get(new OreFilterKey(world, pos)).getOres();
+        } catch (final ExecutionException e) {
+            throw new RuntimeException(e);
         }
-        return list.size();
     }
 
     public void load() {
@@ -124,6 +125,8 @@ public enum OreConfigManager {
                 registerTypeAdapter(ResourceLocation.class, new ResourceLocationAdapter()).
                 registerTypeAdapter(IBlockState.class, new WrappedBlockStateAdapter()).
                 registerTypeAdapter(OreConfig.class, new OreConfigAdapter()).
+                registerTypeAdapter(FilterType.class, new FilterTypeAdapter()).
+                registerTypeAdapter(SelectorType.class, new SelectorTypeAdapter()).
                 setPrettyPrinting().
                 disableHtmlEscaping().
                 create();
@@ -145,7 +148,7 @@ public enum OreConfigManager {
         }
 
         // Remove entries where ores are disabled or have no weight.
-        allOres.removeIf(ore -> !ore.enabled || ore.weight < 1);
+        allOres.removeIf(ore -> !ore.enabled || ore.itemWeight < 1);
 
         BedrockOres.getLog().info("After removing disabled and unavailable ores, got {} ores.", allOres.size());
 
@@ -176,25 +179,12 @@ public enum OreConfigManager {
         BedrockOres.getLog().info("After removing duplicate ores, got {} ores.", allOres.size());
 
         // Order by weight
-        allOres.sort(Comparator.comparingInt(a -> a.weight));
+        allOres.sort(Comparator.comparingInt(a -> a.itemWeight));
 
-        // Build dimension type specific lists.
-        for (final DimensionType dimensionType : DimensionType.values()) {
-            final String dimensionName = dimensionType.toString().toLowerCase(Locale.US);
-            final List<OreConfig> oresForDimension = new ArrayList<>();
-            oresForDimension.addAll(allOres);
-            oresForDimension.removeIf(ore -> !Strings.isNullOrEmpty(ore.dimension) && // No filter?
-                                             !Objects.equals(ore.dimension.toLowerCase(Locale.US), dimensionName) && // Matches name?
-                                             !Objects.equals(ore.dimension, ANY_DIMENSION)); // Matches any?
-            oresByDimensionType.put(dimensionType, oresForDimension);
-            oreWeightSumByDimensionType.put(dimensionType, oresForDimension.stream().
-                    map(ore -> ore.weight).
-                    reduce((a, b) -> a + b).
-                    orElse(0));
-        }
+        // Clean up filters, remove invalid entries and such and build lookup tables.
+        allOres.forEach(OreConfig::buildFilter);
 
-        // We only use weight sorting in per-dimension lists, so now we sort
-        // alphabetically for a nicer listing when using the list command.
+        // Sort alphabetically for a nicer listing when using the list command.
         allOres.sort(Comparator.comparing(oreConfig -> oreConfig.state.toString()));
     }
 

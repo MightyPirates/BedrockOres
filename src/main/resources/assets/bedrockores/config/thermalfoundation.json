@@ -13,7 +13,7 @@
     "yieldMin": 64,
     "yieldMax": 80,
     "group": "copper",
-    "groupOrder": 0
+    "groupOrder": "thermalfoundation"
   },
   {
     "state": {
@@ -29,7 +29,7 @@
     "yieldMin": 56,
     "yieldMax": 70,
     "group": "tin",
-    "groupOrder": 0
+    "groupOrder": "thermalfoundation"
   },
   {
     "state": {
@@ -45,7 +45,7 @@
     "yieldMin": 32,
     "yieldMax": 40,
     "group": "silver",
-    "groupOrder": 0
+    "groupOrder": "thermalfoundation"
   },
   {
     "state": {
@@ -61,7 +61,7 @@
     "yieldMin": 32,
     "yieldMax": 40,
     "group": "lead",
-    "groupOrder": 0
+    "groupOrder": "thermalfoundation"
   },
   {
     "state": {
@@ -77,7 +77,7 @@
     "yieldMin": 8,
     "yieldMax": 10,
     "group": "nickel",
-    "groupOrder": 0
+    "groupOrder": "thermalfoundation"
   },
   {
     "comment": [
@@ -100,7 +100,7 @@
     "yieldMin": 64,
     "yieldMax": 80,
     "group": "aluminum",
-    "groupOrder": 0
+    "groupOrder": "thermalfoundation"
   },
   {
     "enabled": false,
@@ -117,7 +117,7 @@
     "yieldMin": 8,
     "yieldMax": 10,
     "group": "platinum",
-    "groupOrder": 0
+    "groupOrder": "thermalfoundation"
   },
   {
     "enabled": false,
@@ -134,7 +134,7 @@
     "yieldMin": 8,
     "yieldMax": 10,
     "group": "iridium",
-    "groupOrder": 0
+    "groupOrder": "thermalfoundation"
   },
   {
     "enabled": false,
@@ -151,6 +151,6 @@
     "yieldMin": 8,
     "yieldMax": 10,
     "group": "mithril",
-    "groupOrder": 0
+    "groupOrder": "thermalfoundation"
   }
 ]

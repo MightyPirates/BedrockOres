@@ -1,0 +1,50 @@
+[
+  {
+    "state": {
+      "name": "mekanism:oreblock",
+      "properties": {
+        "type": "osmium"
+      }
+    },
+    "widthMin": 3,
+    "widthMax": 5,
+    "countMin": 8,
+    "countMax": 12,
+    "yieldMin": 32,
+    "yieldMax": 40,
+    "group": "osmium",
+    "groupOrder": "mekanism"
+  },
+  {
+    "state": {
+      "name": "mekanism:oreblock",
+      "properties": {
+        "type": "copper"
+      }
+    },
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 10,
+    "countMax": 16,
+    "yieldMin": 64,
+    "yieldMax": 80,
+    "group": "copper",
+    "groupOrder": "mekanism"
+  },
+  {
+    "state": {
+      "name": "mekanism:oreblock",
+      "properties": {
+        "type": "tin"
+      }
+    },
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 10,
+    "countMax": 16,
+    "yieldMin": 56,
+    "yieldMax": 70,
+    "group": "tin",
+    "groupOrder": "mekanism"
+  }
+]

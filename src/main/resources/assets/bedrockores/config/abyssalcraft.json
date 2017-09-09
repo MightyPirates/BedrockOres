@@ -1,0 +1,190 @@
+[
+  {
+    "state": {
+      "name": "abyssalcraft:nitreore"
+    },
+    "weight": 5,
+    "widthMin": 2,
+    "widthMax": 4,
+    "countMin": 3,
+    "countMax": 5,
+    "yieldMin": 13,
+    "yieldMax": 16
+  },
+  {
+    "state": {
+      "name": "abyssalcraft:abyore"
+    },
+    "biome": [
+      "abyssalcraft:darklands",
+      "abyssalcraft:darklands_forest",
+      "abyssalcraft:darklands_hills",
+      "abyssalcraft:darklands_mountains",
+      "abyssalcraft:darklands_plains"
+    ],
+    "weight": 100,
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 6,
+    "yieldMin": 11,
+    "yieldMax": 14
+  },
+  {
+    "state": {
+      "name": "abyssalcraft:dreadore"
+    },
+    "dimension": "the_dreadlands",
+    "widthMin": 5,
+    "widthMax": 7,
+    "countMin": 8,
+    "countMax": 14,
+    "yieldMin": 76,
+    "yieldMax": 95
+  },
+  {
+    "state": {
+      "name": "abyssalcraft:abydreadore"
+    },
+    "dimension": "the_dreadlands",
+    "biome": "abyssalcraft:dreadlands",
+    "widthMin": 5,
+    "widthMax": 8,
+    "countMin": 10,
+    "countMax": 16,
+    "yieldMin": 163,
+    "yieldMax": 204
+  },
+  {
+    "state": {
+      "name": "abyssalcraft:coraliumore"
+    },
+    "biome": "abyssalcraft:coralium_infested_swamp",
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 6,
+    "countMax": 10,
+    "yieldMin": 24,
+    "yieldMax": 30
+  },
+  {
+    "state": {
+      "name": "abyssalcraft:abylcorore"
+    },
+    "dimension": "the_abyssal_wasteland",
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 20,
+    "yieldMax": 25
+  },
+  {
+    "state": {
+      "name": "abyssalcraft:abycorore"
+    },
+    "dimension": "the_abyssal_wasteland",
+    "widthMin": 5,
+    "widthMax": 7,
+    "countMin": 5,
+    "countMax": 10,
+    "yieldMin": 66,
+    "yieldMax": 83
+  },
+  {
+    "state": {
+      "name": "abyssalcraft:abynitore"
+    },
+    "dimension": "the_abyssal_wasteland",
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 36,
+    "yieldMax": 45
+  },
+  {
+    "state": {
+      "name": "abyssalcraft:abyiroore"
+    },
+    "dimension": "the_abyssal_wasteland",
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 36,
+    "yieldMax": 45
+  },
+  {
+    "state": {
+      "name": "abyssalcraft:abycopore"
+    },
+    "dimension": "the_abyssal_wasteland",
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 36,
+    "yieldMax": 45
+  },
+  {
+    "state": {
+      "name": "abyssalcraft:abytinore"
+    },
+    "dimension": "the_abyssal_wasteland",
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 36,
+    "yieldMax": 45
+  },
+  {
+    "state": {
+      "name": "abyssalcraft:abycopore"
+    },
+    "dimension": "the_abyssal_wasteland",
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 5,
+    "countMax": 10,
+    "yieldMin": 10,
+    "yieldMax": 12
+  },
+  {
+    "state": {
+      "name": "abyssalcraft:abygolore"
+    },
+    "dimension": "the_abyssal_wasteland",
+    "widthMin": 4,
+    "widthMax": 6,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 15,
+    "yieldMax": 19
+  },
+  {
+    "state": {
+      "name": "abyssalcraft:abydiaore"
+    },
+    "dimension": "the_abyssal_wasteland",
+    "widthMin": 2,
+    "widthMax": 4,
+    "countMin": 3,
+    "countMax": 6,
+    "yieldMin": 12,
+    "yieldMax": 15
+  },
+  {
+    "state": {
+      "name": "abyssalcraft:abypcorore"
+    },
+    "dimension": "the_abyssal_wasteland",
+    "widthMin": 2,
+    "widthMax": 4,
+    "countMin": 3,
+    "countMax": 6,
+    "yieldMin": 14,
+    "yieldMax": 18
+  }
+]

@@ -4,11 +4,12 @@ tile.bedrockores.bedrock_ore.name=Grundgesteinerz
 commands.bedrockores.usage=Hauptbefehl für alle Befehle in der Bedrock Ores mod. Nutze Tabkomplettierung, um Unterbefehle zu sehen.
 commands.bedrockores.wrap.usage=Während du auf einen Block blickt aufrufen, um den Block in ein Grundgesteinerz umzuwandeln. Optional kann die Ausbeute spezifiziert werden.
 commands.bedrockores.unwrap.usage=Während du auf einen Block blickst aufrufen, um einen Grundgesteinerzblock zurück in den Block umzuwandeln, den er umschließt.
-commands.bedrockores.list=§aAlle Erze die in Grundgestein eingebettet werden drüfen:
+commands.bedrockores.list=§aAlle Erze die in Grundgestein eingebettet werden dürfen:
 commands.bedrockores.list_item=§7 - §f%s
 commands.bedrockores.list_errors=§cEs gab Fehler beim Einlesen dieser Blöcke:
 commands.bedrockores.list_error_item=§7 - §f%s
 commands.bedrockores.list_errors_epilogue=§cBitte siehe in deinem Log nach Warnungen für weiteren Informationen.
+commands.bedrockores.info=§aAlle Erze die in Grundgestein in Dimension §r%s§a (Typ: §r%s§a), Biom §r%s§a (Typen: §r%s§a) eingebettet werden dürfen:
 
 config.bedrockores.miner_extraction_cooldown=Bohrerarbeitsintervall
 config.bedrockores.miner_efficiency=Bohrereffizienz
