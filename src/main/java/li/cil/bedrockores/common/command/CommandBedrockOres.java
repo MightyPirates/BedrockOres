@@ -21,6 +21,7 @@ public class CommandBedrockOres extends AbstractCommand {
         addSubCommand(new SubCommandWrap());
         addSubCommand(new SubCommandUnwrap());
         addSubCommand(new SubCommandList());
+        addSubCommand(new SubCommandInfo());
     }
 
     private void addSubCommand(final CommandBase command) {
