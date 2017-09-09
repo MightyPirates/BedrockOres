@@ -67,7 +67,6 @@ public final class Settings {
                     "to; specifically, the sort index will be the index in this list times five. So by default " +
                     "the sort index for ThermalFoundation ores will be 0 and the one for Immersive Engineering " +
                     "will be 10.")
-    @Config.RequiresMcRestart
     public static String[] orePriority = {
             "thermalfoundation",
             "ic2",
