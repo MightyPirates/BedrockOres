@@ -2,9 +2,9 @@ package li.cil.bedrockores.common.world;
 
 import gnu.trove.list.TFloatList;
 import gnu.trove.list.array.TFloatArrayList;
-import li.cil.bedrockores.common.config.ore.OreConfig;
 import li.cil.bedrockores.common.config.OreConfigManager;
 import li.cil.bedrockores.common.config.Settings;
+import li.cil.bedrockores.common.config.ore.OreConfig;
 import li.cil.bedrockores.common.init.Blocks;
 import li.cil.bedrockores.common.tileentity.TileEntityBedrockOre;
 import net.minecraft.block.Block;
@@ -31,9 +31,6 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
     INSTANCE;
 
     // --------------------------------------------------------------------- //
-
-    private static final ThreadLocal<List<BlockPos>> candidates = ThreadLocal.withInitial(ArrayList::new);
-    private static final ThreadLocal<TFloatList> distribution = ThreadLocal.withInitial(TFloatArrayList::new);
 
     @Nullable
     @GameRegistry.ObjectHolder("minecraft:bedrock")
@@ -67,12 +64,12 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
             return;
         }
 
-        final int veinMinWidth = Math.max(1, ore.widthMin);
-        final int veinMaxWidth = Math.max(veinMinWidth, ore.widthMax);
-        final int veinMinHeight = Math.max(1, ore.heightMin);
-        final int veinMaxHeight = Math.max(veinMinHeight, ore.heightMax);
-        final int veinMinCount = Math.max(1, ore.countMin);
-        final int veinMaxCount = Math.max(veinMinCount, ore.countMax);
+        final int veinMinWidth = MathHelper.clamp(ore.widthMin, 1, 15);
+        final int veinMaxWidth = MathHelper.clamp(ore.widthMax, veinMinWidth, 15);
+        final int veinMinHeight = MathHelper.clamp(ore.heightMin, 1, 255);
+        final int veinMaxHeight = MathHelper.clamp(veinMinHeight, ore.heightMax, 255);
+        final int veinMinCount = MathHelper.clamp(ore.countMin, 1, 8 * 8 * 255);
+        final int veinMaxCount = MathHelper.clamp(veinMinCount, ore.countMax, 8 * 8 * 255);
         final int veinMinYield = Math.max(1, ore.yieldMin);
         final int veinMaxYield = Math.max(veinMinYield, ore.yieldMax);
 
@@ -89,13 +86,13 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
 
         // We generate veins in ellipsoid shapes in the bedrock. Pick a width
         // and height for the ellipse, as well as a center.
-        final int a = MathHelper.ceil((veinMinWidth == veinMaxWidth ? veinMinWidth : (veinMinWidth + random.nextInt(veinMaxWidth - veinMinWidth))) / 2f);
-        final int b = MathHelper.ceil((veinMinWidth == veinMaxWidth ? veinMinWidth : (veinMinWidth + random.nextInt(veinMaxWidth - veinMinWidth))) / 2f);
-        final int maxWidth = Math.max(a, b);
+        final float a = (veinMinWidth == veinMaxWidth ? veinMinWidth : (veinMinWidth + random.nextInt(veinMaxWidth - veinMinWidth + 1))) / 2f;
+        final float b = (veinMinWidth == veinMaxWidth ? veinMinWidth : (veinMinWidth + random.nextInt(veinMaxWidth - veinMinWidth + 1))) / 2f;
+        final float maxWidth = Math.max(a, b);
         final int h = veinMinHeight + random.nextInt(veinMaxHeight - veinMinHeight);
         final float rotation = random.nextFloat() * (float) Math.PI;
-        final int centerX = chunkX * 16 + 8 - maxWidth + random.nextInt(maxWidth * 2);
-        final int centerZ = chunkZ * 16 + 8 - maxWidth + random.nextInt(maxWidth * 2);
+        final float centerX = chunkX * 16 + 8 + maxWidth + random.nextInt(16 - Math.round(maxWidth * 2) + 1);
+        final float centerZ = chunkZ * 16 + 8 + maxWidth + random.nextInt(16 - Math.round(maxWidth * 2) + 1);
 
         final double distanceToSpawn;
         if (world instanceof WorldServer && ((WorldServer) world).findingSpawnPoint) {
@@ -106,7 +103,7 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
             distanceToSpawn = 0;
         } else {
             final BlockPos spawnPoint = world.getSpawnPoint();
-            distanceToSpawn = new Vec3i(spawnPoint.getX(), 0, spawnPoint.getZ()).getDistance(centerX, 0, centerZ);
+            distanceToSpawn = new Vec3i(spawnPoint.getX(), 0, spawnPoint.getZ()).getDistance(MathHelper.floor(centerX), 0, MathHelper.floor(centerZ));
         }
 
         final float veinScale;
@@ -119,108 +116,100 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
         final int adjustedCount = Math.round(veinCount * Math.max(1, veinScale * 0.5f));
         final int adjustedYield = Math.round(veinYield * veinScale);
 
-        // Make sure we stay in bounds of the chunk so as not to trigger further generation.
-        // Actually, stay in *reduced* bounds because setting a blockstate will also trigger
-        // loading of its neighboring chunk if it's on the edge of a chunk... thanks Minecraft.
-        final int minX = Math.max(chunkX * 16 + 1, centerX - maxWidth);
-        final int maxX = Math.min((chunkX + 1) * 16 - 2, centerX + maxWidth);
-        final int minZ = Math.max(chunkZ * 16 + 1, centerZ - maxWidth);
-        final int maxZ = Math.min((chunkZ + 1) * 16 - 2, centerZ + maxWidth);
+        final int minX = MathHelper.ceil(centerX - maxWidth);
+        final int maxX = MathHelper.floor(centerX + maxWidth) - 1;
+        final int minZ = MathHelper.ceil(centerZ - maxWidth);
+        final int maxZ = MathHelper.floor(centerZ + maxWidth) - 1;
 
-        final List<BlockPos> candidates = WorldGeneratorBedrockOre.candidates.get();
-        final TFloatList distribution = WorldGeneratorBedrockOre.distribution.get();
+        final List<BlockPos> candidates = new ArrayList<>();
+        final TFloatList distribution = new TFloatArrayList();
 
         assert candidates.isEmpty();
         assert distribution.isEmpty();
 
-        try {
-            // Pick all candidate positions in the target bounds, those positions
-            // being the ones that fall inside our ellipsoid.
-            int maxY = 0;
-            for (int z = minZ; z <= maxZ; z++) {
-                for (int x = minX; x <= maxX; x++) {
-                    if (!isPointInEllipse(x, z, centerX, centerZ, a, b, rotation)) {
-                        continue;
-                    }
-                    for (int y = Settings.veinBaseY; y >= 0; y--) {
-                        final BlockPos pos = new BlockPos(x, y, z);
-                        final IBlockState state = world.getBlockState(pos);
-                        assert state.getBlock() != Blocks.bedrockOre;
-                        if (state.getBlock().isReplaceableOreGen(state, world, pos, WorldGeneratorBedrockOre::isBedrockBlock)) {
-                            if (y > maxY) {
-                                maxY = y;
-                            }
-                            candidates.add(pos);
-                        }
-                    }
-                }
-            }
-
-            // We start at the typical max y-level for bedrock, but in case we
-            // don't find anything at the higher levels make sure we still try
-            // to use the full height.
-            final int minY = maxY - h;
-            candidates.removeIf(pos -> pos.getY() <= minY);
-
-            if (candidates.size() == 0) {
-                return;
-            }
-
-            // Inside the ellipsoid we pick a number of actually used blocks
-            // in a uniform random fashion.
-            if (candidates.size() > adjustedCount) {
-                Collections.shuffle(candidates, random);
-            }
-
-            final int placeCount = Math.min(adjustedCount, candidates.size());
-
-            // Each generated block gets a bit of randomness to its actual
-            // amount to make things less boring.
-            float sum = 0;
-            for (int i = 0; i < placeCount; i++) {
-                final float weight = random.nextFloat();
-                sum += weight;
-                distribution.add(weight);
-            }
-
-            // Half of the total yield is evenly distributed across blocks, the
-            // rest falls into this random distribution. Adjust the normalizer
-            // accordingly.
-            final float fixedYield = adjustedYield / 2f;
-            final int baseYield = MathHelper.ceil(fixedYield / placeCount);
-            final float normalizer = (adjustedYield - fixedYield) / sum;
-            int remaining = adjustedYield;
-            for (int i = 0; i < placeCount && remaining > 0; i++) {
-                final int amount = Math.min(remaining, baseYield + MathHelper.ceil(distribution.get(i) * normalizer));
-                if (amount == 0) {
+        // Pick all candidate positions in the target bounds, those positions
+        // being the ones that fall inside our ellipsoid.
+        int maxY = 0;
+        for (int z = minZ; z <= maxZ; z++) {
+            for (int x = minX; x <= maxX; x++) {
+                if (!isPointInEllipse(x, z, centerX, centerZ, a, b, rotation)) {
                     continue;
                 }
-
-                remaining -= amount;
-
-                final BlockPos pos = candidates.get(i);
-                world.setBlockState(pos, Blocks.bedrockOre.getDefaultState(), 2);
-
-                final TileEntity tileEntity = world.getTileEntity(pos);
-                if (tileEntity instanceof TileEntityBedrockOre) {
-                    final TileEntityBedrockOre tileEntityBedrockOre = (TileEntityBedrockOre) tileEntity;
-                    tileEntityBedrockOre.setOreBlockState(ore.state.getBlockState(), amount);
+                for (int y = Settings.veinBaseY; y >= 0; y--) {
+                    final BlockPos pos = new BlockPos(x, y, z);
+                    final IBlockState state = world.getBlockState(pos);
+                    assert state.getBlock() != Blocks.bedrockOre;
+                    if (state.getBlock().isReplaceableOreGen(state, world, pos, WorldGeneratorBedrockOre::isBedrockBlock)) {
+                        if (y > maxY) {
+                            maxY = y;
+                        }
+                        candidates.add(pos);
+                    }
                 }
             }
-
-            assert remaining == 0;
-        } finally {
-            candidates.clear();
-            distribution.clear();
         }
+
+        // We start at the typical max y-level for bedrock, but in case we
+        // don't find anything at the higher levels make sure we still try
+        // to use the full height.
+        final int minY = maxY - h;
+        candidates.removeIf(pos -> pos.getY() <= minY);
+
+        if (candidates.size() == 0) {
+            return;
+        }
+
+        // Inside the ellipsoid we pick a number of actually used blocks
+        // in a uniform random fashion.
+        if (candidates.size() > adjustedCount) {
+            Collections.shuffle(candidates, random);
+        }
+
+        final int placeCount = Math.min(adjustedCount, candidates.size());
+
+        // Each generated block gets a bit of randomness to its actual
+        // amount to make things less boring.
+        float sum = 0;
+        for (int i = 0; i < placeCount; i++) {
+            final float weight = random.nextFloat();
+            sum += weight;
+            distribution.add(weight);
+        }
+
+        // Half of the total yield is evenly distributed across blocks, the
+        // rest falls into this random distribution. Adjust the normalizer
+        // accordingly.
+        final float fixedYield = adjustedYield / 2f;
+        final int baseYield = MathHelper.ceil(fixedYield / placeCount);
+        final float normalizer = (adjustedYield - fixedYield) / sum;
+        int remaining = adjustedYield;
+        for (int i = 0; i < placeCount && remaining > 0; i++) {
+            final int amount = Math.min(remaining, baseYield + MathHelper.ceil(distribution.get(i) * normalizer));
+            if (amount == 0) {
+                continue;
+            }
+
+            remaining -= amount;
+
+            final BlockPos pos = candidates.get(i);
+            world.setBlockState(pos, Blocks.bedrockOre.getDefaultState(), 2);
+
+            final TileEntity tileEntity = world.getTileEntity(pos);
+            if (tileEntity instanceof TileEntityBedrockOre) {
+                final TileEntityBedrockOre tileEntityBedrockOre = (TileEntityBedrockOre) tileEntity;
+                tileEntityBedrockOre.setOreBlockState(ore.state.getBlockState(), amount);
+            }
+        }
+
+        assert remaining == 0;
     }
 
-    private static boolean isPointInEllipse(final int px, final int py, final int ex, final int ey, final float ea, final float eb, final float er) {
+    private static boolean isPointInEllipse(final float px, final float py, final float ex, final float ey, final float ea, final float eb, final float er) {
         final float cr = MathHelper.cos(er);
         final float sr = MathHelper.sin(er);
 
-        final int dx = px - ex;
-        final int dy = py - ey;
+        final float dx = px - ex;
+        final float dy = py - ey;
 
         final float leftTop = cr * dx + sr * dy;
         final float left = (leftTop * leftTop) / (ea * ea);
