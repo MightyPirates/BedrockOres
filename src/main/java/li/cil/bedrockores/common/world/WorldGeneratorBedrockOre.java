@@ -95,15 +95,19 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
         final float centerZ = chunkZ * 16 + 8 + maxWidth + random.nextInt(16 - Math.round(maxWidth * 2) + 1);
 
         final double distanceToSpawn;
-        if (world instanceof WorldServer && ((WorldServer) world).findingSpawnPoint) {
-            // If this is called *while* we're looking for a valid spawn pos, the reported
-            // spawn pos will be BlockPos.ORIGIN. So we're almost guaranteed to be far enough
-            // away from it for scaling to kick in. Inversely, if we're looking for a spawn pos,
-            // we assume we're close enough to the spawn for scaling *not* to kick in.
-            distanceToSpawn = 0;
+        if (world.provider.canRespawnHere()) {
+            if (world instanceof WorldServer && ((WorldServer) world).findingSpawnPoint) {
+                // If this is called *while* we're looking for a valid spawn pos, the reported
+                // spawn pos will be BlockPos.ORIGIN. So we're almost guaranteed to be far enough
+                // away from it for scaling to kick in. Inversely, if we're looking for a spawn pos,
+                // we assume we're close enough to the spawn for scaling *not* to kick in.
+                distanceToSpawn = 0;
+            } else {
+                final BlockPos spawnPoint = world.getSpawnPoint();
+                distanceToSpawn = new Vec3i(spawnPoint.getX(), 0, spawnPoint.getZ()).getDistance(MathHelper.floor(centerX), 0, MathHelper.floor(centerZ));
+            }
         } else {
-            final BlockPos spawnPoint = world.getSpawnPoint();
-            distanceToSpawn = new Vec3i(spawnPoint.getX(), 0, spawnPoint.getZ()).getDistance(MathHelper.floor(centerX), 0, MathHelper.floor(centerZ));
+            distanceToSpawn = Settings.veinDistanceScaleMultiplier;
         }
 
         final float veinScale;
