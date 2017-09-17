@@ -1,5 +1,6 @@
 package li.cil.bedrockores.common.tileentity;
 
+import li.cil.bedrockores.common.BedrockOres;
 import li.cil.bedrockores.common.config.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -20,8 +21,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
     // --------------------------------------------------------------------- //
@@ -41,6 +44,8 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
 
     @Nullable
     private ItemStack droppedStack;
+
+    private static final Set<IBlockState> loggedWarningFor = new HashSet<>();
 
     // --------------------------------------------------------------------- //
 
@@ -193,7 +198,15 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
             if (oreBlockState == null) {
                 droppedStack = ItemStack.EMPTY;
             } else {
-                droppedStack = oreBlockState.getBlock().getPickBlock(oreBlockState, null, getWorld(), BlockPos.ORIGIN, null);
+                try {
+                    droppedStack = oreBlockState.getBlock().getPickBlock(oreBlockState, null, getWorld(), BlockPos.ORIGIN, null);
+                } catch (final Throwable t) {
+                    droppedStack = ItemStack.EMPTY;
+
+                    if (loggedWarningFor.add(oreBlockState)) {
+                        BedrockOres.getLog().error("Failed determining dropped block for " + oreBlockState.toString() + ", miners will not be able to harvest this bedrock ore!", t);
+                    }
+                }
             }
         }
         if (droppedStack.isEmpty()) {
