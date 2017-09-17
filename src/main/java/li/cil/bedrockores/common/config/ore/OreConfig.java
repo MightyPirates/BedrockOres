@@ -1,14 +1,15 @@
 package li.cil.bedrockores.common.config.ore;
 
 import joptsimple.internal.Strings;
+import li.cil.bedrockores.common.config.Settings;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.BiomeManager;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.LinkedHashSet;
-import java.util.Locale;
 import java.util.Set;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
@@ -52,7 +53,7 @@ public final class OreConfig extends WeightedRandom.Item {
 
     public OreConfig() {
         super(10);
-        dimension.add(DimensionType.OVERWORLD.getName().toLowerCase(Locale.US));
+        dimension.addAll(Arrays.asList(Settings.defaultDimensionTypes));
         biome.add(ANY_VALUE);
     }
 

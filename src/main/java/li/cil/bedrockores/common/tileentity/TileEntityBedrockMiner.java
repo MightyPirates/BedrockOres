@@ -1,6 +1,7 @@
 package li.cil.bedrockores.common.tileentity;
 
 import cofh.redstoneflux.api.IEnergyReceiver;
+import li.cil.bedrockores.common.BedrockOres;
 import li.cil.bedrockores.common.config.Constants;
 import li.cil.bedrockores.common.config.OreConfigManager;
 import li.cil.bedrockores.common.config.Settings;
@@ -71,7 +72,8 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
     private static final int SEND_DELAY = 20; // in ticks
 
     private static final int SLOT_FUEL = 0;
-    private static final int SLOT_OUTPUT = 1;
+    private static final int SLOT_OUTPUT_FIRST = 1;
+    private static final int SLOT_OUTPUT_COUNT = 6;
 
     private static final int SCAN_RADIUS = 2; // 0 is only straight down
     private static final int SCAN_DEPTH = 3; // 0 is empty
@@ -322,10 +324,19 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
     }
 
     private boolean tryTransferOutput() {
-        final ItemStack stack = inventory.getStackInSlot(SLOT_OUTPUT);
-        if (stack.isEmpty()) {
+        int outputSlot = -1;
+        for (int slot = SLOT_OUTPUT_FIRST; slot < inventory.getSlots(); ++slot) {
+            final ItemStack stack = inventory.getStackInSlot(slot);
+            if (!stack.isEmpty()) {
+                outputSlot = slot;
+                break;
+            }
+        }
+        if (outputSlot < 0) {
             return true;
         }
+
+        final ItemStack stack = inventory.getStackInSlot(outputSlot);
 
         if (transferCooldown > 0) {
             --transferCooldown;
@@ -357,7 +368,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
         }
 
         final ItemStack remainder = ItemHandlerHelper.insertItem(itemHandler, stack, false);
-        inventory.setStackInSlot(SLOT_OUTPUT, remainder);
+        inventory.setStackInSlot(outputSlot, remainder);
         markDirty();
 
         transferCooldown = 10;
@@ -436,8 +447,18 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
 
         assert extractionCooldown == 0;
 
-        final ItemStack stack = bedrockOre.extract();
-        inventory.setStackInSlot(SLOT_OUTPUT, stack);
+        inventory.isInsertingOutputs = true;
+        try {
+            final List<ItemStack> drops = bedrockOre.extract();
+            for (final ItemStack drop : drops) {
+                final ItemStack remainder = ItemHandlerHelper.insertItem(inventory, drop, false);
+                if (!remainder.isEmpty()) {
+                    BedrockOres.getLog().warn("Some mod crammed an unhealthy amount of drops into the drops list in the HarvestDropsEvent (more than {}). Which is more than the miner's buffer can hold. Surplus item is being deleted: {}", SLOT_OUTPUT_COUNT, remainder.getDisplayName());
+                }
+            }
+        } finally {
+            inventory.isInsertingOutputs = false;
+        }
         markDirty();
 
         beginExtractionCooldown(bedrockOre);
@@ -513,19 +534,23 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
     }
 
     private final class ItemHandlerMiner extends ItemStackHandler {
+        boolean isInsertingOutputs;
+
         ItemHandlerMiner() {
-            super(2);
+            super(1 + SLOT_OUTPUT_COUNT);
         }
 
         @Nonnull
         @Override
         public ItemStack insertItem(final int slot, @Nonnull final ItemStack stack, final boolean simulate) {
-            if (slot == SLOT_OUTPUT) {
-                return stack;
-            }
+            if (!isInsertingOutputs) {
+                if (slot >= SLOT_OUTPUT_FIRST) {
+                    return stack;
+                }
 
-            if (Math.round(TileEntityFurnace.getItemBurnTime(stack) * Settings.minerEfficiency) < 1) {
-                return stack;
+                if (Math.round(TileEntityFurnace.getItemBurnTime(stack) * Settings.minerEfficiency) < 1) {
+                    return stack;
+                }
             }
 
             return super.insertItem(slot, stack, simulate);
