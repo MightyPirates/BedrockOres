@@ -42,10 +42,10 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
     private static final String TAG_AMOUNT = "amount";
     private static final String TAG_ORE_BLOCK_STATE_ID = "id";
 
+    private static final Set<IBlockState> loggedWarningFor = Collections.synchronizedSet(new HashSet<>());
+
     @Nullable
     private ItemStack droppedStack;
-
-    private static final Set<IBlockState> loggedWarningFor = new HashSet<>();
 
     // --------------------------------------------------------------------- //
 
