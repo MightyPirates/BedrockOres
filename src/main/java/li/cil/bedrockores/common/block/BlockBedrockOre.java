@@ -237,9 +237,10 @@ public final class BlockBedrockOre extends Block {
 
     @Override
     public ItemStack getPickBlock(final IBlockState state, final RayTraceResult target, final World world, final BlockPos pos, final EntityPlayer player) {
-        final IBlockState oreBlockState = getOreBlockState(world.getTileEntity(pos));
-        if (oreBlockState != null) {
-            return oreBlockState.getBlock().getPickBlock(oreBlockState, target, world, pos, player);
+        final TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileEntityBedrockOre) {
+            final TileEntityBedrockOre tileEntityBedrockOre = (TileEntityBedrockOre) tileEntity;
+            return tileEntityBedrockOre.getDroppedStack();
         }
         return super.getPickBlock(state, target, world, pos, player);
     }

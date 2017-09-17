@@ -1,20 +1,30 @@
 package li.cil.bedrockores.common.tileentity;
 
+import li.cil.bedrockores.common.BedrockOres;
 import li.cil.bedrockores.common.config.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
     // --------------------------------------------------------------------- //
@@ -32,6 +42,8 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
     private static final String TAG_AMOUNT = "amount";
     private static final String TAG_ORE_BLOCK_STATE_ID = "id";
 
+    private static final Set<IBlockState> loggedWarningFor = Collections.synchronizedSet(new HashSet<>());
+
     @Nullable
     private ItemStack droppedStack;
 
@@ -44,6 +56,7 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
 
     @SuppressWarnings("deprecation")
     public void setOreBlockState(@Nullable final IBlockState state, final int amount) {
+        //noinspection VariableNotUsedInsideIf
         this.amount = state != null ? amount : 0;
 
         if (Objects.equals(state, oreBlockState)) {
@@ -69,8 +82,46 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
         return amount;
     }
 
+    @SuppressWarnings("deprecation")
     @Nullable
-    public ItemStack extract() {
+    public ItemStack getDroppedStack() {
+        if (droppedStack == null) {
+            if (oreBlockState != null) {
+                final Block block = oreBlockState.getBlock();
+                try {
+                    droppedStack = block.getPickBlock(oreBlockState, null, getWorld(), getPos(), null);
+                } catch (final Throwable t) {
+                    try {
+                        final Item item = Item.getItemFromBlock(block);
+                        final int damage = block.damageDropped(oreBlockState);
+                        final ItemStack stack = new ItemStack(item, 1, damage);
+                        final int meta = item.getMetadata(stack);
+                        if (Objects.equals(block.getStateFromMeta(meta), oreBlockState)) {
+                            droppedStack = stack;
+                        } else {
+                            throw new Exception("Block/Item implementation does not allow round-trip via Block.damageDropped/Item.getMetadata/Block.getStateFromMeta: " + block.toString() + ", " + item.toString());
+                        }
+                    } catch (final Throwable t2) {
+                        if (loggedWarningFor.add(oreBlockState)) {
+                            // Log twice to get both stack traces. Don't log first trace if second lookup succeeds.
+                            BedrockOres.getLog().warn("Failed determining dropped block for " + oreBlockState.toString() + " via getPickBlock, trying to resolve via meta.", t);
+                            BedrockOres.getLog().error("Failed determining dropped block for " + oreBlockState.toString() + " via meta, clearing bedrock ore.", t2);
+                        }
+                    }
+                }
+            }
+        }
+        if (droppedStack == null) {
+            amount = 0;
+        }
+        return droppedStack;
+    }
+
+    public List<ItemStack> extract() {
+        if (world.isRemote) {
+            return Collections.emptyList();
+        }
+
         final ItemStack stack = getDroppedStack();
 
         --amount;
@@ -80,7 +131,19 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
             getWorld().markChunkDirty(getPos(), this);
         }
 
-        return stack != null ? stack.copy() : null;
+        if (!(world instanceof WorldServer)) {
+            return Collections.singletonList(stack);
+        }
+
+        final FakePlayer fakePlayer = FakePlayerFactory.getMinecraft((WorldServer) getWorld());
+        final BlockEvent.HarvestDropsEvent event = new BlockEvent.HarvestDropsEvent(getWorld(), getPos(), getOreBlockState(), 0, 1, Collections.singletonList(stack), fakePlayer, true);
+        MinecraftForge.EVENT_BUS.post(event);
+
+        if (event.getDropChance() < 1f && event.getDropChance() > getWorld().rand.nextFloat()) {
+            return Collections.emptyList();
+        } else {
+            return event.getDrops();
+        }
     }
 
     // --------------------------------------------------------------------- //
@@ -164,16 +227,5 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
     private void readFromNBTForClient(final NBTTagCompound compound) {
         final int oreBlockStateId = compound.getInteger(TAG_ORE_BLOCK_STATE_ID);
         setOreBlockState(Block.BLOCK_STATE_IDS.getByValue(oreBlockStateId), compound.getInteger(TAG_AMOUNT));
-    }
-
-    @Nullable
-    private ItemStack getDroppedStack() {
-        if (droppedStack == null && oreBlockState != null) {
-            droppedStack = oreBlockState.getBlock().getPickBlock(oreBlockState, null, getWorld(), BlockPos.ORIGIN, null);
-        }
-        if (droppedStack == null) {
-            amount = 0;
-        }
-        return droppedStack;
     }
 }
