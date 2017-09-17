@@ -131,12 +131,16 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
             getWorld().markChunkDirty(getPos(), this);
         }
 
+        if (stack.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         if (!(world instanceof WorldServer)) {
-            return Collections.singletonList(stack);
+            return Collections.singletonList(stack.copy());
         }
 
         final FakePlayer fakePlayer = FakePlayerFactory.getMinecraft((WorldServer) getWorld());
-        final BlockEvent.HarvestDropsEvent event = new BlockEvent.HarvestDropsEvent(getWorld(), getPos(), getOreBlockState(), 0, 1, Collections.singletonList(stack), fakePlayer, true);
+        final BlockEvent.HarvestDropsEvent event = new BlockEvent.HarvestDropsEvent(getWorld(), getPos(), getOreBlockState(), 0, 1, Collections.singletonList(stack.copy()), fakePlayer, true);
         MinecraftForge.EVENT_BUS.post(event);
 
         if (event.getDropChance() < 1f && event.getDropChance() > getWorld().rand.nextFloat()) {
