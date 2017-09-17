@@ -5,6 +5,7 @@ import li.cil.bedrockores.common.config.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -56,6 +57,7 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
 
     @SuppressWarnings("deprecation")
     public void setOreBlockState(@Nullable final IBlockState state, final int amount) {
+        //noinspection VariableNotUsedInsideIf
         this.amount = state != null ? amount : 0;
 
         if (Objects.equals(state, oreBlockState)) {
@@ -79,6 +81,43 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
 
     public int getAmount() {
         return amount;
+    }
+
+    @SuppressWarnings("deprecation")
+    public ItemStack getDroppedStack() {
+        if (droppedStack == null) {
+            if (oreBlockState != null) {
+                final Block block = oreBlockState.getBlock();
+                try {
+                    droppedStack = block.getPickBlock(oreBlockState, null, getWorld(), getPos(), null);
+                } catch (final Throwable t) {
+                    try {
+                        final Item item = Item.getItemFromBlock(block);
+                        final int damage = block.damageDropped(oreBlockState);
+                        final ItemStack stack = new ItemStack(item, 1, damage);
+                        final int meta = item.getMetadata(stack);
+                        if (Objects.equals(block.getStateFromMeta(meta), oreBlockState)) {
+                            droppedStack = stack;
+                        } else {
+                            throw new Exception("Block/Item implementation does not allow round-trip via Block.damageDropped/Item.getMetadata/Block.getStateFromMeta: " + block.toString() + ", " + item.toString());
+                        }
+                    } catch (final Throwable t2) {
+                        if (loggedWarningFor.add(oreBlockState)) {
+                            // Log twice to get both stack traces. Don't log first trace if second lookup succeeds.
+                            BedrockOres.getLog().warn("Failed determining dropped block for " + oreBlockState.toString() + " via getPickBlock, trying to resolve via meta.", t);
+                            BedrockOres.getLog().error("Failed determining dropped block for " + oreBlockState.toString() + " via meta, clearing bedrock ore.", t2);
+                        }
+                    }
+                }
+            }
+        }
+        if (droppedStack == null) {
+            droppedStack = ItemStack.EMPTY;
+        }
+        if (droppedStack.isEmpty()) {
+            amount = 0;
+        }
+        return droppedStack;
     }
 
     public List<ItemStack> extract() {
@@ -191,26 +230,5 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
     private void readFromNBTForClient(final NBTTagCompound compound) {
         final int oreBlockStateId = compound.getInteger(TAG_ORE_BLOCK_STATE_ID);
         setOreBlockState(Block.BLOCK_STATE_IDS.getByValue(oreBlockStateId), compound.getInteger(TAG_AMOUNT));
-    }
-
-    private ItemStack getDroppedStack() {
-        if (droppedStack == null) {
-            if (oreBlockState != null) {
-                try {
-                    droppedStack = oreBlockState.getBlock().getPickBlock(oreBlockState, null, getWorld(), BlockPos.ORIGIN, null);
-                } catch (final Throwable t) {
-                    if (loggedWarningFor.add(oreBlockState)) {
-                        BedrockOres.getLog().error("Failed determining dropped block for " + oreBlockState.toString() + ", miners will not be able to harvest this bedrock ore!", t);
-                    }
-                }
-            }
-        }
-        if (droppedStack == null) {
-            droppedStack = ItemStack.EMPTY;
-        }
-        if (droppedStack.isEmpty()) {
-            amount = 0;
-        }
-        return droppedStack;
     }
 }
