@@ -447,12 +447,17 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
 
         assert extractionCooldown == 0;
 
-        final List<ItemStack> drops = bedrockOre.extract();
-        for (final ItemStack drop : drops) {
-            final ItemStack remainder = ItemHandlerHelper.insertItem(inventory, drop, false);
-            if (!remainder.isEmpty()) {
-                BedrockOres.getLog().warn("Some mod crammed an unhealthy amount of drops into the drops list in the HarvestDropsEvent (more than {}). Which is more than the miner's buffer can hold. Surplus item is being deleted: {}", SLOT_OUTPUT_COUNT, remainder.getDisplayName());
+        inventory.isInsertingOutputs = true;
+        try {
+            final List<ItemStack> drops = bedrockOre.extract();
+            for (final ItemStack drop : drops) {
+                final ItemStack remainder = ItemHandlerHelper.insertItem(inventory, drop, false);
+                if (!remainder.isEmpty()) {
+                    BedrockOres.getLog().warn("Some mod crammed an unhealthy amount of drops into the drops list in the HarvestDropsEvent (more than {}). Which is more than the miner's buffer can hold. Surplus item is being deleted: {}", SLOT_OUTPUT_COUNT, remainder.getDisplayName());
+                }
             }
+        } finally {
+            inventory.isInsertingOutputs = false;
         }
         markDirty();
 
@@ -529,6 +534,8 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
     }
 
     private final class ItemHandlerMiner extends ItemStackHandler {
+        boolean isInsertingOutputs;
+
         ItemHandlerMiner() {
             super(1 + SLOT_OUTPUT_COUNT);
         }
@@ -536,12 +543,14 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
         @Nonnull
         @Override
         public ItemStack insertItem(final int slot, @Nonnull final ItemStack stack, final boolean simulate) {
-            if (slot >= SLOT_OUTPUT_FIRST) {
-                return stack;
-            }
+            if (!isInsertingOutputs) {
+                if (slot >= SLOT_OUTPUT_FIRST) {
+                    return stack;
+                }
 
-            if (Math.round(TileEntityFurnace.getItemBurnTime(stack) * Settings.minerEfficiency) < 1) {
-                return stack;
+                if (Math.round(TileEntityFurnace.getItemBurnTime(stack) * Settings.minerEfficiency) < 1) {
+                    return stack;
+                }
             }
 
             return super.insertItem(slot, stack, simulate);
