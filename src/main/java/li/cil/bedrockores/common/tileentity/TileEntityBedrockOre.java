@@ -195,19 +195,18 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
 
     private ItemStack getDroppedStack() {
         if (droppedStack == null) {
-            if (oreBlockState == null) {
-                droppedStack = ItemStack.EMPTY;
-            } else {
+            if (oreBlockState != null) {
                 try {
                     droppedStack = oreBlockState.getBlock().getPickBlock(oreBlockState, null, getWorld(), BlockPos.ORIGIN, null);
                 } catch (final Throwable t) {
-                    droppedStack = ItemStack.EMPTY;
-
                     if (loggedWarningFor.add(oreBlockState)) {
                         BedrockOres.getLog().error("Failed determining dropped block for " + oreBlockState.toString() + ", miners will not be able to harvest this bedrock ore!", t);
                     }
                 }
             }
+        }
+        if (droppedStack == null) {
+            droppedStack = ItemStack.EMPTY;
         }
         if (droppedStack.isEmpty()) {
             amount = 0;
