@@ -81,7 +81,7 @@
     },
     "dimensionFilter": "whitelist",
     "dimensionSelector": "type",
-    "dimension": [ "overworld"] ,
+    "dimension": [ "overworld", "miningworld" ],
     "biomeFilter": "whitelist",
     "biomeSelector": "id",
     "biome": [ "*" ],

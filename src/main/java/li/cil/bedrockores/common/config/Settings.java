@@ -1,6 +1,9 @@
 package li.cil.bedrockores.common.config;
 
+import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.config.Config;
+
+import java.util.Locale;
 
 @Config(modid = Constants.MOD_ID)
 public final class Settings {
@@ -87,6 +90,16 @@ public final class Settings {
                     "the bit in the block state name before the colon, e.g. `thermalfoundation`.")
     @Config.RequiresMcRestart
     public static String[] oreModBlacklist = {};
+
+    @Config.LangKey(Constants.CONFIG_DEFAULT_DIMENSION_TYPES)
+    @Config.Comment("The list of dimension *types* assigned to ore entries with no explicit dimension config. " +
+                    "This includes the defaults for vanilla ores and non-dimension-specific mod ore defaults. " +
+                    "Use this to make those ores also spawn in dimension types other than the overworld.")
+    @Config.RequiresMcRestart
+    public static String[] defaultDimensionTypes = {
+            DimensionType.OVERWORLD.getName().toLowerCase(Locale.US),
+            "miningworld" // Aroma1997
+    };
 
     // --------------------------------------------------------------------- //
 

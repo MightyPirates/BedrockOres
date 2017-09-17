@@ -6,6 +6,7 @@ commands.bedrockores.wrap.usage=Während du auf einen Block blickt aufrufen, um 
 commands.bedrockores.unwrap.usage=Während du auf einen Block blickst aufrufen, um einen Grundgesteinerzblock zurück in den Block umzuwandeln, den er umschließt.
 commands.bedrockores.list=§aAlle Erze die in Grundgestein eingebettet werden dürfen:
 commands.bedrockores.list_item=§7 - §f%s
+commands.bedrockores.list_empty=§7 - §cKeine Erze gefunden
 commands.bedrockores.list_errors=§cEs gab Fehler beim Einlesen dieser Blöcke:
 commands.bedrockores.list_error_item=§7 - §f%s
 commands.bedrockores.list_errors_epilogue=§cBitte siehe in deinem Log nach Warnungen für weiteren Informationen.
@@ -24,6 +25,7 @@ config.bedrockores.allow_player_mining=Spieler dürfen Erze abbauen
 config.bedrockores.world_generator_weight=Weltgeneratorgewichtung
 config.bedrockores.ore_priority=Erzpriorität
 config.bedrockores.ore_mod_blacklist=Mod-Schwarzliste
+config.bedrockores.default_dimension_types=Standarddimensionen
 
 gui.bedrockores.expected_yield=Erwartete Ausbeute: %s
 gui.bedrockores.exhausted=Erschöpft
