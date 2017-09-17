@@ -91,7 +91,6 @@ public final class Settings {
     @Config.Comment("The list of dimension *types* assigned to ore entries with no explicit dimension config. " +
                     "This includes the defaults for vanilla ores and non-dimension-specific mod ore defaults. " +
                     "Use this to make those ores also spawn in dimension types other than the overworld.")
-    @Config.RequiresMcRestart
     public static String[] defaultDimensionTypes = {
             DimensionType.OVERWORLD.getName().toLowerCase(Locale.US),
             "miningworld" // Aroma1997

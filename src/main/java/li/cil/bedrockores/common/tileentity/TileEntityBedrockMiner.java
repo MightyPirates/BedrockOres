@@ -327,7 +327,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
         int outputSlot = -1;
         for (int slot = SLOT_OUTPUT_FIRST; slot < inventory.getSlots(); ++slot) {
             final ItemStack stack = inventory.getStackInSlot(slot);
-            if (!stack == null) {
+            if (stack != null) {
                 outputSlot = slot;
                 break;
             }
@@ -451,7 +451,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
             final List<ItemStack> drops = bedrockOre.extract();
             for (final ItemStack drop : drops) {
                 final ItemStack remainder = ItemHandlerHelper.insertItem(inventory, drop, false);
-                if (!remainder.isEmpty()) {
+                if (remainder != null && remainder.stackSize > 0) {
                     BedrockOres.getLog().warn("Some mod crammed an unhealthy amount of drops into the drops list in the HarvestDropsEvent (more than {}). Which is more than the miner's buffer can hold. Surplus item is being deleted: {}", SLOT_OUTPUT_COUNT, remainder.getDisplayName());
                 }
             }

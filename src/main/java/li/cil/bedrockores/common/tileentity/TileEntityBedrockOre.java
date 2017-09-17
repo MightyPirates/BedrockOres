@@ -131,7 +131,7 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
             getWorld().markChunkDirty(getPos(), this);
         }
 
-        if (stack.isEmpty()) {
+        if (stack == null) {
             return Collections.emptyList();
         }
 
