@@ -64,7 +64,10 @@ public final class BlockBedrockMiner extends Block {
             final IItemHandler itemHandler = tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
             if (itemHandler != null) {
                 for (int slot = 0; slot < itemHandler.getSlots(); slot++) {
-                    InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), itemHandler.getStackInSlot(slot));
+                    final ItemStack stack = itemHandler.getStackInSlot(slot);
+                    if (stack != null) {
+                        InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+                    }
                 }
             }
         }
