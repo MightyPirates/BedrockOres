@@ -45,7 +45,6 @@
     "countMax": 14,
     "yieldMin": 128,
     "yieldMax": 160,
-    "group": "lead",
     "groupOrder": "forestry"
   }
 ]

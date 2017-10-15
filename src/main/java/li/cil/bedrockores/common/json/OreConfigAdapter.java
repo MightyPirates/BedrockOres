@@ -8,6 +8,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import li.cil.bedrockores.common.BedrockOres;
+import li.cil.bedrockores.common.config.Constants;
 import li.cil.bedrockores.common.config.OreConfigManager;
 import li.cil.bedrockores.common.config.Settings;
 import li.cil.bedrockores.common.config.ore.OreConfig;
@@ -16,6 +17,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,8 +65,8 @@ public final class OreConfigAdapter implements JsonSerializer<OreConfig>, JsonDe
                     continue;
                 }
 
-                if (Objects.equals("itemWeight", name)) {
-                    jsonObject.addProperty("name", src.itemWeight);
+                if (Arrays.stream(Constants.ITEM_WEIGHT_NAMES).anyMatch(fieldName -> Objects.equals(fieldName, name))) {
+                    jsonObject.addProperty("weight", src.itemWeight);
                     continue;
                 }
 
@@ -83,20 +85,18 @@ public final class OreConfigAdapter implements JsonSerializer<OreConfig>, JsonDe
         OreConfig dst = new OreConfig();
         final JsonObject jsonObject = json.getAsJsonObject();
 
-        if (OreConfigManager.INSTANCE.shouldReuseOreConfigs()) {
-            // Stuff with no block state def gets stripped out anyway.
-            if (!jsonObject.has("state")) {
-                return dst;
-            }
+        // Stuff with no block state def gets stripped out anyway.
+        if (!jsonObject.has("state")) {
+            return dst;
+        }
 
-            // See if we have an entry for this exact block state already, if so we
-            // want to patch it. Yes, this is pretty evil, but whatever works.
-            final WrappedBlockState state = context.deserialize(jsonObject.get("state"), WrappedBlockState.class);
-            for (final OreConfig oreConfig : OreConfigManager.INSTANCE.getOres()) {
-                if (oreConfig.state.equals(state)) {
-                    dst = oreConfig;
-                    break;
-                }
+        // See if we have an entry for this exact block state already, if so we
+        // want to patch it. Yes, this is pretty evil, but whatever works.
+        final WrappedBlockState state = context.deserialize(jsonObject.get("state"), WrappedBlockState.class);
+        for (final OreConfig oreConfig : OreConfigManager.INSTANCE.getOres()) {
+            if (oreConfig.state.equals(state)) {
+                dst = oreConfig;
+                break;
             }
         }
 
