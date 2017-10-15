@@ -40,7 +40,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -71,8 +70,6 @@ public enum OreConfigManager {
                 }
             });
 
-    private boolean shouldReuseOreConfigs;
-
     // --------------------------------------------------------------------- //
 
     // !!! BEWARE !!!
@@ -83,10 +80,6 @@ public enum OreConfigManager {
     // the simplest way to patch previously loaded entries (i.e. only overwrite
     // fields actually present in the JSON). So yeah. It works.
     // !!! BEWARE !!!
-
-    public boolean shouldReuseOreConfigs() {
-        return shouldReuseOreConfigs;
-    }
 
     public List<OreConfig> getOres() {
         return ImmutableList.copyOf(allOres);
@@ -203,7 +196,6 @@ public enum OreConfigManager {
         // Load built-in ore listings.
         for (final String filename : fileNames) {
             try {
-                shouldReuseOreConfigs = true;
                 final ArrayList<OreConfig> oreList = loadFromJar(filename, Types.LIST_ORE, gson);
                 oreList.removeAll(allOres);
                 allOres.addAll(oreList);
@@ -213,25 +205,18 @@ public enum OreConfigManager {
         }
 
         // Extract example user ore-listing to config dir if it doesn't exist.
-        try {
-            final Path directory = Paths.get(configDirectory, Constants.MOD_ID);
-            directory.toFile().mkdirs();
-            final int jsonFileCount = FileUtils.listFiles(directory.toFile(), new String[]{"json"}, false).size();
-            if (jsonFileCount == 0) {
-                BedrockOres.getLog().info("No JSON config files found, extracting example file.");
-                shouldReuseOreConfigs = false;
-                final List<OreConfig> oreList = loadFromJar(EXAMPLE_JSON, Types.LIST_ORE, gson);
-                final File file = directory.resolve(EXAMPLE_JSON).toFile();
-                try {
-                    FileUtils.writeStringToFile(file, gson.toJson(oreList), Charset.defaultCharset());
-                } catch (final IOException e) {
-                    BedrockOres.getLog().warn("Failed writing '" + EXAMPLE_JSON + "'.", e);
-                }
-            } else {
-                BedrockOres.getLog().info("Found JSON config files, skipping extraction of example file.");
+        final Path directory = Paths.get(configDirectory, Constants.MOD_ID);
+        directory.toFile().mkdirs();
+        final int jsonFileCount = FileUtils.listFiles(directory.toFile(), new String[]{"json"}, false).size();
+        if (jsonFileCount == 0) {
+            BedrockOres.getLog().info("No JSON config files found, extracting example file.");
+            try (final InputStream stream = getConfigFileStreamFromJar(EXAMPLE_JSON)) {
+                FileUtils.copyInputStreamToFile(stream, directory.resolve(EXAMPLE_JSON).toFile());
+            } catch (final IOException e) {
+                BedrockOres.getLog().warn("Failed writing '" + EXAMPLE_JSON + "'.", e);
             }
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
+        } else {
+            BedrockOres.getLog().info("Found JSON config files, skipping extraction of example file.");
         }
     }
 
@@ -240,7 +225,6 @@ public enum OreConfigManager {
         files.stream().sorted(Comparator.comparing(File::getName, AlphanumComparator.INSTANCE)).forEach(file -> {
             final List<OreConfig> oreList;
             try (final InputStream stream = new FileInputStream(file)) {
-                shouldReuseOreConfigs = true;
                 oreList = gson.fromJson(new InputStreamReader(stream), Types.LIST_ORE);
                 oreList.removeAll(allOres);
             } catch (final IOException | JsonSyntaxException e) {

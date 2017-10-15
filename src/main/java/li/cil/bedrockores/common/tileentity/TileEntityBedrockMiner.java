@@ -542,7 +542,11 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
         @Nullable
         @Override
         public ItemStack insertItem(final int slot, @Nonnull final ItemStack stack, final boolean simulate) {
-            if (!isInsertingOutputs) {
+            if (isInsertingOutputs) {
+                if (slot < SLOT_OUTPUT_FIRST) {
+                    return stack;
+                }
+            } else {
                 if (slot >= SLOT_OUTPUT_FIRST) {
                     return stack;
                 }

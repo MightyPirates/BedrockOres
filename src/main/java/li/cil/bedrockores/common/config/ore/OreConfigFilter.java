@@ -66,7 +66,7 @@ final class OreConfigFilter {
                 final E dimensionType = dimensionTypeLookup.get(dimensionTypeName);
                 result.add(dimensionType);
             } else {
-                BedrockOres.getLog().warn("Unknown dimension type '{}', ignoring.", value);
+                BedrockOres.getLog().info("Unknown dimension type '{}', ignoring.", value);
             }
         }
 
