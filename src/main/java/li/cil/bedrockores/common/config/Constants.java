@@ -56,6 +56,10 @@ public final class Constants {
     static final String CONFIG_DEFAULT_DIMENSION_TYPES = "config.bedrockores.default_dimension_types";
 
     // --------------------------------------------------------------------- //
+    // Field names of obfuscated stuffs.
+    public static final String[] ITEM_WEIGHT_NAMES = {"itemWeight", "field_76292_a", "a"};
+
+    // --------------------------------------------------------------------- //
     // GUI
 
     public static final String GUI_EXPECTED_YIELD = "gui.bedrockores.expected_yield";
