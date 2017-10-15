@@ -85,20 +85,18 @@ public final class OreConfigAdapter implements JsonSerializer<OreConfig>, JsonDe
         OreConfig dst = new OreConfig();
         final JsonObject jsonObject = json.getAsJsonObject();
 
-        if (OreConfigManager.INSTANCE.shouldReuseOreConfigs()) {
-            // Stuff with no block state def gets stripped out anyway.
-            if (!jsonObject.has("state")) {
-                return dst;
-            }
+        // Stuff with no block state def gets stripped out anyway.
+        if (!jsonObject.has("state")) {
+            return dst;
+        }
 
-            // See if we have an entry for this exact block state already, if so we
-            // want to patch it. Yes, this is pretty evil, but whatever works.
-            final WrappedBlockState state = context.deserialize(jsonObject.get("state"), WrappedBlockState.class);
-            for (final OreConfig oreConfig : OreConfigManager.INSTANCE.getOres()) {
-                if (oreConfig.state.equals(state)) {
-                    dst = oreConfig;
-                    break;
-                }
+        // See if we have an entry for this exact block state already, if so we
+        // want to patch it. Yes, this is pretty evil, but whatever works.
+        final WrappedBlockState state = context.deserialize(jsonObject.get("state"), WrappedBlockState.class);
+        for (final OreConfig oreConfig : OreConfigManager.INSTANCE.getOres()) {
+            if (oreConfig.state.equals(state)) {
+                dst = oreConfig;
+                break;
             }
         }
 
