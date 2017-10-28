@@ -20,6 +20,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -132,15 +133,18 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
         }
 
         if (stack == null) {
-            return Collections.emptyList();
+            return new ArrayList<>();
         }
 
+        final ArrayList<ItemStack> drops = new ArrayList<>();
+        drops.add(stack.copy());
+
         if (!(world instanceof WorldServer)) {
-            return Collections.singletonList(stack.copy());
+            return drops;
         }
 
         final FakePlayer fakePlayer = FakePlayerFactory.getMinecraft((WorldServer) getWorld());
-        final BlockEvent.HarvestDropsEvent event = new BlockEvent.HarvestDropsEvent(getWorld(), getPos(), getOreBlockState(), 0, 1, Collections.singletonList(stack.copy()), fakePlayer, true);
+        final BlockEvent.HarvestDropsEvent event = new BlockEvent.HarvestDropsEvent(getWorld(), getPos(), getOreBlockState(), 0, 1, drops, fakePlayer, true);
         MinecraftForge.EVENT_BUS.post(event);
 
         if (event.getDropChance() < 1f && event.getDropChance() > getWorld().rand.nextFloat()) {
