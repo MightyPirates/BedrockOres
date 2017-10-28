@@ -6,15 +6,18 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
 
 import java.util.EnumSet;
+import java.util.Set;
 
 public final class OreFilterKey {
     final int dimension;
     final DimensionType dimensionType;
     final ResourceLocation biome;
     final EnumSet<BiomeManager.BiomeType> biomeTypes;
+    final Set<BiomeDictionary.Type> biomeDictTypes;
 
     public OreFilterKey(final World world, final ChunkPos pos) {
         final Biome biome = world.getBiome(pos.getBlock(8, 0, 8));
@@ -22,6 +25,7 @@ public final class OreFilterKey {
         this.dimensionType = world.provider.getDimensionType();
         this.biome = biome.getRegistryName();
         this.biomeTypes = BiomeUtils.getBiomeTypes(biome);
+        this.biomeDictTypes = BiomeDictionary.getTypes(biome);
     }
 
     @Override
@@ -47,6 +51,9 @@ public final class OreFilterKey {
         if (!biomeTypes.equals(that.biomeTypes)) {
             return false;
         }
+        if (!biomeDictTypes.equals(that.biomeDictTypes)) {
+            return false;
+        }
         return true;
     }
 
@@ -56,6 +63,7 @@ public final class OreFilterKey {
         hashCode = 31 * hashCode + dimensionType.hashCode();
         hashCode = 31 * hashCode + biome.hashCode();
         hashCode = 31 * hashCode + biomeTypes.hashCode();
+        hashCode = 31 * hashCode + biomeDictTypes.hashCode();
         return hashCode;
     }
 }

@@ -2,13 +2,9 @@ package li.cil.bedrockores.common.config.ore;
 
 import joptsimple.internal.Strings;
 import li.cil.bedrockores.common.config.Settings;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.WeightedRandom;
-import net.minecraft.world.DimensionType;
-import net.minecraftforge.common.BiomeManager;
 
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -75,9 +71,9 @@ public final class OreConfig extends WeightedRandom.Item {
         filter = new OreConfigFilter(this);
     }
 
-    public boolean matches(final int dimension, final DimensionType dimensionType, final ResourceLocation biome, final EnumSet<BiomeManager.BiomeType> biomeTypes) {
-        return dimensionFilter.filter(dimensionSelector.select(filter, dimension, dimensionType)) &&
-               biomeFilter.filter(biomeSelector.select(filter, biome, biomeTypes));
+    public boolean matches(final OreFilterKey key) {
+        return dimensionFilter.filter(dimensionSelector.select(filter, key.dimension, key.dimensionType)) &&
+               biomeFilter.filter(biomeSelector.select(filter, key.biome, key.biomeTypes, key.biomeDictTypes));
     }
 
     // --------------------------------------------------------------------- //

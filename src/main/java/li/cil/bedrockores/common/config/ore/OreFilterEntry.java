@@ -12,7 +12,7 @@ public final class OreFilterEntry {
     private final int totalWeight;
 
     public OreFilterEntry(final OreFilterKey key, final List<OreConfig> ores) {
-        this.ores = ores.stream().filter(ore -> ore.matches(key.dimension, key.dimensionType, key.biome, key.biomeTypes)).collect(Collectors.toList());
+        this.ores = ores.stream().filter(ore -> ore.matches(key)).collect(Collectors.toList());
         totalWeight = WeightedRandom.getTotalWeight(this.ores);
     }
 
