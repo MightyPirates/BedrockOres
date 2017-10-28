@@ -100,7 +100,14 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
                         if (Objects.equals(block.getStateFromMeta(meta), oreBlockState)) {
                             droppedStack = stack;
                         } else {
-                            throw new Exception("Block/Item implementation does not allow round-trip via Block.damageDropped/Item.getMetadata/Block.getStateFromMeta: " + block.toString() + ", " + item.toString());
+                            final int guessedItemDamage = block.getMetaFromState(oreBlockState);
+                            final ItemStack guessedItemStack = new ItemStack(item, 1, guessedItemDamage);
+                            final int guessedMeta = item.getMetadata(stack);
+                            if (Objects.equals(block.getStateFromMeta(guessedMeta), oreBlockState)) {
+                                droppedStack = guessedItemStack;
+                            } else {
+                                throw new Exception("Block/Item implementation does not allow round-trip via Block.damageDropped/Item.getMetadata/Block.getStateFromMeta: " + block.toString() + ", " + item.toString());
+                            }
                         }
                     } catch (final Throwable t2) {
                         if (loggedWarningFor.add(oreBlockState)) {

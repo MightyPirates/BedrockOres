@@ -1,3 +1,3 @@
-* Fixed example JSON file not being extracted correctly.
-* Fixed Apatite being in the lead ore group.
-* Added missing documentation of `heightMin`/`heightMax` to example JSON.
+* Fixed potential crash when other mods tried modifying drops during an automated extraction.
+* Added one more heuristic for looking up item stack for block states.
+* Added new `biomeSelector` type, `dictionary`. Allows using biome dictionary types to build biome filters.
