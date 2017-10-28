@@ -6,6 +6,7 @@ import joptsimple.internal.Strings;
 import li.cil.bedrockores.common.BedrockOres;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
 
 import java.util.Collection;
@@ -21,6 +22,7 @@ final class OreConfigFilter {
     TIntSet dimensionIds;
     EnumSet<BiomeManager.BiomeType> biomeTypes;
     Set<ResourceLocation> biomeIds;
+    Set<BiomeDictionary.Type> biomeDictTypes;
 
     OreConfigFilter(final OreConfig config) {
         switch (config.dimensionSelector) {
@@ -33,6 +35,8 @@ final class OreConfigFilter {
                 if (dimensionIds == null) {
                     dimensionIds = buildIntSet(config.dimension);
                 }
+            case Dictionary:
+                BedrockOres.getLog().error("Dictionary type not supported for world selectors (used in config for '{}').", config.state.toString());
                 break;
         }
 
@@ -45,6 +49,10 @@ final class OreConfigFilter {
             case Id:
                 if (biomeIds == null) {
                     biomeIds = buildResourceLocationSet(config.biome);
+                }
+            case Dictionary:
+                if (biomeDictTypes == null) {
+                    biomeDictTypes = buildBiomeDictTypeSet(config.biome);
                 }
                 break;
         }
@@ -98,6 +106,21 @@ final class OreConfigFilter {
 
             final ResourceLocation location = new ResourceLocation(value);
             result.add(location);
+        }
+
+        return result;
+    }
+
+    private static Set<BiomeDictionary.Type> buildBiomeDictTypeSet(final Set<String> values) {
+        final Set<BiomeDictionary.Type> result = new HashSet<>();
+
+        for (final String value : values) {
+            assert !Strings.isNullOrEmpty(value);
+
+            final BiomeDictionary.Type type = BiomeDictionary.Type.getType(value);
+            if (type != null) {
+                result.add(type);
+            }
         }
 
         return result;
