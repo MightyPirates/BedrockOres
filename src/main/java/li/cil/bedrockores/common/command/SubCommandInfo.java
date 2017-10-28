@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -31,7 +32,7 @@ final class SubCommandInfo extends AbstractSubCommand {
         final String dimensionType = world.provider.getDimensionType().getName().toLowerCase(Locale.US);
         final String biomeId = biome.getRegistryName().toString();
         final String biomeTypes = String.join(", ", BiomeUtils.getBiomeTypes(biome).stream().map(e -> e.name().toLowerCase(Locale.US)).collect(Collectors.toList()));
-        final String biomeDictTypes = String.join(", ", BiomeDictionary.getTypes(biome).stream().map(e -> e.getName().toLowerCase(Locale.US)).collect(Collectors.toList()));
+        final String biomeDictTypes = String.join(", ", Arrays.stream(BiomeDictionary.getTypesForBiome(biome)).map(e -> e.name().toLowerCase(Locale.US)).collect(Collectors.toList()));
 
         notifyCommandListener(sender, this, Constants.COMMAND_INFO, dimensionId, dimensionType, biomeId, Strings.isNullOrEmpty(biomeTypes) ? "?" : biomeTypes, Strings.isNullOrEmpty(biomeDictTypes) ? "?" : biomeDictTypes);
         final List<OreConfig> ores = OreConfigManager.INSTANCE.getOres(world, new ChunkPos(sender.getPosition()));
