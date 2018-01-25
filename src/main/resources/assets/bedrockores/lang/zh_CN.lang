@@ -1,13 +1,31 @@
 tile.bedrockores.bedrock_miner.name=基岩矿石采掘机
+tile.bedrockores.bedrock_ore.name=基岩矿石
 
 commands.bedrockores.usage=这是本 Mod 所有子命令的主命令。使用 Tab 自动补齐来浏览所有可用子命令。
 commands.bedrockores.wrap.usage=使用此命令可将十字准星正对着的矿石转化成基岩矿石。可指定储量。
 commands.bedrockores.unwrap.usage=使用此命令可将十字准星正对着的基岩矿石转化成对应的普通矿石。
 commands.bedrockores.list=§a以下矿物可能会出现在基岩中：
 commands.bedrockores.list_item=§7 - §f%s
+commands.bedrockores.list_empty=§7 - §c没有找到矿石
 commands.bedrockores.list_errors=§c在解析方块时发生以下错误：
 commands.bedrockores.list_error_item=§7 - §f%s
 commands.bedrockores.list_errors_epilogue=§c查阅日志获得关于警告的详细信息。
+commands.bedrockores.info=§a所有我们可以在维度 '§r%s§a'（类型：§r%s§a），生物群系 '§r%s§a'（类型：§r%s§a，词典类型：§r%s§a）的矿石有：
+
+config.bedrockores.miner_extraction_cooldown=采掘机冷却时间
+config.bedrockores.miner_efficiency=采掘机效率
+config.bedrockores.vein_base_y=矿脉基础海拔（y 值）
+config.bedrockores.vein_chance=矿脉概率
+config.bedrockores.vein_yield_base_scale=产量比例
+config.bedrockores.vein_distance_scale_start=矿脉规模基础距离
+config.bedrockores.vein_distance_scale_multiplier=矿脉规模因数
+config.bedrockores.ui_only_when_sneaking=仅潜行时显示 UI
+config.bedrockores.retrogen_speed=再生成速率（区块/刻）
+config.bedrockores.allow_player_mining=允许玩家挖掘
+config.bedrockores.world_generator_weight=世界生成器权重
+config.bedrockores.ore_priority=矿石优先级
+config.bedrockores.ore_mod_blacklist=Mod 黑名单
+config.bedrockores.default_dimension_types=默认维度
 
 gui.bedrockores.expected_yield=预计产量：%s
 gui.bedrockores.exhausted=采空
