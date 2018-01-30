@@ -14,6 +14,8 @@ commands.bedrockores.info=§aAll ores we may embed in bedrock in dimension §r%s
 
 config.bedrockores.miner_extraction_cooldown=Miner extraction cooldown
 config.bedrockores.miner_efficiency=Miner efficiency
+config.bedrockores.miner_efficiency_internal_power=Miner burn efficiency
+config.bedrockores.miner_efficiency_external_power=Miner power efficiency
 config.bedrockores.vein_base_y=Vein base y-level
 config.bedrockores.vein_chance=Vein chance
 config.bedrockores.vein_yield_base_scale=Yield scale
