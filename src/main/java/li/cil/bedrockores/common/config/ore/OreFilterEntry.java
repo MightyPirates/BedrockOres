@@ -16,6 +16,10 @@ public final class OreFilterEntry {
         totalWeight = WeightedRandom.getTotalWeight(this.ores);
     }
 
+    public int getTotalWeight() {
+        return totalWeight;
+    }
+
     @Nullable
     public OreConfig getOre(final Random random) {
         if (ores.size() == 0 || totalWeight <= 0) {
