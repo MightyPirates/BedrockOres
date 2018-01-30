@@ -8,6 +8,7 @@ commands.bedrockores.wrap.usage=Usalo mentre guardi un blocco per convertirlo ad
 commands.bedrockores.unwrap.usage=Usalo mentre guardi ad un minerale di roccia di fondo grezza per convertirlo indietro al blocco che lo avvolge.
 commands.bedrockores.list=§aTutti i minerali che possono essere incorporati nella roccia di fondo:
 commands.bedrockores.list_item=§7 - §f%s
+commands.bedrockores.list_item_percent=§7 - §f%s (%s%%)
 commands.bedrockores.list_errors=§cCi sono stati errori che analizzano questi blocchi:
 commands.bedrockores.list_error_item=§7 - §f%s
 commands.bedrockores.list_errors_epilogue=§cPer ulteriori informazioni, controlla il tuo log per le avvertenze.

@@ -104,9 +104,9 @@ public enum OreConfigManager {
         }
     }
 
-    public List<OreConfig> getOres(final World world, final ChunkPos pos) {
+    public OreFilterEntry getOreProvider(final World world, final ChunkPos pos) {
         try {
-            return oresByWorldAndBiomeCache.get(new OreFilterKey(world, pos)).getOres();
+            return oresByWorldAndBiomeCache.get(new OreFilterKey(world, pos));
         } catch (final ExecutionException e) {
             throw new RuntimeException(e);
         }
