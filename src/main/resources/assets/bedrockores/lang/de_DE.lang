@@ -18,6 +18,7 @@ config.bedrockores.vein_base_y=Erzvenengrundhöhe
 config.bedrockores.vein_chance=Erzvenenwahrscheinlichkeit
 config.bedrockores.vein_yield_base_scale=Ergiebigkeitsskalierung
 config.bedrockores.vein_distance_scale_start=Erzvenenskalierungsgrunddistanz
+config.bedrockores.vein_min_spawn_distance=Minimaler Erzvenenstartpositionsabstand
 config.bedrockores.vein_distance_scale_multiplier=Erzvenenskalierungsmultiplikator
 config.bedrockores.ui_only_when_sneaking=UI nur wenn schleichend
 config.bedrockores.retrogen_speed=Retrogen chunks/tick

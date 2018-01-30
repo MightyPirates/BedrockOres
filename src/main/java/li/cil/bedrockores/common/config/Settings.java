@@ -40,6 +40,11 @@ public final class Settings {
     @Config.RangeDouble(min = 0)
     public static float veinDistanceScaleStart = 300;
 
+    @Config.LangKey(Constants.CONFIG_VEIN_MIN_SPAWN_DISTANCE)
+    @Config.Comment("The minimum distance from spawn at which veins may spawn.")
+    @Config.RangeDouble(min = 0)
+    public static float veinMinSpawnDistance = 0;
+
     @Config.LangKey(Constants.CONFIG_VEIN_DISTANCE_SCALE_MULTIPLIER)
     @Config.Comment("A constant scaling factor applied to distance based vein scaling. The final range based " +
                     "scaling is computed as 'logn((distanceToSpawn-veinYieldDistanceScaleStart)/10)*veinYieldDistanceScaleMultiplier'.")

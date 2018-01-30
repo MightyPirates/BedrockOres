@@ -110,6 +110,10 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
             distanceToSpawn = Settings.veinDistanceScaleMultiplier;
         }
 
+        if (distanceToSpawn < Settings.veinMinSpawnDistance) {
+            return;
+        }
+
         final float veinScale;
         if (distanceToSpawn > Settings.veinDistanceScaleStart) {
             veinScale = Math.max(1, (float) Math.log((distanceToSpawn - Settings.veinDistanceScaleStart) / 10) * Settings.veinDistanceScaleMultiplier);
