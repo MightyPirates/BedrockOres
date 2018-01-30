@@ -6,6 +6,7 @@ commands.bedrockores.wrap.usage=使用此命令可将十字准星正对着的矿
 commands.bedrockores.unwrap.usage=使用此命令可将十字准星正对着的基岩矿石转化成对应的普通矿石。
 commands.bedrockores.list=§a以下矿物可能会出现在基岩中：
 commands.bedrockores.list_item=§7 - §f%s
+commands.bedrockores.list_item_percent=§7 - §f%s (%s%%)
 commands.bedrockores.list_empty=§7 - §c没有找到矿石
 commands.bedrockores.list_errors=§c在解析方块时发生以下错误：
 commands.bedrockores.list_error_item=§7 - §f%s

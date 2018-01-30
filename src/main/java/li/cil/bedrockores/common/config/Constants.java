@@ -31,6 +31,7 @@ public final class Constants {
     public static final String COMMAND_SUB_USAGE = "commands.bedrockores.%s.usage";
     public static final String COMMAND_LIST = "commands.bedrockores.list";
     public static final String COMMAND_LIST_ITEM = "commands.bedrockores.list_item";
+    public static final String COMMAND_LIST_ITEM_PERCENT = "commands.bedrockores.list_item_percent";
     public static final String COMMAND_LIST_EMPTY = "commands.bedrockores.list_empty";
     public static final String COMMAND_LIST_ERRORS = "commands.bedrockores.list_errors";
     public static final String COMMAND_LIST_ERROR_ITEM = "commands.bedrockores.list_error_item";

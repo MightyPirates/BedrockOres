@@ -6,6 +6,7 @@ commands.bedrockores.wrap.usage=Call while looking at a block to convert it to a
 commands.bedrockores.unwrap.usage=Call while looking at a bedrock ore block to convert it back to the block it wraps.
 commands.bedrockores.list=§aAll ores we may embed in bedrock:
 commands.bedrockores.list_item=§7 - §f%s
+commands.bedrockores.list_item_percent=§7 - §f%s (%s%%)
 commands.bedrockores.list_empty=§7 - §cNo ores found
 commands.bedrockores.list_errors=§cThere were errors parsing these blocks:
 commands.bedrockores.list_error_item=§7 - §f%s

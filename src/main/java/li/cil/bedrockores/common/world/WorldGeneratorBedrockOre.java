@@ -78,7 +78,7 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
             return;
         }
 
-        final float yieldScale = Settings.veinYieldConstScale * OreConfigManager.INSTANCE.getOres(world, chunkPos).size();
+        final float yieldScale = Settings.veinYieldConstScale * OreConfigManager.INSTANCE.getOreProvider(world, chunkPos).getOres().size();
         final int veinYield = Math.max(0, Math.round((veinMinYield == veinMaxYield ? veinMinYield : (veinMinYield + random.nextInt(veinMaxYield - veinMinYield))) * yieldScale));
         if (veinYield == 0) {
             return;

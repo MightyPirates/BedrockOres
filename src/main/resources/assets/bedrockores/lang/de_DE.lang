@@ -6,6 +6,7 @@ commands.bedrockores.wrap.usage=Während du auf einen Block blickt aufrufen, um 
 commands.bedrockores.unwrap.usage=Während du auf einen Block blickst aufrufen, um einen Grundgesteinerzblock zurück in den Block umzuwandeln, den er umschließt.
 commands.bedrockores.list=§aAlle Erze die in Grundgestein eingebettet werden dürfen:
 commands.bedrockores.list_item=§7 - §f%s
+commands.bedrockores.list_item_percent=§7 - §f%s (%s%%)
 commands.bedrockores.list_empty=§7 - §cKeine Erze gefunden
 commands.bedrockores.list_errors=§cEs gab Fehler beim Einlesen dieser Blöcke:
 commands.bedrockores.list_error_item=§7 - §f%s
