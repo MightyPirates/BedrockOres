@@ -419,7 +419,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
         }
 
         final ItemStack stack = inventory.getStackInSlot(SLOT_FUEL);
-        final int burnTime = Math.round(TileEntityFurnace.getItemBurnTime(stack) * Settings.minerEfficiency);
+        final int burnTime = Math.round(TileEntityFurnace.getItemBurnTime(stack) * Settings.minerEfficiency * Settings.minerEfficiencyInternalPower);
 
         // Either it was empty, invalid or we're consuming the fuel.
         inventory.setStackInSlot(SLOT_FUEL, ItemStack.EMPTY);
@@ -485,7 +485,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
     }
 
     private static int getCoalEnergyValue() {
-        return MathHelper.ceil(TileEntityFurnace.getItemBurnTime(new ItemStack(Items.COAL)) / (BURN_TIME_PER_RF * Settings.minerEfficiency));
+        return MathHelper.ceil(TileEntityFurnace.getItemBurnTime(new ItemStack(Items.COAL)) / (BURN_TIME_PER_RF * Settings.minerEfficiency * Settings.minerEfficiencyInternalPower));
     }
 
     private static Stream<TileEntityBedrockOre> findBedrockOres(final World world, final BlockPos center) {
@@ -552,7 +552,11 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
                     return stack;
                 }
 
-                if (Math.round(TileEntityFurnace.getItemBurnTime(stack) * Settings.minerEfficiency) < 1) {
+                if (Settings.minerEfficiencyInternalPower <= 0) {
+                    return stack;
+                }
+
+                if (Math.round(TileEntityFurnace.getItemBurnTime(stack) * Settings.minerEfficiency * Settings.minerEfficiencyInternalPower) < 1) {
                     return stack;
                 }
             }
@@ -592,6 +596,11 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
         }
 
         @Override
+        public boolean canReceive() {
+            return super.canReceive() && Settings.minerEfficiencyExternalPower > 0;
+        }
+
+        @Override
         public int receiveEnergy(final int maxReceive, final boolean simulate) {
             final int result = super.receiveEnergy(maxReceive, simulate);
             if (!simulate && result > 0) {
@@ -601,8 +610,8 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
         }
 
         int consumeEnergyForBurnTime() {
-            final int burnTime = (int) (energy * (BURN_TIME_PER_RF * Settings.minerEfficiency));
-            final int usedEnergy = Math.min(energy, Math.round(burnTime / (BURN_TIME_PER_RF * Settings.minerEfficiency)));
+            final int burnTime = (int) (energy * (BURN_TIME_PER_RF * Settings.minerEfficiency * Settings.minerEfficiencyExternalPower));
+            final int usedEnergy = Math.min(energy, Math.round(burnTime / (BURN_TIME_PER_RF * Settings.minerEfficiency * Settings.minerEfficiencyExternalPower)));
             energy -= usedEnergy;
             return burnTime;
         }

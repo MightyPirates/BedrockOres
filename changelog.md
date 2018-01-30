@@ -1,3 +1,3 @@
-* Fixed potential crash when other mods tried modifying drops during an automated extraction.
-* Added one more heuristic for looking up item stack for block states.
-* Added new `biomeSelector` type, `dictionary`. Allows using biome dictionary types to build biome filters.
+* Added setting to enforce minimum distance to spawn for veins to spawn.
+* Added settings to separately control burn and power efficiency of miner. Also allows disabling either.
+* Fixed potential crash when some mod adds a biome that doesn't have a registry name.

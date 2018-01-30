@@ -13,10 +13,22 @@ public final class Settings {
     public static int minerExtractionCooldown = 100;
 
     @Config.LangKey(Constants.CONFIG_MINER_EFFICIENCY)
-    @Config.Comment("The fuel efficiency of the miner. Actual burn time is original burn time times this. " +
+    @Config.Comment("The fuel efficiency of the miner. Actual mining time is original mining time times this. " +
                     "Applies to both internal power generation as well as power supplied externally.")
     @Config.RangeDouble(min = 0)
     public static float minerEfficiency = 0.5f;
+
+    @Config.LangKey(Constants.CONFIG_MINER_EFFICIENCY_INTERNAL_POWER)
+    @Config.Comment("The fuel efficiency of the miner. Total mining time is original burn time times this times `minerEfficiency`. " +
+                    "Applies to internal power generation. Set to 0 to disable internal powering.")
+    @Config.RangeDouble(min = 0)
+    public static float minerEfficiencyInternalPower = 1f;
+
+    @Config.LangKey(Constants.CONFIG_MINER_EFFICIENCY_EXTERNAL_POWER)
+    @Config.Comment("The power efficiency of the miner. Total mining time is original powered time times this times `minerEfficiency`. " +
+                    "Applies to power supplied externally. Set to 0 to disable external powering.")
+    @Config.RangeDouble(min = 0)
+    public static float minerEfficiencyExternalPower = 1f;
 
     @Config.LangKey(Constants.CONFIG_VEIN_BASE_Y)
     @Config.Comment("The y level at which to start looking for bedrock to generate veins in, searching down.")
@@ -39,6 +51,11 @@ public final class Settings {
     @Config.Comment("The distance from spawn at which to start scaling up vein size and yield.")
     @Config.RangeDouble(min = 0)
     public static float veinDistanceScaleStart = 300;
+
+    @Config.LangKey(Constants.CONFIG_VEIN_MIN_SPAWN_DISTANCE)
+    @Config.Comment("The minimum distance from spawn at which veins may spawn.")
+    @Config.RangeDouble(min = 0)
+    public static float veinMinSpawnDistance = 0;
 
     @Config.LangKey(Constants.CONFIG_VEIN_DISTANCE_SCALE_MULTIPLIER)
     @Config.Comment("A constant scaling factor applied to distance based vein scaling. The final range based " +
