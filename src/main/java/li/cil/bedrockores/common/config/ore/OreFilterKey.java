@@ -9,12 +9,15 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.Objects;
 
 public final class OreFilterKey {
     final int dimension;
     final DimensionType dimensionType;
+    @Nullable
     final ResourceLocation biome;
     final EnumSet<BiomeManager.BiomeType> biomeTypes;
     final BiomeDictionary.Type[] biomeDictTypes;
@@ -45,7 +48,7 @@ public final class OreFilterKey {
         if (dimensionType != that.dimensionType) {
             return false;
         }
-        if (!biome.equals(that.biome)) {
+        if (!Objects.equals(biome, that.biome)) {
             return false;
         }
         if (!biomeTypes.equals(that.biomeTypes)) {
@@ -61,7 +64,7 @@ public final class OreFilterKey {
     public int hashCode() {
         int hashCode = dimension;
         hashCode = 31 * hashCode + dimensionType.hashCode();
-        hashCode = 31 * hashCode + biome.hashCode();
+        hashCode = 31 * hashCode + (biome != null ? biome.hashCode() : 0);
         hashCode = 31 * hashCode + biomeTypes.hashCode();
         hashCode = 31 * hashCode + Arrays.hashCode(biomeDictTypes);
         return hashCode;

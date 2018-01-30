@@ -14,10 +14,13 @@ commands.bedrockores.info=§aAlle Erze die in Grundgestein in Dimension §r%s§a
 
 config.bedrockores.miner_extraction_cooldown=Bohrerarbeitsintervall
 config.bedrockores.miner_efficiency=Bohrereffizienz
+config.bedrockores.miner_efficiency_internal_power=Bohrerverbrennungseffizienz
+config.bedrockores.miner_efficiency_external_power=Bohrerstromeffizienz
 config.bedrockores.vein_base_y=Erzvenengrundhöhe
 config.bedrockores.vein_chance=Erzvenenwahrscheinlichkeit
 config.bedrockores.vein_yield_base_scale=Ergiebigkeitsskalierung
 config.bedrockores.vein_distance_scale_start=Erzvenenskalierungsgrunddistanz
+config.bedrockores.vein_min_spawn_distance=Minimaler Erzvenenstartpositionsabstand
 config.bedrockores.vein_distance_scale_multiplier=Erzvenenskalierungsmultiplikator
 config.bedrockores.ui_only_when_sneaking=UI nur wenn schleichend
 config.bedrockores.retrogen_speed=Retrogen chunks/tick

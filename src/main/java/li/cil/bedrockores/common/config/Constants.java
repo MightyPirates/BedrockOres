@@ -42,10 +42,13 @@ public final class Constants {
 
     static final String CONFIG_MINER_EXTRACTION_COOLDOWN = "config.bedrockores.miner_extraction_cooldown";
     static final String CONFIG_MINER_EFFICIENCY = "config.bedrockores.miner_efficiency";
+    static final String CONFIG_MINER_EFFICIENCY_INTERNAL_POWER = "config.bedrockores.miner_efficiency_internal_power";
+    static final String CONFIG_MINER_EFFICIENCY_EXTERNAL_POWER = "config.bedrockores.miner_efficiency_external_power";
     static final String CONFIG_VEIN_BASE_Y = "config.bedrockores.vein_base_y";
     static final String CONFIG_VEIN_CHANCE = "config.bedrockores.vein_chance";
     static final String CONFIG_VEIN_YIELD_BASE_SCALE = "config.bedrockores.vein_yield_base_scale";
     static final String CONFIG_VEIN_DISTANCE_SCALE_START = "config.bedrockores.vein_distance_scale_start";
+    static final String CONFIG_VEIN_MIN_SPAWN_DISTANCE = "config.bedrockores.vein_min_spawn_distance";
     static final String CONFIG_VEIN_DISTANCE_SCALE_MULTIPLIER = "config.bedrockores.vein_distance_scale_multiplier";
     static final String CONFIG_UI_ONLY_WHEN_SNEAKING = "config.bedrockores.ui_only_when_sneaking";
     static final String CONFIG_RETROGEN_SPEED = "config.bedrockores.retrogen_speed";
