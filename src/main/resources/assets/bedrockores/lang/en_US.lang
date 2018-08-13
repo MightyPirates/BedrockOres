@@ -30,6 +30,7 @@ config.bedrockores.world_generator_weight=World generator weight
 config.bedrockores.ore_priority=Ore priority
 config.bedrockores.ore_mod_blacklist=Mod blacklist
 config.bedrockores.default_dimension_types=Default dimensions
+config.bedrockores.ore_mask_uses_alpha=Ore mask uses alpha
 
 gui.bedrockores.expected_yield=Expected yield: %s
 gui.bedrockores.exhausted=Exhausted
