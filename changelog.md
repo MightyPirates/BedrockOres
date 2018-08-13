@@ -1,4 +1,2 @@
-* Added setting to enforce minimum distance to spawn for veins to spawn.
-* Added settings to separately control burn and power efficiency of miner. Also allows disabling either.
-* Fixed potential crash when some mod adds a biome that doesn't have a registry name.
-* Updated Chinese localization (3TUSK).
+* Added config option for alpha transparent ore masks.
+* Fixed small bug when parsing filters, leading to incorrect error logging.

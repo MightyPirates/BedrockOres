@@ -92,7 +92,7 @@ public final class BlockBedrockOre extends Block {
 
     @Override
     public boolean canRenderInLayer(final IBlockState state, final BlockRenderLayer layer) {
-        return layer == BlockRenderLayer.CUTOUT_MIPPED;
+        return Settings.oreMaskUsesAlpha ? layer == BlockRenderLayer.TRANSLUCENT : layer == BlockRenderLayer.CUTOUT_MIPPED;
     }
 
     @Override

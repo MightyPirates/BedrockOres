@@ -35,6 +35,7 @@ final class OreConfigFilter {
                 if (dimensionIds == null) {
                     dimensionIds = buildIntSet(config.dimension);
                 }
+                break;
             case Dictionary:
                 BedrockOres.getLog().error("Dictionary type not supported for world selectors (used in config for '{}').", config.state.toString());
                 break;
@@ -50,6 +51,7 @@ final class OreConfigFilter {
                 if (biomeIds == null) {
                     biomeIds = buildResourceLocationSet(config.biome);
                 }
+                break;
             case Dictionary:
                 if (biomeDictTypes == null) {
                     biomeDictTypes = buildBiomeDictTypeSet(config.biome);
