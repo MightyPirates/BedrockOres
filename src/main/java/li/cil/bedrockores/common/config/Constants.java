@@ -58,6 +58,7 @@ public final class Constants {
     static final String CONFIG_ORE_PRIORITY = "config.bedrockores.ore_priority";
     static final String CONFIG_ORE_MOD_BLACKLIST = "config.bedrockores.ore_mod_blacklist";
     static final String CONFIG_DEFAULT_DIMENSION_TYPES = "config.bedrockores.default_dimension_types";
+    static final String CONFIG_ORE_MASK_USES_ALPHA = "config.bedrockores.ore_mask_uses_alpha";
 
     // --------------------------------------------------------------------- //
     // Field names of obfuscated stuffs.

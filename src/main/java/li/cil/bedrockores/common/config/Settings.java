@@ -113,6 +113,13 @@ public final class Settings {
             "miningworld" // Aroma1997
     };
 
+    @Config.LangKey(Constants.CONFIG_ORE_MASK_USES_ALPHA)
+    @Config.Comment("Whether to support alpha transparency in ore mask, not just completely transparent/completely " +
+                    "opaque. Only required when the resource pack in use provides such a custom mask. Slightly more " +
+                    "expensive to render.")
+    @Config.RequiresWorldRestart
+    public static boolean oreMaskUsesAlpha = false;
+
     // --------------------------------------------------------------------- //
 
     private Settings() {
