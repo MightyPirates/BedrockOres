@@ -47,7 +47,7 @@ public enum WorldGeneratorBedrockOre implements IWorldGenerator {
         if (Retrogen.INSTANCE.markChunkGenerated(world.provider.getDimension(), chunkX, chunkZ)) {
             generateImpl(random, chunkX, chunkZ, world);
         }
-        world.getChunkFromChunkCoords(chunkX, chunkZ).markDirty();
+        world.getChunk(chunkX, chunkZ).markDirty();
     }
 
     // --------------------------------------------------------------------- //

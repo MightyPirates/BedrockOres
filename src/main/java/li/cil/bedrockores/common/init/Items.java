@@ -20,7 +20,7 @@ public final class Items {
 
     private static void registerItem(final IForgeRegistry<Item> registry, final Item item, final String name) {
         registry.register(item.
-                setUnlocalizedName(Constants.MOD_ID + "." + name).
+                setTranslationKey(Constants.MOD_ID + "." + name).
                 setCreativeTab(CreativeTabs.MISC).
                 setRegistryName(name));
     }

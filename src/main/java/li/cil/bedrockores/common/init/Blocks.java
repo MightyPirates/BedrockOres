@@ -8,6 +8,7 @@ import li.cil.bedrockores.common.tileentity.TileEntityBedrockOre;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -29,11 +30,11 @@ public final class Blocks {
 
     private static void registerBlock(final IForgeRegistry<Block> registry, final Block block, final String name, final Class<? extends TileEntity> tileEntity) {
         registry.register(block.
-                setUnlocalizedName(Constants.MOD_ID + '.' + name).
+                setTranslationKey(Constants.MOD_ID + '.' + name).
                 setCreativeTab(CreativeTabs.MISC).
                 setRegistryName(name));
 
-        GameRegistry.registerTileEntity(tileEntity, Constants.MOD_ID + ':' + name);
+        GameRegistry.registerTileEntity(tileEntity, new ResourceLocation(Constants.MOD_ID, name));
     }
 
     // --------------------------------------------------------------------- //
