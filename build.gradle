@@ -67,8 +67,8 @@ repositories {
 }
 
 dependencies {
-    deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
-    deobfCompile "cofh:RedstoneFlux:${config.minecraft.version}-${config.rf.version}:universal"
+    compile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
+    deobfCompile "cofh:RedstoneFlux:1.12-${config.rf.version}:universal"
 }
 
 processResources {
