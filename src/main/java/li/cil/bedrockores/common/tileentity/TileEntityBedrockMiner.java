@@ -296,7 +296,7 @@ public final class TileEntityBedrockMiner extends AbstractLookAtInfoProvider imp
             final float dy = (rng.nextFloat() - 0.5f) * 0.3f;
 
             final Vec3d origin = new Vec3d(getPos()).
-                    addVector(0.5, 0.5, 0.5).
+                    add(0.5, 0.5, 0.5).
                     add(new Vec3d(direction).scale(0.5)).
                     add(right.scale(dx)).
                     add(up.scale(dy));

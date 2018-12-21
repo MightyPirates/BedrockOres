@@ -23,7 +23,7 @@ public abstract class AbstractLookAtInfoProvider extends TileEntity implements L
     }
 
     protected final void sendBlockUpdatePacket() {
-        final Chunk chunk = getWorld().getChunkFromBlockCoords(getPos());
+        final Chunk chunk = getWorld().getChunk(getPos());
         final IBlockState state = getWorld().getBlockState(getPos());
         getWorld().markAndNotifyBlock(getPos(), chunk, state, state, 3);
     }

@@ -131,7 +131,7 @@ public enum OreConfigManager {
         BedrockOres.getLog().info("Done loading ore config, got {} ores. Filtering...", allOres.size());
 
         // Remove entries where block state could not be loaded.
-        allOres.removeIf(ore -> ore.state.getBlockState().getBlock() == Blocks.AIR || ArrayUtils.contains(Settings.oreModBlacklist, ore.state.getName().getResourceDomain()));
+        allOres.removeIf(ore -> ore.state.getBlockState().getBlock() == Blocks.AIR || ArrayUtils.contains(Settings.oreModBlacklist, ore.state.getName().getNamespace()));
 
         // Grab extraction speeds for *all* ores we know, even disabled ones, in
         // case of ores left from previous generation (disabled later on in an

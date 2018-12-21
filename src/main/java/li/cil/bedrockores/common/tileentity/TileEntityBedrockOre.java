@@ -8,6 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -38,9 +39,11 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
     // --------------------------------------------------------------------- //
     // Computed data
 
+    private static final String TAG_ORE = "ore";
     private static final String TAG_ORE_ID = "oreId";
     private static final String TAG_ORE_META = "oreMeta";
     private static final String TAG_AMOUNT = "amount";
+    @Deprecated
     private static final String TAG_ORE_BLOCK_STATE_ID = "id";
 
     private static final Set<IBlockState> loggedWarningFor = Collections.synchronizedSet(new HashSet<>());
@@ -55,7 +58,6 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
         return oreBlockState;
     }
 
-    @SuppressWarnings("deprecation")
     public void setOreBlockState(@Nullable final IBlockState state, final int amount) {
         //noinspection VariableNotUsedInsideIf
         this.amount = state != null ? amount : 0;
@@ -73,7 +75,7 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
                 getWorld().markChunkDirty(getPos(), this);
                 sendBlockUpdatePacket();
             }
-            if (oreBlockState != null && oreBlockState.getLightValue() > 0) {
+            if (oreBlockState != null && oreBlockState.getLightValue(this.world, this.pos) > 0) { // because the ore block state locates at the same position...
                 getWorld().checkLight(getPos());
             }
         }
@@ -202,12 +204,7 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
         final NBTTagCompound result = super.writeToNBT(compound);
 
         if (oreBlockState != null) {
-            // Using the internal ID makes this world specific, but that's fine.
-            final Block oreBlock = oreBlockState.getBlock();
-            final int oreId = Block.getIdFromBlock(oreBlock);
-            final int oreMeta = oreBlock.getMetaFromState(oreBlockState);
-            result.setInteger(TAG_ORE_ID, oreId);
-            result.setInteger(TAG_ORE_META, oreMeta);
+            result.setTag(TAG_ORE, NBTUtil.writeBlockState(new NBTTagCompound(), this.oreBlockState));
             result.setInteger(TAG_AMOUNT, amount);
         }
 
@@ -219,30 +216,31 @@ public final class TileEntityBedrockOre extends AbstractLookAtInfoProvider {
     public void readFromNBT(final NBTTagCompound compound) {
         super.readFromNBT(compound);
 
-        final int oreId = compound.getInteger(TAG_ORE_ID);
-        final int oreMeta = compound.getInteger(TAG_ORE_META);
-        final Block oreBlock = Block.getBlockById(oreId);
-        if (oreBlock == Blocks.AIR) {
-            setOreBlockState(null, 0);
+        if (compound.hasKey(TAG_ORE)) {
+            setOreBlockState(NBTUtil.readBlockState(compound.getCompoundTag(TAG_ORE)), compound.getInteger(TAG_AMOUNT));
         } else {
-            setOreBlockState(oreBlock.getStateFromMeta(oreMeta), compound.getInteger(TAG_AMOUNT));
+            final int oreId = compound.getInteger(TAG_ORE_ID);
+            final int oreMeta = compound.getInteger(TAG_ORE_META);
+            final Block oreBlock = Block.getBlockById(oreId);
+            if (oreBlock == Blocks.AIR) {
+                setOreBlockState(null, 0);
+            } else {
+                setOreBlockState(oreBlock.getStateFromMeta(oreMeta), compound.getInteger(TAG_AMOUNT));
+            }
         }
     }
 
     // --------------------------------------------------------------------- //
 
-    @SuppressWarnings("deprecation")
     private NBTTagCompound writeToNBTForClient(final NBTTagCompound compound) {
         if (oreBlockState != null) {
-            compound.setInteger(TAG_ORE_BLOCK_STATE_ID, Block.BLOCK_STATE_IDS.get(oreBlockState));
+            compound.setTag(TAG_ORE, NBTUtil.writeBlockState(new NBTTagCompound(), this.oreBlockState));
             compound.setInteger(TAG_AMOUNT, amount);
         }
         return compound;
     }
 
-    @SuppressWarnings("deprecation")
     private void readFromNBTForClient(final NBTTagCompound compound) {
-        final int oreBlockStateId = compound.getInteger(TAG_ORE_BLOCK_STATE_ID);
-        setOreBlockState(Block.BLOCK_STATE_IDS.getByValue(oreBlockStateId), compound.getInteger(TAG_AMOUNT));
+        setOreBlockState(NBTUtil.readBlockState(compound.getCompoundTag(TAG_ORE)), compound.getInteger(TAG_AMOUNT));
     }
 }
