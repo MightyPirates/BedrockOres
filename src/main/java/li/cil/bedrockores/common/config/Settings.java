@@ -115,7 +115,7 @@ public final class Settings {
     @Config.RequiresMcRestart
     public static String[] defaultDimensionTypes = {
             DimensionType.OVERWORLD.getName().toLowerCase(Locale.US),
-            "miningworld" // Aroma1997
+            "MINING_WORLD" // Aroma1997
     };
 
     @Config.LangKey(Constants.CONFIG_ORE_MASK_USES_ALPHA)
