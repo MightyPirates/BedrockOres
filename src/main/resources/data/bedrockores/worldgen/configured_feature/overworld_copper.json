@@ -1,0 +1,13 @@
+{
+  "type": "bedrockores:bedrock_ore",
+  "config": {
+    "ore": {"Name": "minecraft:copper_ore"},
+    "amount": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 300,
+        "max_inclusive": 500
+      }
+    }
+  }
+}

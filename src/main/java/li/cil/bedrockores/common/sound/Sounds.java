@@ -1,15 +1,23 @@
 package li.cil.bedrockores.common.sound;
 
 import li.cil.bedrockores.common.config.Constants;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
-public enum Sounds {
-    INSTANCE;
+public final class Sounds {
+    private static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Constants.MOD_ID);
 
-    public SoundEvent bedrockMiner;
+    // --------------------------------------------------------------------- //
 
-    public void init() {
-        bedrockMiner = new SoundEvent(new ResourceLocation(Constants.MOD_ID, Constants.SOUND_BEDROCK_MINER));
+    public static final RegistryObject<SoundEvent> MINER = SOUND_EVENTS.register("bedrock_miner", () -> new SoundEvent(new ResourceLocation(Constants.MOD_ID, "bedrock_miner")));
+
+    // --------------------------------------------------------------------- //
+
+    public static void initialize() {
+        SOUND_EVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 }

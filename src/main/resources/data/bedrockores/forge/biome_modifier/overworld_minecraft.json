@@ -1,0 +1,15 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "bedrockores:overworld_coal",
+    "bedrockores:overworld_copper",
+    "bedrockores:overworld_diamond",
+    "bedrockores:overworld_emerald",
+    "bedrockores:overworld_gold",
+    "bedrockores:overworld_iron",
+    "bedrockores:overworld_lapis",
+    "bedrockores:overworld_redstone"
+  ],
+  "step": "underground_ores"
+}

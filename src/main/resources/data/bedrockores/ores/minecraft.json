@@ -1,0 +1,105 @@
+[
+  {
+    "block": "minecraft:coal_ore",
+    "size": 24,
+    "countMin": 12,
+    "countMax": 20,
+    "yieldMin": 340,
+    "yieldMax": 425
+  },
+  {
+    "block": "minecraft:iron_ore",
+    "size": 18,
+    "countMin": 10,
+    "countMax": 16,
+    "yieldMin": 180,
+    "yieldMax": 225
+  },
+  {
+    "block": "minecraft:gold_ore",
+    "size": 16,
+    "countMin": 8,
+    "countMax": 12,
+    "yieldMin": 18,
+    "yieldMax": 22
+  },
+  {
+    "block": "minecraft:diamond_ore",
+    "size": 12,
+    "countMin": 4,
+    "countMax": 8,
+    "yieldMin": 8,
+    "yieldMax": 10
+  },
+  {
+    "block": "minecraft:redstone_ore",
+    "size": 18,
+    "countMin": 8,
+    "countMax": 10,
+    "yieldMin": 64,
+    "yieldMax": 80
+  },
+  {
+    "block": "minecraft:lapis_ore",
+    "size": 16,
+    "countMin": 4,
+    "countMax": 6,
+    "yieldMin": 7,
+    "yieldMax": 9
+  },
+  {
+    "comment": [
+      "Usually emeralds only generate in hills biomes, and there any number",
+      "between 3 and 8 can pop up. Since we can be anywhere, we lean towards the",
+      "lower end for our default."
+    ],
+    "block": "minecraft:emerald_ore",
+    "size": 8,
+    "countMin": 2,
+    "countMax": 4,
+    "yieldMin": 4,
+    "yieldMax": 5,
+    "biome": [
+      "extreme_hills",
+      "smaller_extreme_hills",
+      "extreme_hills_with_trees",
+      "mutated_extreme_hills",
+      "mutated_extreme_hills_with_trees"
+    ]
+  },
+  {
+    "block": "minecraft:quartz_ore",
+    "size": 16,
+    "countMin": 8,
+    "countMax": 10,
+    "yieldMin": 224,
+    "yieldMax": 280,
+    "dimension": [
+      "minecraft:nether"
+    ]
+  },
+  {
+    "comment": [
+      "Glowstone... now glowstone is such a precious snowflake. How it is",
+      "generated is honestly kinda nuts. So there's one 'seed' glowstone,",
+      "right. After that it uses a distribution favoring the column going",
+      "straight down from there to sample random positions 1500 bloody times",
+      "(not even kidding) and converts the sampled position to glowstone if",
+      "it already has a glowstone neighbor.",
+      "The sample area is 15x12x15, and the distribution is basically like",
+      "rolling two dice, but I have no idea how to model the 'if next to",
+      "existing glowstone', soooo let's ballpark it to ~1/64 of that area",
+      "getting filled, so 42 blocks. And there's 1-10 of those per chunk.",
+      "Yeah, this is random af... let's go with 42*5."
+    ],
+    "block": "minecraft:glowstone",
+    "size": 18,
+    "countMin": 10,
+    "countMax": 14,
+    "yieldMin": 210,
+    "yieldMax": 262,
+    "dimension": [
+      "minecraft:nether"
+    ]
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "block.bedrockores.bedrock_miner": "Bedrock Miner",
+  "gui.bedrockores.expected_yield": "Expected yield: %s",
+  "gui.bedrockores.exhausted": "Exhausted",
+  "tooltip.bedrockores.bedrock_miner": "§7Mines the 5x3x5 area below it for bedrock ores."
+}

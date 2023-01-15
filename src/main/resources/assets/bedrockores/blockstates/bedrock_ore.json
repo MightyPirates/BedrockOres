@@ -1,0 +1,15 @@
+{
+  "multipart": [
+    {
+      "apply": [
+        {"model": "bedrockores:block/bedrock_ore_mask"},
+        {"model": "bedrockores:block/bedrock_ore_mask_mirrored"},
+        {"model": "bedrockores:block/bedrock_ore_mask", "y": 180},
+        {"model": "bedrockores:block/bedrock_ore_mask_mirrored", "y": 180}
+      ]
+    },
+    {
+      "apply": {"model": "bedrockores:block/bedrock_ore"}
+    }
+  ]
+}

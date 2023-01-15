@@ -1,0 +1,13 @@
+{
+  "type": "bedrockores:bedrock_ore",
+  "config": {
+    "ore": {"Name": "minecraft:diamond_ore"},
+    "amount": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 30,
+        "max_inclusive": 40
+      }
+    }
+  }
+}

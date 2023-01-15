@@ -1,132 +1,55 @@
 package li.cil.bedrockores.common.config;
 
-import net.minecraft.world.DimensionType;
-import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
 
-import java.util.Locale;
-
-@Config(modid = Constants.MOD_ID)
 public final class Settings {
-    @Config.LangKey(Constants.CONFIG_MINER_EXTRACTION_COOLDOWN)
-    @Config.Comment("The time in ticks between extraction operations performed by the miner.")
-    @Config.RangeInt(min = 0)
-    public static int minerExtractionCooldown = 100;
+    public static ForgeConfigSpec.IntValue minerExtractionCooldown;
+    public static ForgeConfigSpec.DoubleValue minerEfficiency;
+    public static ForgeConfigSpec.DoubleValue minerEfficiencyInternalPower;
+    public static ForgeConfigSpec.DoubleValue minerEfficiencyExternalPower;
 
-    @Config.LangKey(Constants.CONFIG_MINER_EFFICIENCY)
-    @Config.Comment("The fuel efficiency of the miner. Actual mining time is original mining time times this. " +
-                    "Applies to both internal power generation as well as power supplied externally.")
-    @Config.RangeDouble(min = 0)
-    public static float minerEfficiency = 0.5f;
+    public static ForgeConfigSpec.IntValue veinsPerChunk;
+    public static ForgeConfigSpec.BooleanValue allowPlayerMining;
 
-    @Config.LangKey(Constants.CONFIG_MINER_EFFICIENCY_INTERNAL_POWER)
-    @Config.Comment("The fuel efficiency of the miner. Total mining time is original burn time times this times `minerEfficiency`. " +
-                    "Applies to internal power generation. Set to 0 to disable internal powering.")
-    @Config.RangeDouble(min = 0)
-    public static float minerEfficiencyInternalPower = 1f;
+    public static ForgeConfigSpec.BooleanValue uiOnlyWhenSneaking;
 
-    @Config.LangKey(Constants.CONFIG_MINER_EFFICIENCY_EXTERNAL_POWER)
-    @Config.Comment("The power efficiency of the miner. Total mining time is original powered time times this times `minerEfficiency`. " +
-                    "Applies to power supplied externally. Set to 0 to disable external powering.")
-    @Config.RangeDouble(min = 0)
-    public static float minerEfficiencyExternalPower = 1f;
+    public static void initialize() {
+        var builder = new ForgeConfigSpec.Builder();
 
-    @Config.LangKey(Constants.CONFIG_VEIN_BASE_Y)
-    @Config.Comment("The y level at which to start looking for bedrock to generate veins in, searching down.")
-    @Config.RangeInt(min = 0, max = 255)
-    public static int veinBaseY = 5;
+        builder.push("miner");
+        minerExtractionCooldown = builder
+                .comment("The time in ticks between extraction operations performed by the miner.")
+                .defineInRange("cooldown", 100, 0, Integer.MAX_VALUE);
+        minerEfficiency = builder
+                .comment("The power efficiency of the miner. Actual mining time per power unit is original value times this. " +
+                        "Applies to both internal power generation as well as power supplied externally. Set to 0 to disable power requirement.")
+                .defineInRange("efficiency", 1.0, 0, 100);
+        minerEfficiencyInternalPower = builder
+                .comment("The fuel efficiency of the miner. Total mining time is original burn time times this times `minerEfficiency`. " +
+                        "Applies to internal power generation. Set to 0 to disable internal powering.")
+                .defineInRange("fuel_efficiency", 1.0, 0, 100);
+        minerEfficiencyExternalPower = builder
+                .comment("The power efficiency of the miner. Total mining time is original powered time times this times `minerEfficiency`. " +
+                        "Applies to power supplied externally. Set to 0 to disable external powering.")
+                .defineInRange("energy_efficiency", 1.0, 0, 100);
 
-    @Config.LangKey(Constants.CONFIG_VEIN_CHANCE)
-    @Config.Comment("The probability that a bedrock vein spawns in a chunk. In other words, the relative " +
-                    "amount of chunks a vein spawns in.")
-    @Config.RangeDouble(min = 0, max = 1)
-    public static float veinChance = 0.5f;
+        builder.pop().push("world");
+        veinsPerChunk = builder
+                .comment("The number of bedrock ore veins to attempt to generate per chunk.")
+                .defineInRange("veins_per_chunk", 5, 0, 50);
+        allowPlayerMining = builder
+                .comment("Whether to allow players to directly mine bedrock ores. " +
+                        "Disabling this will force players to use the bedrock miner.")
+                .define("player_mining", true);
 
-    @Config.LangKey(Constants.CONFIG_VEIN_YIELD_BASE_SCALE)
-    @Config.Comment("A constant scaling factor applied to all yields. Intended to allow easily changing " +
-                    "yields in general, while not messing with the balancing of ores against each other.")
-    @Config.RangeDouble(min = 0, max = 10000)
-    public static float veinYieldConstScale = 2f;
+        builder.pop().push("ui");
+        uiOnlyWhenSneaking = builder
+                .comment("Whether to only show the floating UI indicating ore yield when sneaking.")
+                .define("info_only_when_sneaking", false);
 
-    @Config.LangKey(Constants.CONFIG_VEIN_DISTANCE_SCALE_START)
-    @Config.Comment("The distance from spawn at which to start scaling up vein size and yield.")
-    @Config.RangeDouble(min = 0)
-    public static float veinDistanceScaleStart = 300;
 
-    @Config.LangKey(Constants.CONFIG_VEIN_MIN_SPAWN_DISTANCE)
-    @Config.Comment("The minimum distance from spawn at which veins may spawn.")
-    @Config.RangeDouble(min = 0)
-    public static float veinMinSpawnDistance = 0;
-
-    @Config.LangKey(Constants.CONFIG_VEIN_DISTANCE_SCALE_MULTIPLIER)
-    @Config.Comment("A constant scaling factor applied to distance based vein scaling. The final range based " +
-                    "scaling is computed as 'logn((distanceToSpawn-veinYieldDistanceScaleStart)/10)*veinYieldDistanceScaleMultiplier'.")
-    @Config.RangeDouble(min = 0)
-    public static float veinDistanceScaleMultiplier = 2f;
-
-    @Config.LangKey(Constants.CONFIG_UI_ONLY_WHEN_SNEAKING)
-    @Config.Comment("Whether to only show the floating UI indicating ore yield when sneaking.")
-    public static boolean uiOnlyWhenSneaking = false;
-
-    @Config.LangKey(Constants.CONFIG_RETROGEN_SPEED)
-    @Config.Comment("Maximum number of chunks to perform retrogen for per tick. 0 to disable retrogen.")
-    @Config.RangeInt(min = 0)
-    @Config.RequiresWorldRestart
-    public static int retrogenSpeed = 10;
-
-    @Config.LangKey(Constants.CONFIG_ALLOW_PLAYER_MINING)
-    @Config.Comment("Whether to allow players to directly mine bedrock ores. " +
-                    "Disabling this will force players to use the bedrock miner.")
-    public static boolean allowPlayerMining = true;
-
-    @Config.LangKey(Constants.CONFIG_WORLD_GENERATOR_WEIGHT)
-    @Config.Comment("The 'weight' of the world generator placing bedrock ores. This is used when Forge " +
-                    "sorts generators to know in what order they run. Higher weights run later.")
-    @Config.RequiresMcRestart
-    public static int worldGeneratorWeight = 10;
-
-    @Config.LangKey(Constants.CONFIG_ORE_PRIORITY)
-    @Config.Comment("Controls the sort index the `groupOrder` field in a JSON config for ore gen evaluates " +
-                    "to; specifically, the sort index will be the index in this list times five. So by default " +
-                    "the sort index for ThermalFoundation ores will be 0 and the one for Immersive Engineering " +
-                    "will be 10.")
-    @Config.RequiresMcRestart
-    public static String[] orePriority = {
-            "thermalfoundation",
-            "ic2",
-            "immersiveengineering",
-            "techreborn",
-            "forestry",
-            "silentgems",
-            "mekanism"
-    };
-
-    @Config.LangKey(Constants.CONFIG_ORE_MOD_BLACKLIST)
-    @Config.Comment("A blacklist to easily disable ore generation for individual mods. Useful when you want " +
-                    "to disable ores with default configurations without adding an `enabled: false` entry " +
-                    "for each one to a JSON config. This must be the mod IDs of the mods to disable, i.e. " +
-                    "the bit in the block state name before the colon, e.g. `thermalfoundation`.")
-    @Config.RequiresMcRestart
-    public static String[] oreModBlacklist = {};
-
-    @Config.LangKey(Constants.CONFIG_DEFAULT_DIMENSION_TYPES)
-    @Config.Comment("The list of dimension *types* assigned to ore entries with no explicit dimension config. " +
-                    "This includes the defaults for vanilla ores and non-dimension-specific mod ore defaults. " +
-                    "Use this to make those ores also spawn in dimension types other than the overworld.")
-    @Config.RequiresMcRestart
-    public static String[] defaultDimensionTypes = {
-            DimensionType.OVERWORLD.getName().toLowerCase(Locale.US),
-            "miningworld" // Aroma1997
-    };
-
-    @Config.LangKey(Constants.CONFIG_ORE_MASK_USES_ALPHA)
-    @Config.Comment("Whether to support alpha transparency in ore mask, not just completely transparent/completely " +
-                    "opaque. Only required when the resource pack in use provides such a custom mask. Slightly more " +
-                    "expensive to render.")
-    @Config.RequiresWorldRestart
-    public static boolean oreMaskUsesAlpha = false;
-
-    // --------------------------------------------------------------------- //
-
-    private Settings() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, builder.build());
     }
 }

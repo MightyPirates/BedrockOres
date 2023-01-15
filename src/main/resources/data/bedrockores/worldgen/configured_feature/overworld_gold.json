@@ -1,0 +1,13 @@
+{
+  "type": "bedrockores:bedrock_ore",
+  "config": {
+    "ore": {"Name": "minecraft:gold_ore"},
+    "amount": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 50,
+        "max_inclusive": 100
+      }
+    }
+  }
+}

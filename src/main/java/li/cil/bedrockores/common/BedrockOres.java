@@ -1,62 +1,35 @@
 package li.cil.bedrockores.common;
 
-import li.cil.bedrockores.common.command.CommandBedrockOres;
+import li.cil.bedrockores.common.block.Blocks;
+import li.cil.bedrockores.common.block.entity.BlockEntities;
+import li.cil.bedrockores.common.command.ModCommands;
 import li.cil.bedrockores.common.config.Constants;
-import li.cil.bedrockores.common.world.Retrogen;
+import li.cil.bedrockores.common.config.Settings;
+import li.cil.bedrockores.common.item.Items;
+import li.cil.bedrockores.common.network.Network;
+import li.cil.bedrockores.common.sound.Sounds;
+import li.cil.bedrockores.common.world.BedrockOreFeatures;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import org.apache.logging.log4j.Logger;
 
-@Mod(modid = Constants.MOD_ID, version = Constants.MOD_VERSION, name = Constants.MOD_NAME,
-     useMetadata = true)
+@Mod(Constants.MOD_ID)
 public final class BedrockOres {
-    // --------------------------------------------------------------------- //
-    // FML / Forge
+    public BedrockOres() {
+        Settings.initialize();
 
-    @Mod.Instance(Constants.MOD_ID)
-    public static BedrockOres instance;
+        Network.initialize();
 
-    @SidedProxy(clientSide = Constants.PROXY_CLIENT, serverSide = Constants.PROXY_COMMON)
-    public static ProxyCommon proxy;
+        Blocks.initialize();
+        BlockEntities.initialize();
+        Items.initialize();
+        Sounds.initialize();
+        BedrockOreFeatures.initialize();
 
-    // --------------------------------------------------------------------- //
-
-    @Mod.EventHandler
-    public void onPreInit(final FMLPreInitializationEvent event) {
-        log = event.getModLog();
-        proxy.onPreInit(event);
+        MinecraftForge.EVENT_BUS.addListener(BedrockOres::onCommandsRegister);
     }
 
-    @Mod.EventHandler
-    public void onInit(final FMLInitializationEvent event) {
-        proxy.onInit(event);
-    }
-
-    @Mod.EventHandler
-    public void onPostInit(final FMLPostInitializationEvent event) {
-        proxy.onPostInit(event);
-    }
-
-    @Mod.EventHandler
-    public void serverAboutToStart(final FMLServerAboutToStartEvent evt) {
-        Retrogen.INSTANCE.clear();
-    }
-
-    @Mod.EventHandler
-    public void onServerStarting(final FMLServerStartingEvent event) {
-        event.registerServerCommand(new CommandBedrockOres());
-    }
-
-    // --------------------------------------------------------------------- //
-
-    private static Logger log;
-
-    public static Logger getLog() {
-        return log;
+    private static void onCommandsRegister(final RegisterCommandsEvent event) {
+        ModCommands.register(event.getDispatcher());
     }
 }

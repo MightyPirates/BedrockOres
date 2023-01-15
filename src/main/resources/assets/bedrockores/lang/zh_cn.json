@@ -1,0 +1,6 @@
+{
+  "block.bedrockores.bedrock_miner": "基岩矿石采掘机",
+  "gui.bedrockores.expected_yield": "预计产量：%s",
+  "gui.bedrockores.exhausted": "采空",
+  "tooltip.bedrockores.bedrock_miner": "§7采集其 5x3x5 范围下方所有基岩矿石内的矿物。"
+}

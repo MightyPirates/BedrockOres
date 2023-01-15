@@ -1,18 +1,40 @@
-/*
+#system
+.DS_Store
 
-# folders
-!/gradle
-!/src
+# eclipse
+bin/
+*.launch
+.settings
+.metadata
+.classpath
+.project
 
-# files
-!/.gitignore
-!/README.md
-!/build.gradle
-!/build.properties
-!/gradlew
-!/gradlew.bat
-!/changelog.md
+# idea
+out/
+*.ipr
+*.iws
+*.iml
+.idea/
 
-# APIs and dependencies
-!/libs
-/libs/*
+# gradle
+build/
+.gradle/
+
+# other
+eclipse/
+output/
+libs/
+classes/
+
+#vscode
+.vscode
+
+# Files from Forge MDK
+forge*changelog.txt
+
+# generated resources
+**/src/generated/
+
+# minecraft
+run/
+logs/

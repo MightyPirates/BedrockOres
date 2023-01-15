@@ -1,115 +1,173 @@
-buildscript {
-    repositories {
-        jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-    }
-}
-
 plugins {
-    id "com.matthewprenger.cursegradle" version "1.0.9"
+    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id "com.modrinth.minotaur" version "2.5.0"
+    id 'maven-publish'
+    id 'idea'
+    id 'eclipse'
 }
-
-apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'maven-publish'
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
-file "build.properties" withReader {
-    def prop = new Properties()
-    prop.load(it)
-    ext.config = new ConfigSlurper().parse prop
-}
-
-version = config.mod.version
-group = config.mod.group
-archivesBaseName = config.mod.name
 
 def getGitRef() {
-  try {
-    def stdout = new ByteArrayOutputStream()
-    exec {
-      commandLine 'git', 'rev-parse', '--short', 'HEAD'
-      standardOutput = stdout
+    try {
+        final def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'rev-parse', '--short', 'HEAD'
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
+    } catch (final Throwable ignored) {
+        return 'unknown'
     }
-    return stdout.toString().trim()
-  } catch (Throwable e) {
-    return "unknown"
-  }
 }
 
-if (System.getenv("PROMOTED_NUMBER") != null)
-    version += ".${System.getenv("PROMOTED_NUMBER")}"
-else if (System.getenv("BUILD_NUMBER") != null)
-    version += ".${System.getenv("BUILD_NUMBER")}"
-else
-    version += "+" + getGitRef()
+version = "${semver}+${getGitRef()}"
+group = maven_group
+archivesBaseName = "${rootProject.archives_base_name}-MC${rootProject.minecraft_version}"
 
-ext.simpleVersion = version
-version = "MC${config.minecraft.version}-${project.version}"
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-minecraft {
-    version = "${config.minecraft.version}-${config.forge.version}"
-    runDir = "run"
-    mappings = config.minecraft.mappings
-    replace "@VERSION@", project.simpleVersion
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'utf-8'
 }
 
 repositories {
-    maven { url "http://dvs1.progwml6.com/files/maven" }
-    maven { url = "http://maven.covers1624.net" }
+    maven {
+        url 'https://cursemaven.com'
+        content { includeGroup "curse.maven" }
+    }
 }
 
 dependencies {
-    deobfCompile "mezz.jei:jei_${config.minecraft.version}:${config.jei.version}"
-    deobfCompile "cofh:RedstoneFlux:${config.minecraft.version}-${config.rf.version}:universal"
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    // Just for in-dev convenience. Mod doesn't use any JEI APIs.
+    runtimeOnly fg.deobf("curse.maven:jei-238222:4239206")
+}
+
+minecraft {
+    mappings channel: 'official', version: minecraft_version
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'info'
+
+            mods {
+                bedrockores {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'info'
+
+            mods {
+                bedrockores {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'info'
+
+            args '--mod', 'bedrockores', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources')
+
+            mods {
+                bedrockores {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+task copyGeneratedResources(type: Copy) {
+    from 'src/generated'
+    into 'src/main'
+    exclude 'resources/.cache'
 }
 
 processResources {
-    inputs.property "version", project.simpleVersion
-    inputs.property "mcversion", project.minecraft.version
-    inputs.property "fversion", config.forge.version
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-        expand 'version':project.simpleVersion, 'mcversion':project.minecraft.version, 'fversion':config.forge.version
-    }
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
+    inputs.property "version", semver
 
-    // Move access transformer to META-INF
-    rename '(.+_at.cfg)', 'META-INF/$1'
+    filesMatching("META-INF/mods.toml") {
+        expand "version": semver
+    }
 }
 
 jar {
+    finalizedBy 'reobfJar'
+
     manifest {
-        attributes FMLAT: "bedrockores_at.cfg"
+        attributes([
+                'Specification-Title'     : 'bedrockores',
+                'Specification-Vendor'    : 'Sangar',
+                'Specification-Version'   : '1',
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : version,
+                'Implementation-Vendor'   : 'Sangar',
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = "${rootProject.archives_base_name}-${rootProject.minecraft_version}-${project.name}"
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = System.getenv("GITHUB_MAVEN_URL") ?: ""
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
 }
 
 curseforge {
-    apiKey = project.hasProperty("curseForgeApiKey") ? project.curseForgeApiKey : ""
+    apiKey = System.getenv('CURSEFORGE_API_KEY') ?: ""
     project {
-        id = config.curse.project.id
-        releaseType = config.curse.project.releaseType
+        id = curse_project_id
+        releaseType = "release"
         changelogType = "markdown"
-        changelog = file("changelog.md")
-        addGameVersion config.minecraft.version
-        addGameVersion "1.12.1"
-        addGameVersion "1.12.2"
-        addGameVersion "Java 8"
+        changelog = System.getenv("CHANGELOG") ?: "Changelog not available."
+        addGameVersion 'Forge'
+        addGameVersion minecraft_version
+        addGameVersion "Java 17"
     }
 }
 
-// this is needed for IntelliJ so we don't have to copy over the assets manually every time
+modrinth {
+    token = System.getenv("MODRINTH_API_KEY") ?: ""
+    projectId = rootProject.modrinth_project_id
+    changelog = System.getenv("CHANGELOG") ?: "Changelog not available."
+    versionNumber = "MC${minecraft_version}-${semver}"
+    versionName = "${archives_base_name}-${version}"
+    versionType = "release"
+    gameVersions = [rootProject.minecraft_version]
+    loaders = ["forge"]
+}
+
 idea {
     module {
-        outputDir = file('build/classes/main')
+        for (final String exclude in ["out", "logs"]) {
+            excludeDirs += file(exclude)
+        }
     }
 }

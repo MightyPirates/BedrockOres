@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "T": {
+      "item": "minecraft:dropper"
+    },
+    "R": {
+      "tag": "forge:storage_blocks/redstone"
+    },
+    "P": {
+      "item": "minecraft:piston"
+    },
+    "D": {
+      "tag": "forge:gems/diamond"
+    },
+    "O": {
+      "tag": "forge:obsidian"
+    }
+  },
+  "pattern": [
+    "ITI",
+    "RPR",
+    "ODO"
+  ],
+  "result": {
+    "item": "bedrockores:bedrock_miner"
+  }
+}

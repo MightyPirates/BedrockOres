@@ -2,6 +2,6 @@
 @MethodsReturnNonnullByDefault
 package li.cil.bedrockores.common;
 
-import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;
