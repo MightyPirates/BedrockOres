@@ -47,8 +47,7 @@ public final class Settings {
         builder.pop().push("ui");
         uiOnlyWhenSneaking = builder
                 .comment("Whether to only show the floating UI indicating ore yield when sneaking.")
-                .define("info_only_when_sneaking", false);
-
+                .define("info_only_when_sneaking", true);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, builder.build());
     }
