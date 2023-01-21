@@ -36,6 +36,13 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew -Psemver='${{ steps.split_tag.outputs._1 }}' build
 
+      - name: Add Artifacts to Github Release
+        uses: alexellis/upload-assets@0.3.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          asset_paths: '["./build/libs/*.jar"]'
+
       - name: Publish to Curseforge and Minotaur
         uses: Kir-Antipov/mc-publish@v3.2
         with:
@@ -49,5 +56,3 @@ jobs:
 
           curseforge-id: 275083
           curseforge-token: ${{ secrets.CURSEFORGE_API_KEY }}
-
-          github-token: ${{ secrets.GITHUB_TOKEN }}
