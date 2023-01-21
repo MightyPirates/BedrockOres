@@ -39,8 +39,10 @@ jobs:
       - name: Publish to Curseforge and Minotaur
         uses: Kir-Antipov/mc-publish@v3.2
         with:
+          name: Bedrock Ores MC${{ steps.split_tag.outputs._0 }}-${{ steps.split_tag.outputs._1 }}
           game-versions: ${{ steps.split_tag.outputs._0 }}
           version: ${{ steps.split_tag.outputs._1 }}
+          java: Java 17
 
           modrinth-id: bedrockores
           modrinth-token: ${{ secrets.MODRINTH_API_KEY }}
