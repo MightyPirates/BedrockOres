@@ -13,7 +13,7 @@ public final class Sounds {
 
     // --------------------------------------------------------------------- //
 
-    public static final RegistryObject<SoundEvent> MINER = SOUND_EVENTS.register("bedrock_miner", () -> new SoundEvent(new ResourceLocation(Constants.MOD_ID, "bedrock_miner")));
+    public static final RegistryObject<SoundEvent> MINER = SOUND_EVENTS.register("bedrock_miner", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Constants.MOD_ID, "bedrock_miner")));
 
     // --------------------------------------------------------------------- //
 

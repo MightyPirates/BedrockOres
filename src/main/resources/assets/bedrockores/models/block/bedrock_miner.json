@@ -338,9 +338,9 @@
     }
   ],
   "textures": {
-    "top": "bedrockores:blocks/bedrock_miner_top",
-    "side": "bedrockores:blocks/bedrock_miner_side",
-    "bottom": "bedrockores:blocks/bedrock_miner_bottom",
+    "top": "bedrockores:block/bedrock_miner_top",
+    "side": "bedrockores:block/bedrock_miner_side",
+    "bottom": "bedrockores:block/bedrock_miner_bottom",
     "particle": "#side"
   }
 }

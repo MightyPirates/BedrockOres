@@ -1,7 +1,6 @@
 package li.cil.bedrockores.client.render;
 
 import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.math.Matrix4f;
 import li.cil.bedrockores.common.block.entity.BlockEntityWithInfo;
 import li.cil.bedrockores.common.config.Constants;
 import li.cil.bedrockores.common.config.Settings;
@@ -67,7 +66,7 @@ public final class BlockEntityInfoRenderer {
 
         stack.scale(-0.025f, -0.025f, 0.025f);
 
-        final Matrix4f matrix = stack.last().pose();
+        final var matrix = stack.last().pose();
 
         final Font font = Minecraft.getInstance().font;
         final MultiBufferSource.BufferSource buffer = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());

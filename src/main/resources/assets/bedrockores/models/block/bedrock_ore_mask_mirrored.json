@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_mirrored_all",
   "textures": {
-    "all": "bedrockores:blocks/bedrock_ore_mask"
+    "all": "bedrockores:block/bedrock_ore_mask"
   },
   "render_type": "minecraft:cutout"
 }
