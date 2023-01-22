@@ -51,7 +51,7 @@ jobs:
           version: ${{ steps.split_tag.outputs._1 }}
           java: Java 17
 
-          modrinth-id: bedrockores
+          modrinth-id: KCMBVtfE
           modrinth-token: ${{ secrets.MODRINTH_API_KEY }}
 
           curseforge-id: 275083
