@@ -74,9 +74,6 @@ public final class BedrockOreMinerBlockEntity extends BlockEntityWithInfo {
     private static final int SLOT_FUEL_COUNT = 1;
     private static final int SLOT_OUTPUT_COUNT = 6;
 
-    private static final int SCAN_RADIUS = 2; // 0 is only straight down
-    private static final int SCAN_DEPTH = 3; // 0 is empty
-
     private static final int RF_PER_BURN_TIME = 10;
 
     private static final int SOUND_INTERVAL = 30; // in ticks
@@ -454,24 +451,24 @@ public final class BedrockOreMinerBlockEntity extends BlockEntityWithInfo {
         private int x, y, z;
 
         ScanAreaSpliterator() {
-            super((SCAN_RADIUS * 2 + 1) * (SCAN_RADIUS * 2 + 1) * SCAN_DEPTH, ORDERED | DISTINCT | SIZED | NONNULL | IMMUTABLE | SUBSIZED);
-            this.x = -SCAN_RADIUS;
-            this.z = -SCAN_RADIUS;
+            super(numberOfBlocksInArea(), ORDERED | DISTINCT | SIZED | NONNULL | IMMUTABLE | SUBSIZED);
+            this.x = -radius();
+            this.z = -radius();
             this.y = 0;
         }
 
         @Override
         public boolean tryAdvance(final Consumer<? super BedrockOreBlockEntity> action) {
             final var scanLevel = requireNonNull(getLevel());
-            while (y < SCAN_DEPTH) {
+            while (y < layers()) {
                 final var pos = getBlockPos().below().offset(x, -y, z);
 
                 x++;
-                if (x > SCAN_RADIUS) {
-                    x = -SCAN_RADIUS;
+                if (x > radius()) {
+                    x = -radius();
                     z++;
-                    if (z > SCAN_RADIUS) {
-                        z = -SCAN_RADIUS;
+                    if (z > radius()) {
+                        z = -radius();
                         y++;
                     }
                 }
@@ -483,6 +480,18 @@ public final class BedrockOreMinerBlockEntity extends BlockEntityWithInfo {
                 }
             }
             return false;
+        }
+
+        private static int radius() {
+            return Settings.minerAreaRadius.get() - 1;
+        }
+
+        private static int layers() {
+            return Settings.minerAreaLayers.get();
+        }
+
+        private static int numberOfBlocksInArea() {
+            return (radius() * 2 + 1) * (radius() * 2 + 1) * layers();
         }
     }
 

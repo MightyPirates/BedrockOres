@@ -2,5 +2,5 @@
   "block.bedrockores.bedrock_miner": "Grundgesteinbohrer",
   "gui.bedrockores.expected_yield": "Erwartete Ausbeute: %s",
   "gui.bedrockores.exhausted": "Erschöpft",
-  "tooltip.bedrockores.bedrock_miner": "§7Gräbt Grundgesteinerze in einem Bereich von 5x3x5 unter sich aus."
+  "tooltip.bedrockores.bedrock_miner": "Gräbt Grundgesteinerze in einem Bereich von %sx%sx%s unter sich aus."
 }

@@ -9,6 +9,8 @@ public final class Settings {
     public static ForgeConfigSpec.DoubleValue minerEfficiency;
     public static ForgeConfigSpec.DoubleValue minerEfficiencyInternalPower;
     public static ForgeConfigSpec.DoubleValue minerEfficiencyExternalPower;
+    public static ForgeConfigSpec.IntValue minerAreaRadius;
+    public static ForgeConfigSpec.IntValue minerAreaLayers;
 
     public static ForgeConfigSpec.IntValue veinsPerChunk;
     public static ForgeConfigSpec.BooleanValue allowPlayerMining;
@@ -34,6 +36,12 @@ public final class Settings {
                 .comment("The power efficiency of the miner. Total mining time is original powered time times this times `minerEfficiency`. " +
                         "Applies to power supplied externally. Set to 0 to disable external powering.")
                 .defineInRange("energy_efficiency", 1.0, 0, 100);
+        minerAreaRadius = builder
+                .comment("The radius of the incircle of the square area around the miner in which it operates, in blocks. 1 is straight down.")
+                .defineInRange("areaRadius", 3, 1, 16);
+        minerAreaLayers = builder
+                .comment("The number of layers below the miner in which it operates, in blocks. 1 is just the layer below the miner.")
+                .defineInRange("areaLayers", 3, 1, 32);
 
         builder.pop().push("world");
         veinsPerChunk = builder

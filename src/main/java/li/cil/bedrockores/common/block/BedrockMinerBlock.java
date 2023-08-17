@@ -3,6 +3,8 @@ package li.cil.bedrockores.common.block;
 import li.cil.bedrockores.common.block.entity.BedrockOreMinerBlockEntity;
 import li.cil.bedrockores.common.block.entity.BlockEntities;
 import li.cil.bedrockores.common.config.Constants;
+import li.cil.bedrockores.common.config.Settings;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
@@ -89,6 +91,8 @@ public final class BedrockMinerBlock extends BaseEntityBlock {
     @Override
     public void appendHoverText(final ItemStack stack, @Nullable final BlockGetter level, final List<Component> tooltip, final TooltipFlag flags) {
         super.appendHoverText(stack, level, tooltip, flags);
-        tooltip.add(Component.translatable(Constants.TOOLTIP_BEDROCK_MINER));
+        final var edgeLength = (Settings.minerAreaRadius.get() - 1) * 2 + 1;
+        final var layers = Settings.minerAreaLayers.get();
+        tooltip.add(Component.translatable(Constants.TOOLTIP_BEDROCK_MINER, edgeLength, layers, edgeLength).withStyle(ChatFormatting.GRAY));
     }
 }

@@ -2,5 +2,5 @@
   "block.bedrockores.bedrock_miner": "Minatore di Roccia di Fondo",
   "gui.bedrockores.expected_yield": "Rendimento atteso: %s",
   "gui.bedrockores.exhausted": "Esausto",
-  "tooltip.bedrockores.bedrock_miner": "§7Scava l'area del 5x3x5 sotto di lui per minerali di roccia di fondo."
+  "tooltip.bedrockores.bedrock_miner": "Scava l'area del %sx%sx%s sotto di lui per minerali di roccia di fondo."
 }

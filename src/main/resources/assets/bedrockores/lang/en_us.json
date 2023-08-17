@@ -3,5 +3,5 @@
   "gui.bedrockores.expected_yield": "Expected yield: %s",
   "gui.bedrockores.exhausted": "Exhausted",
   "gui.bedrockores.infinite": "Infinite",
-  "tooltip.bedrockores.bedrock_miner": "§7Mines the 5x3x5 area below it for bedrock ores."
+  "tooltip.bedrockores.bedrock_miner": "Mines the %sx%sx%s area below it for bedrock ores."
 }
