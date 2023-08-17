@@ -83,9 +83,8 @@ public final class BedrockMinerBlock extends BaseEntityBlock {
                     Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), itemHandler.getStackInSlot(slot));
                 }
             });
-        } else {
-            super.onRemove(oldState, level, pos, newState, movedByPiston);
         }
+        super.onRemove(oldState, level, pos, newState, movedByPiston);
     }
 
     @Override
