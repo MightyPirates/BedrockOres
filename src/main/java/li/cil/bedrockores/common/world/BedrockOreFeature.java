@@ -58,7 +58,9 @@ public class BedrockOreFeature extends Feature<BedrockOreConfiguration> {
             setBlock(level, pos, Blocks.BEDROCK_ORE.get().defaultBlockState());
             if (level.getBlockEntity(pos) instanceof BedrockOreBlockEntity bedrockOre) {
                 bedrockOre.setOreBlockState(config.ore());
-                bedrockOre.setAmount(config.amount().sample(random));
+                config.amount()
+                        .ifLeft(amount -> bedrockOre.setAmount(amount.sample(random)))
+                        .ifRight(infinite -> bedrockOre.setInfinite());
             }
             didPlace = true;
         }
