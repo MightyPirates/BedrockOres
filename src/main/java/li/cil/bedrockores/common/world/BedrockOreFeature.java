@@ -48,7 +48,7 @@ public class BedrockOreFeature extends Feature<BedrockOreConfiguration> {
         for (int y = yMaxInclusive; y >= yMinInclusive; --y) {
             pos.setY(y);
 
-            if (!level.getBlockState(pos).is(net.minecraft.world.level.block.Blocks.BEDROCK)) {
+            if (!config.rule().test(level.getBlockState(pos), random)) {
                 continue;
             }
             if (random.nextFloat() >= config.density()) {
