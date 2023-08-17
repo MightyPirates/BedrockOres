@@ -29,7 +29,7 @@ public final class BlockEntityInfoRenderer {
             return;
         }
 
-        final var level = player.level;
+        final var level = player.level();
 
         if (Settings.uiOnlyWhenSneaking.get() && !player.isCrouching()) {
             return;

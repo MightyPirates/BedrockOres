@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import javax.annotation.Nullable;
@@ -27,8 +27,8 @@ import java.util.List;
 
 public final class BedrockMinerBlock extends BaseEntityBlock {
     public BedrockMinerBlock() {
-        super(Properties
-                .of(Material.METAL)
+        super(Properties.of()
+                .mapColor(MapColor.METAL)
                 .strength(5, 10)
                 .sound(SoundType.METAL));
     }

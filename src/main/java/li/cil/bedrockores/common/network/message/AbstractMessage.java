@@ -53,7 +53,7 @@ public abstract class AbstractMessage {
     @Nullable
     private static Level getServerLevel(final NetworkEvent.Context context) {
         final var sender = context.getSender();
-        return sender != null ? sender.getLevel() : null;
+        return sender != null ? sender.level() : null;
     }
 
     @OnlyIn(Dist.CLIENT)

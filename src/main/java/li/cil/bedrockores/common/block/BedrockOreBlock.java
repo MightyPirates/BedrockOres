@@ -23,8 +23,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.HitResult;
 
 import javax.annotation.Nullable;
@@ -38,8 +37,8 @@ import javax.annotation.Nullable;
  */
 public final class BedrockOreBlock extends BaseEntityBlock {
     public BedrockOreBlock() {
-        super(Properties
-                .of(Material.STONE)
+        super(Properties.of()
+                .mapColor(MapColor.STONE)
                 .strength(-1F, 3600000)
                 .noLootTable()
                 .isValidSpawn((state, reader, pos, entity) -> false));
@@ -213,7 +212,7 @@ public final class BedrockOreBlock extends BaseEntityBlock {
     }
 
     @Override
-    public MaterialColor getMapColor(final BlockState state, final BlockGetter level, final BlockPos pos, final MaterialColor defaultColor) {
+    public MapColor getMapColor(final BlockState state, final BlockGetter level, final BlockPos pos, final MapColor defaultColor) {
         final var ore = getOreBlockState(level.getBlockEntity(pos));
         if (ore != null) {
             return ore.getMapColor(level, pos);
