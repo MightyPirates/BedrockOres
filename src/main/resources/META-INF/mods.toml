@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[46,)"
+loaderVersion = "[47,)"
 issueTrackerURL = "https://github.com/MightyPirates/BedrockOres/issues"
 license = "MIT"
 
@@ -16,12 +16,12 @@ Large ore deposits embedded in the bedrock.
 [[dependencies.bedrockores]]
 modId = "forge"
 mandatory = true
-versionRange = "[46.0.14,)"
+versionRange = "[47.1.0,)"
 ordering = "NONE"
 side = "BOTH"
 [[dependencies.bedrockores]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.20,)"
+versionRange = "[1.20.1,)"
 ordering = "NONE"
 side = "BOTH"
