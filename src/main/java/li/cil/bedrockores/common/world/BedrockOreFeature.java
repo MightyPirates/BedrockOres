@@ -20,10 +20,16 @@ public class BedrockOreFeature extends Feature<BedrockOreConfiguration> {
         final var level = context.level();
         final var random = context.random();
 
-        final var y = origin.getY();
-        final var y1 = y + 4;
-        final var y0 = y - 4;
         final var radius = config.radius().sample(random);
+        final var height = config.height().sample(random);
+
+        assert radius > 0;
+        assert height > 0;
+
+        final var y = origin.getY();
+        final var yShift = height / 2;
+        final var yMaxInclusive = y + height - 1 - yShift;
+        final var yMinInclusive = y - yShift;
 
         var didPlace = false;
         var tempPos = new BlockPos.MutableBlockPos();
@@ -31,26 +37,26 @@ public class BedrockOreFeature extends Feature<BedrockOreConfiguration> {
             int dx = pos.getX() - origin.getX();
             int dz = pos.getZ() - origin.getZ();
             if (dx * dx + dz * dz <= radius * radius) {
-                didPlace |= this.placeColumn(config, level, random, tempPos.set(pos), y0, y1);
+                didPlace |= this.placeColumn(config, level, random, tempPos.set(pos), yMinInclusive, yMaxInclusive);
             }
         }
         return didPlace;
     }
 
-    protected boolean placeColumn(BedrockOreConfiguration config, WorldGenLevel level, RandomSource random, BlockPos.MutableBlockPos center, int y0, int y1) {
+    protected boolean placeColumn(BedrockOreConfiguration config, WorldGenLevel level, RandomSource random, BlockPos.MutableBlockPos pos, int yMinInclusive, int yMaxInclusive) {
         var didPlace = false;
-        for (int i = y1; i > y0; --i) {
-            center.setY(i);
+        for (int y = yMaxInclusive; y >= yMinInclusive; --y) {
+            pos.setY(y);
 
-            if (!level.getBlockState(center).is(net.minecraft.world.level.block.Blocks.BEDROCK)) {
+            if (!level.getBlockState(pos).is(net.minecraft.world.level.block.Blocks.BEDROCK)) {
                 continue;
             }
             if (random.nextFloat() >= config.density()) {
                 continue;
             }
 
-            setBlock(level, center, Blocks.BEDROCK_ORE.get().defaultBlockState());
-            if (level.getBlockEntity(center) instanceof BedrockOreBlockEntity bedrockOre) {
+            setBlock(level, pos, Blocks.BEDROCK_ORE.get().defaultBlockState());
+            if (level.getBlockEntity(pos) instanceof BedrockOreBlockEntity bedrockOre) {
                 bedrockOre.setOreBlockState(config.ore());
                 bedrockOre.setAmount(config.amount().sample(random));
             }

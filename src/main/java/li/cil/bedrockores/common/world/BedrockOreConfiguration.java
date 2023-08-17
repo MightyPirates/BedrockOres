@@ -10,14 +10,14 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 public record BedrockOreConfiguration(BlockState ore,
                                       IntProvider amount,
                                       IntProvider radius,
-                                      IntProvider halfHeight,
+                                      IntProvider height,
                                       float density
 ) implements FeatureConfiguration {
     public static final Codec<BedrockOreConfiguration> CODEC = RecordCodecBuilder.create((builder) -> builder.group(
             BlockState.CODEC.fieldOf("ore").forGetter(BedrockOreConfiguration::ore),
             IntProvider.POSITIVE_CODEC.fieldOf("amount").forGetter(BedrockOreConfiguration::amount),
             IntProvider.codec(0, 8).optionalFieldOf("radius", ConstantInt.of(4)).forGetter(BedrockOreConfiguration::radius),
-            IntProvider.NON_NEGATIVE_CODEC.optionalFieldOf("half_height", ConstantInt.of(2)).forGetter(BedrockOreConfiguration::halfHeight),
+            IntProvider.POSITIVE_CODEC.optionalFieldOf("height", ConstantInt.of(8)).forGetter(BedrockOreConfiguration::height),
             Codec.floatRange(0, 1).optionalFieldOf("density", 0.75f).forGetter(BedrockOreConfiguration::density)
     ).apply(builder, BedrockOreConfiguration::new));
 }
