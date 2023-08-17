@@ -30,6 +30,6 @@ public record BedrockOreConfiguration(BlockState ore,
     ).apply(builder, BedrockOreConfiguration::new));
 
     private static DataResult<? extends String> verifyInfinite(final String value) {
-        return "infinite".equals(value) ? DataResult.success(value) : DataResult.error("Expected 'infinite' or an integer value");
+        return "infinite".equals(value) ? DataResult.success(value) : DataResult.error(() -> "Expected 'infinite' or an integer value");
     }
 }

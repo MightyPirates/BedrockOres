@@ -77,9 +77,9 @@ public final class BlockEntityInfoRenderer {
         final int packedLight = LightTexture.pack(15, 15);
 
         font.drawInBatch(text, horizontalTextOffset, 0, 0xffffffff,
-                false, matrix, buffer, true, backgroundColor, packedLight);
+                false, matrix, buffer, Font.DisplayMode.SEE_THROUGH, backgroundColor, packedLight);
         font.drawInBatch(text, horizontalTextOffset, 0, 0xffffffff,
-                false, matrix, buffer, false, 0, packedLight);
+                false, matrix, buffer, Font.DisplayMode.NORMAL, 0, packedLight);
 
         buffer.endBatch();
 
