@@ -38,12 +38,14 @@ import javax.annotation.Nullable;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.TemporalAmount;
+import java.util.OptionalInt;
 import java.util.Spliterators;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.partitioningBy;
 
 public final class BedrockOreMinerBlockEntity extends BlockEntityWithInfo {
     // --------------------------------------------------------------------- //
@@ -147,8 +149,19 @@ public final class BedrockOreMinerBlockEntity extends BlockEntityWithInfo {
 
     @Override
     protected Component buildInfo() {
-        final int yield = findBedrockOres().
+        final var ores = findBedrockOres().
                 map(BedrockOreBlockEntity::getAmount).
+                collect(partitioningBy(OptionalInt::isPresent));
+
+        // If there are any infinite ore spawns within range, we can consider this miner to have infinite yield.
+        final var infiniteOres = ores.get(false);
+        if (!infiniteOres.isEmpty()) {
+            return Component.translatable(Constants.GUI_EXPECTED_YIELD, Component.translatable(Constants.GUI_INFINITE));
+        }
+
+        final var finiteOres = ores.get(true);
+        @SuppressWarnings("OptionalGetWithoutIsPresent") final int yield = finiteOres.stream().
+                map(OptionalInt::getAsInt).
                 reduce(Integer::sum).
                 orElse(0);
         if (yield > 0) {
@@ -343,7 +356,7 @@ public final class BedrockOreMinerBlockEntity extends BlockEntityWithInfo {
             return;
         }
 
-        if (currentOre == null || currentOre.isRemoved() || currentOre.getAmount() <= 0) {
+        if (currentOre == null || currentOre.isRemoved() || currentOre.isEmpty()) {
             currentOre = findBedrockOres().findFirst().orElse(null);
             if (currentOre == null) {
                 hasNoMoreOres = true;

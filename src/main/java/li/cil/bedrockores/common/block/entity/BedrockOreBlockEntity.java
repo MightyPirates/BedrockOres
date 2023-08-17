@@ -5,6 +5,7 @@ import li.cil.bedrockores.common.config.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -17,7 +18,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.Objects;
+import java.util.OptionalInt;
 
 import static java.util.Objects.requireNonNull;
 import static li.cil.bedrockores.common.block.Blocks.BEDROCK_ORE;
@@ -27,7 +30,8 @@ public final class BedrockOreBlockEntity extends BlockEntityWithInfo {
     // Persisted data
 
     private BlockState oreBlockState = Blocks.AIR.defaultBlockState();
-    private int amount;
+    @Nullable
+    private Integer amount;
 
     // --------------------------------------------------------------------- //
     // Computed data
@@ -77,12 +81,35 @@ public final class BedrockOreBlockEntity extends BlockEntityWithInfo {
         }
     }
 
-    public int getAmount() {
-        return oreBlockState.isAir() ? 0 : amount;
+    public OptionalInt getAmount() {
+        if (oreBlockState.isAir()) {
+            return OptionalInt.of(0);
+        }
+        if (isInfinite()) {
+            return OptionalInt.empty();
+        }
+        return OptionalInt.of(amount);
     }
 
     public void setAmount(final int value) {
         amount = value;
+    }
+
+    public boolean isInfinite() {
+        return amount == null;
+    }
+
+    public void setInfinite() {
+        amount = null;
+    }
+
+    public boolean isEmpty() {
+        final var amount = getAmount();
+        if (amount.isPresent()) {
+            return amount.getAsInt() <= 0;
+        } else {
+            return false; // infinite
+        }
     }
 
     public ItemStack extract() {
@@ -91,14 +118,19 @@ public final class BedrockOreBlockEntity extends BlockEntityWithInfo {
             return ItemStack.EMPTY;
         }
 
-        --amount;
-        if (amount < 1) {
-            level.setBlock(getBlockPos(), Blocks.BEDROCK.defaultBlockState(), level.isClientSide() ? Block.UPDATE_ALL_IMMEDIATE : Block.UPDATE_ALL);
-        } else {
-            setChanged();
+        final var wasEmpty = isEmpty();
+        if (!isInfinite()) {
+            if (!wasEmpty) { // paranoia underflow guard
+                --amount;
+            }
+            if (isEmpty()) {
+                level.setBlock(getBlockPos(), Blocks.BEDROCK.defaultBlockState(), level.isClientSide() ? Block.UPDATE_ALL_IMMEDIATE : Block.UPDATE_ALL);
+            } else {
+                setChanged();
+            }
         }
 
-        return droppedStack.copy();
+        return wasEmpty ? ItemStack.EMPTY : droppedStack.copy();
     }
 
     // --------------------------------------------------------------------- //
@@ -106,7 +138,11 @@ public final class BedrockOreBlockEntity extends BlockEntityWithInfo {
 
     @Override
     protected Component buildInfo() {
-        return Component.translatable(Constants.GUI_EXPECTED_YIELD, amount);
+        if (isInfinite()) {
+            return Component.translatable(Constants.GUI_EXPECTED_YIELD, Component.translatable(Constants.GUI_INFINITE));
+        } else {
+            return Component.translatable(Constants.GUI_EXPECTED_YIELD, amount);
+        }
     }
 
     // --------------------------------------------------------------------- //
@@ -136,9 +172,14 @@ public final class BedrockOreBlockEntity extends BlockEntityWithInfo {
         super.saveAdditional(tag);
 
         if (oreBlockState != null) {
-            BlockState.CODEC.encodeStart(NbtOps.INSTANCE, oreBlockState)
-                    .result().ifPresent(stateNbt -> tag.put(TAG_STATE, stateNbt));
-            tag.putInt(TAG_AMOUNT, amount);
+            BlockState.CODEC
+                    .encodeStart(NbtOps.INSTANCE, oreBlockState).result()
+                    .ifPresent(stateNbt -> tag.put(TAG_STATE, stateNbt));
+            if (!isInfinite()) {
+                tag.putInt(TAG_AMOUNT, amount);
+            } else {
+                tag.remove(TAG_AMOUNT);
+            }
         }
     }
 
@@ -146,10 +187,15 @@ public final class BedrockOreBlockEntity extends BlockEntityWithInfo {
     public void load(final CompoundTag tag) {
         super.load(tag);
 
-        oreBlockState = BlockState.CODEC.parse(NbtOps.INSTANCE, tag.get(TAG_STATE))
-                .result().orElse(Blocks.AIR.defaultBlockState());
+        oreBlockState = BlockState.CODEC
+                .parse(NbtOps.INSTANCE, tag.get(TAG_STATE)).result()
+                .orElse(Blocks.AIR.defaultBlockState());
         droppedStack = new ItemStack(oreBlockState.getBlock().asItem());
-        amount = tag.getInt(TAG_AMOUNT);
+        if (tag.contains(TAG_AMOUNT, Tag.TAG_INT)) {
+            setAmount(tag.getInt(TAG_AMOUNT));
+        } else {
+            setInfinite();
+        }
     }
 
     @Override
