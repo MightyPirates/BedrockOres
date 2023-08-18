@@ -9,32 +9,33 @@ jobs:
     name: publish
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Extract Version from Tag
-        uses: rishabhgupta/split-by@v2
         id: split_tag
-        with:
-          string: ${{ github.event.release.tag_name }}
-          split-by: '/'
+        run: |
+          tag=${{ github.event.release.tag_name }}
+          parts=(${tag//\// })
+          echo "mc_version=${arrIN[0]}" >> $GITHUB_OUTPUT
+          echo "mod_version=${arrIN[1]}" >> $GITHUB_OUTPUT
 
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
           java-version: 17
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ubuntu-latest-gradle-${{ hashFiles('**/*.gradle*') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: ubuntu-latest-gradle-
       - name: Build with Gradle
-        run: ./gradlew -Psemver='${{ steps.split_tag.outputs._1 }}' build
+        run: ./gradlew -Psemver='${{ steps.split_tag.outputs.mod_version }}' build
 
       - name: Add Artifacts to Github Release
         uses: alexellis/upload-assets@0.4.0
@@ -46,9 +47,8 @@ jobs:
       - name: Publish to Curseforge and Minotaur
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          name: Bedrock Ores MC${{ steps.split_tag.outputs._0 }}-${{ steps.split_tag.outputs._1 }}
-          game-versions: ${{ steps.split_tag.outputs._0 }}
-          version: ${{ steps.split_tag.outputs._1 }}
+          name: Bedrock Ores MC${{ steps.split_tag.outputs.mc_version }}-${{ steps.split_tag.outputs.mod_version }}
+          version: ${{ steps.split_tag.outputs.mod_version }}
           java: Java 17
 
           modrinth-id: KCMBVtfE
