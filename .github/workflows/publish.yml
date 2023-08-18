@@ -35,7 +35,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: ubuntu-latest-gradle-
       - name: Build with Gradle
-        run: ./gradlew -Psemver='${{ steps.split_tag.outputs.mod_version }}' build
+        run: ./gradlew -PmodVersion='${{ steps.split_tag.outputs.mod_version }}' build
 
       - name: Add Artifacts to Github Release
         uses: alexellis/upload-assets@0.4.0
