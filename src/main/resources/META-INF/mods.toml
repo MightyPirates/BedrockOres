@@ -25,3 +25,7 @@ mandatory = true
 versionRange = "[1.20.1,)"
 ordering = "NONE"
 side = "BOTH"
+
+[mc-publish]
+modrinth = "KCMBVtfE"
+curseforge = 275083
