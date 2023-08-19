@@ -26,10 +26,6 @@ base {
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 
-tasks.withType<JavaCompile>().configureEach {
-    options.encoding = "utf-8"
-}
-
 repositories {
     maven {
         url = uri("https://cursemaven.com")
@@ -76,37 +72,37 @@ minecraft {
     }
 }
 
-tasks.register<Copy>("copyGeneratedResources") {
-    from("src/generated")
-    into("src/main")
-    exclude("resources/.cache")
-}
+tasks {
+    withType<JavaCompile>().configureEach {
+        options.encoding = "utf-8"
+    }
 
-tasks.withType<ProcessResources> {
-    inputs.property("version", modVersion)
-
-    filesMatching("META-INF/mods.toml") {
-        expand(mapOf(
+    processResources {
+        val properties = mapOf(
                 "version" to modVersion,
                 "minecraftVersion" to minecraftVersion,
                 "loaderVersion" to forgeVersion.split(".").first(),
                 "forgeVersion" to forgeVersion
-        ))
+        )
+        inputs.properties(properties)
+        filesMatching("META-INF/mods.toml") {
+            expand(properties)
+        }
     }
-}
 
-tasks.withType<Jar> {
-    finalizedBy("reobfJar")
+    jar {
+        finalizedBy("reobfJar")
 
-    manifest {
-        attributes(mapOf(
-                "Specification-Title" to modId,
-                "Specification-Version" to "1",
-                "Specification-Vendor" to "Sangar",
-                "Implementation-Title" to modId,
-                "Implementation-Version" to version,
-                "Implementation-Vendor" to "Sangar",
-        ))
+        manifest {
+            attributes(mapOf(
+                    "Specification-Title" to modId,
+                    "Specification-Version" to "1",
+                    "Specification-Vendor" to "Sangar",
+                    "Implementation-Title" to modId,
+                    "Implementation-Version" to version,
+                    "Implementation-Vendor" to "Sangar",
+            ))
+        }
     }
 }
 
