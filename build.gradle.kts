@@ -1,7 +1,8 @@
 plugins {
-    id("net.minecraftforge.gradle") version "[6.0,6.2)"
-    id("idea")
-    id("eclipse")
+    java
+    idea
+    eclipse
+    alias(libs.plugins.forgegradle)
 }
 
 fun getGitRef(): String {
@@ -11,11 +12,11 @@ fun getGitRef(): String {
     }.standardOutput.asText.get().trim()
 }
 
-val modId: String by extra
-val minecraftVersion: String by extra
-val forgeVersion: String by extra
-val modVersion: String by extra
-val mavenGroup: String by extra
+val modId: String by project
+val mavenGroup: String by project
+val modVersion: String by project
+val minecraftVersion: String = libs.versions.minecraft.get()
+val forgeVersion: String = libs.versions.forge.get()
 
 version = "${modVersion}+${getGitRef()}"
 group = mavenGroup
@@ -37,10 +38,10 @@ repositories {
 }
 
 dependencies {
-    minecraft("net.minecraftforge:forge:${minecraftVersion}-${forgeVersion}")
+    minecraft(libs.forge)
 
     // Just for in-dev convenience. Mod doesn't use any JEI APIs.
-    runtimeOnly(fg.deobf("curse.maven:jei-238222:4690097"))
+    runtimeOnly(fg.deobf(libs.jei.get()))
 }
 
 minecraft {
@@ -72,21 +73,6 @@ minecraft {
                 }
             }
         }
-
-        create("data") {
-            workingDirectory(file("run"))
-
-            property("forge.logging.markers", "REGISTRIES")
-            property("forge.logging.console.level", "info")
-
-            args("--mod", "bedrockores", "--all", "--output", file("src/generated/resources/"), "--existing", file("src/main/resources"))
-
-            mods {
-                create(modId) {
-                    source(sourceSets.main.get())
-                }
-            }
-        }
     }
 }
 
@@ -100,7 +86,12 @@ tasks.withType<ProcessResources> {
     inputs.property("version", modVersion)
 
     filesMatching("META-INF/mods.toml") {
-        expand(mapOf("version" to modVersion))
+        expand(mapOf(
+                "version" to modVersion,
+                "minecraftVersion" to minecraftVersion,
+                "loaderVersion" to forgeVersion.split(".").first(),
+                "forgeVersion" to forgeVersion
+        ))
     }
 }
 
@@ -109,10 +100,10 @@ tasks.withType<Jar> {
 
     manifest {
         attributes(mapOf(
-                "Specification-Title" to "bedrockores",
-                "Specification-Vendor" to "Sangar",
+                "Specification-Title" to modId,
                 "Specification-Version" to "1",
-                "Implementation-Title" to project.name,
+                "Specification-Vendor" to "Sangar",
+                "Implementation-Title" to modId,
                 "Implementation-Version" to version,
                 "Implementation-Vendor" to "Sangar",
         ))
