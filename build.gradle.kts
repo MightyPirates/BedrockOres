@@ -3,6 +3,7 @@ plugins {
     idea
     eclipse
     alias(libs.plugins.forgegradle)
+    alias(libs.plugins.parchment)
     alias(libs.plugins.spotless)
 }
 
@@ -42,7 +43,7 @@ dependencies {
 }
 
 minecraft {
-    mappings("official", minecraftVersion)
+    mappings("parchment", "${libs.versions.parchment.get()}-$minecraftVersion")
 
     runs {
         create("client") {
