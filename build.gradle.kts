@@ -3,6 +3,7 @@ plugins {
     idea
     eclipse
     alias(libs.plugins.forgegradle)
+    alias(libs.plugins.spotless)
 }
 
 fun getGitRef(): String {
@@ -103,6 +104,17 @@ tasks {
                     "Implementation-Vendor" to "Sangar",
             ))
         }
+    }
+}
+
+spotless {
+    java {
+        target("src/*/java/li/cil/**/*.java")
+
+        endWithNewline()
+        trimTrailingWhitespace()
+        removeUnusedImports()
+        indentWithSpaces()
     }
 }
 

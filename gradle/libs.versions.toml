@@ -1,0 +1,13 @@
+[versions]
+minecraft = "1.20.1"
+forge = "47.1.0"
+
+[plugins]
+forgegradle = { id = "net.minecraftforge.gradle", version = "[6.0,6.2)" }
+spotless = { id = "com.diffplug.spotless", version = "6.20.0" }
+
+[libraries]
+minecraft = { group = "com.mojang", name = "minecraft", version.ref = "minecraft" }
+forge = { group = "net.minecraftforge", name = "forge", version = "1.20.1-47.1.0" }
+
+"jei" = { group = "curse.maven", name = "jei-238222", version = "4690097" }
