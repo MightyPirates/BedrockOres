@@ -29,8 +29,7 @@ base {
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 
 repositories {
-    maven {
-        url = uri("https://cursemaven.com")
+    maven("https://cursemaven.com") {
         content { includeGroup("curse.maven") }
     }
 }
