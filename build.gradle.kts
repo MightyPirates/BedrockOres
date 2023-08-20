@@ -29,8 +29,9 @@ base {
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 
 repositories {
-    maven("https://cursemaven.com") {
-        content { includeGroup("curse.maven") }
+    exclusiveContent {
+        forRepository { maven("https://cursemaven.com") }
+        filter { includeGroup("curse.maven") }
     }
 }
 

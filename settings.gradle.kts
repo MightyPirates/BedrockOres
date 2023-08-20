@@ -1,10 +1,12 @@
 pluginManagement {
     repositories {
-        maven("https://maven.minecraftforge.net") {
-            content { includeGroupByRegex("net\\.minecraftforge.*") }
+        exclusiveContent {
+            forRepository { maven("https://maven.minecraftforge.net") }
+            filter { includeGroupByRegex("net\\.minecraftforge.*") }
         }
-        maven("https://maven.parchmentmc.org") {
-            content { includeGroupByRegex("org\\.parchmentmc.*") }
+        exclusiveContent {
+            forRepository { maven("https://maven.parchmentmc.org") }
+            filter { includeGroupByRegex("org\\.parchmentmc.*") }
         }
         gradlePluginPortal()
     }
