@@ -18,7 +18,7 @@ val modId: String by project
 val mavenGroup: String by project
 val modVersion: String by project
 val minecraftVersion: String = libs.versions.minecraft.get()
-val forgeVersion: String = libs.versions.forge.get()
+val forgeVersion: String = libs.versions.forge.platform.get().split("-")[1]
 
 version = "${modVersion}+${getGitRef()}"
 group = mavenGroup
@@ -35,10 +35,10 @@ repositories {
 }
 
 dependencies {
-    minecraft(libs.forge)
+    minecraft(libs.forge.platform)
 
     // Just for in-dev convenience. Mod doesn't use any JEI APIs.
-    runtimeOnly(fg.deobf(libs.jei.get()))
+    runtimeOnly(fg.deobf(libs.forge.jei.get()))
 }
 
 minecraft {
