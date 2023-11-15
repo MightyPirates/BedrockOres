@@ -5,11 +5,10 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.event.network.CustomPayloadEvent;
 import org.apache.commons.lang3.NotImplementedException;
 
 import javax.annotation.Nullable;
-import java.util.function.Supplier;
 
 public abstract class AbstractMessage {
     protected AbstractMessage() {
@@ -21,8 +20,8 @@ public abstract class AbstractMessage {
 
     // --------------------------------------------------------------------- //
 
-    public static boolean handleMessage(final AbstractMessage message, final Supplier<NetworkEvent.Context> contextSupplied) {
-        message.handleMessage(contextSupplied);
+    public static boolean handleMessageAsync(final AbstractMessage message, final CustomPayloadEvent.Context context) {
+        message.handleMessageAsync(context);
         return true;
     }
 
@@ -32,17 +31,16 @@ public abstract class AbstractMessage {
 
     // --------------------------------------------------------------------- //
 
-    protected void handleMessage(final Supplier<NetworkEvent.Context> contextSupplier) {
-        final NetworkEvent.Context context = contextSupplier.get();
+    protected void handleMessageAsync(final CustomPayloadEvent.Context context) {
         context.enqueueWork(() -> handleMessage(context));
     }
 
-    protected void handleMessage(final NetworkEvent.Context context) {
+    protected void handleMessage(final CustomPayloadEvent.Context context) {
         throw new NotImplementedException("Message implements neither asynchronous nor synchronous handleMessage() method.");
     }
 
     @Nullable
-    protected static Level getLevel(final NetworkEvent.Context context) {
+    protected static Level getLevel(final CustomPayloadEvent.Context context) {
         if (context.getDirection().getReceptionSide().isClient()) {
             return getClientLevel();
         } else {
@@ -51,7 +49,7 @@ public abstract class AbstractMessage {
     }
 
     @Nullable
-    private static Level getServerLevel(final NetworkEvent.Context context) {
+    private static Level getServerLevel(final CustomPayloadEvent.Context context) {
         final var sender = context.getSender();
         return sender != null ? sender.level() : null;
     }

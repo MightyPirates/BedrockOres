@@ -4,12 +4,13 @@ import li.cil.bedrockores.common.block.entity.BlockEntityWithInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.event.network.CustomPayloadEvent;
 
 import javax.annotation.Nullable;
 
 public final class InfoResponseMessage extends AbstractMessageWithPosition {
-    @Nullable private Component info;
+    @Nullable
+    private Component info;
 
     // --------------------------------------------------------------------- //
 
@@ -47,7 +48,7 @@ public final class InfoResponseMessage extends AbstractMessageWithPosition {
     }
 
     @Override
-    public void handleMessage(final NetworkEvent.Context context) {
+    public void handleMessage(final CustomPayloadEvent.Context context) {
         withBlockEntity(context, BlockEntityWithInfo.class, blockEntity -> blockEntity.setInfoClient(info));
     }
 }

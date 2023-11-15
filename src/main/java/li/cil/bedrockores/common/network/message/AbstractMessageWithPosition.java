@@ -5,7 +5,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.event.network.CustomPayloadEvent;
 
 import java.util.function.Consumer;
 
@@ -22,7 +22,7 @@ public abstract class AbstractMessageWithPosition extends AbstractMessage {
 
     // --------------------------------------------------------------------- //
 
-    protected <T extends BlockEntity> void withBlockEntity(final NetworkEvent.Context context, final Class<T> type, final Consumer<T> callback) {
+    protected <T extends BlockEntity> void withBlockEntity(final CustomPayloadEvent.Context context, final Class<T> type, final Consumer<T> callback) {
         final Level level = getLevel(context);
         if (level != null) {
             withBlockEntity(level, type, callback);

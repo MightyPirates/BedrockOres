@@ -28,18 +28,8 @@ base {
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 
-repositories {
-    exclusiveContent {
-        forRepository { maven("https://cursemaven.com") }
-        filter { includeGroup("curse.maven") }
-    }
-}
-
 dependencies {
     minecraft(libs.forge.platform)
-
-    // Just for in-dev convenience. Mod doesn't use any JEI APIs.
-    runtimeOnly(fg.deobf(libs.forge.jei.get()))
 }
 
 minecraft {

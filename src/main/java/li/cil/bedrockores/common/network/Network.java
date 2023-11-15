@@ -6,21 +6,22 @@ import li.cil.bedrockores.common.network.message.InfoRequestMessage;
 import li.cil.bedrockores.common.network.message.InfoResponseMessage;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.network.ChannelBuilder;
 import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.SimpleChannel;
 
 import java.util.function.Function;
 
 public final class Network {
-    private static final String PROTOCOL_VERSION = "1";
+    private static final int PROTOCOL_VERSION = 1;
 
-    public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(Constants.MOD_ID, "main"),
-            () -> PROTOCOL_VERSION,
-            PROTOCOL_VERSION::equals,
-            PROTOCOL_VERSION::equals
-    );
+    private static final PacketDistributor.PacketTarget TO_SERVER = PacketDistributor.SERVER.noArg();
+
+    public static final SimpleChannel INSTANCE = ChannelBuilder
+            .named(new ResourceLocation(Constants.MOD_ID, "main"))
+            .networkProtocolVersion(PROTOCOL_VERSION)
+            .simpleChannel();
 
     // --------------------------------------------------------------------- //
 
@@ -34,7 +35,7 @@ public final class Network {
     }
 
     public static <T extends AbstractMessage> void sendToServer(final T message) {
-        Network.INSTANCE.sendToServer(message);
+        Network.INSTANCE.send(message, TO_SERVER);
     }
 
     // --------------------------------------------------------------------- //
@@ -43,7 +44,7 @@ public final class Network {
         INSTANCE.messageBuilder(type, getNextPacketId(), direction)
                 .encoder(AbstractMessage::toBytes)
                 .decoder(decoder)
-                .consumerNetworkThread(AbstractMessage::handleMessage)
+                .consumerNetworkThread(AbstractMessage::handleMessageAsync)
                 .add();
     }
 
