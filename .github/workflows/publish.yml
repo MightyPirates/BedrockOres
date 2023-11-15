@@ -16,8 +16,8 @@ jobs:
         run: |
           tag=${{ github.event.release.tag_name }}
           parts=(${tag//\// })
-          echo "mc_version=${arrIN[0]}" >> $GITHUB_OUTPUT
-          echo "mod_version=${arrIN[1]}" >> $GITHUB_OUTPUT
+          echo "mc_version=${parts[0]}" >> $GITHUB_OUTPUT
+          echo "mod_version=${parts[1]}" >> $GITHUB_OUTPUT
 
       - name: Set up JDK
         uses: actions/setup-java@v3
