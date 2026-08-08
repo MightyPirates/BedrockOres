@@ -2,24 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "T": {
-      "item": "minecraft:dropper"
-    },
-    "R": {
-      "tag": "c:storage_blocks/redstone"
-    },
-    "P": {
-      "item": "minecraft:piston"
-    },
-    "D": {
-      "tag": "c:gems/diamond"
-    },
-    "O": {
-      "tag": "c:obsidians/normal"
-    }
+    "I": "#c:ingots/iron",
+    "T": "minecraft:dropper",
+    "R": "#c:storage_blocks/redstone",
+    "P": "minecraft:piston",
+    "D": "#c:gems/diamond",
+    "O": "#c:obsidians/normal"
   },
   "pattern": [
     "ITI",
@@ -27,7 +15,7 @@
     "ODO"
   ],
   "result": {
-    "id": "bedrockores:bedrock_miner",
-    "count": 1
+    "count": 1,
+    "id": "bedrockores:bedrock_miner"
   }
 }

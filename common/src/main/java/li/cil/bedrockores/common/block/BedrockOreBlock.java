@@ -3,6 +3,7 @@ package li.cil.bedrockores.common.block;
 import com.mojang.serialization.MapCodec;
 import dev.architectury.event.EventResult;
 import dev.architectury.utils.value.IntValue;
+import li.cil.bedrockores.common.RegistryKeys;
 import li.cil.bedrockores.common.block.entity.BedrockOreBlockEntity;
 import li.cil.bedrockores.common.block.entity.BlockEntities;
 import li.cil.bedrockores.common.config.Settings;
@@ -20,6 +21,8 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.MapColor;
 
 import javax.annotation.Nullable;
@@ -37,14 +40,25 @@ import javax.annotation.Nullable;
 public class BedrockOreBlock extends BaseEntityBlock {
     public static final MapCodec<BedrockOreBlock> CODEC = MapCodec.unit(BedrockOreBlockFactory::create);
 
+    public static final IntegerProperty LIGHT = IntegerProperty.create("light", 0, 15);
+
     // --------------------------------------------------------------------- //
 
     public BedrockOreBlock() {
         super(Properties.of()
+                .setId(RegistryKeys.block(RegistryKeys.BEDROCK_ORE))
                 .mapColor(MapColor.STONE)
                 .strength(-1F, 3600000)
                 .noLootTable()
+                .lightLevel(state -> state.getValue(LIGHT))
                 .isValidSpawn((state, reader, pos, entity) -> false));
+        registerDefaultState(defaultBlockState().setValue(LIGHT, 0));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(final StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(LIGHT);
     }
 
     // --------------------------------------------------------------------- //
@@ -66,11 +80,16 @@ public class BedrockOreBlock extends BaseEntityBlock {
         if (level.getBlockEntity(pos) instanceof final BedrockOreBlockEntity bedrockOre) {
             final var oreBlockState = bedrockOre.getOreBlockState();
 
+            final var tool = player.getMainHandItem().copy();
+            final var canHarvest = player.hasCorrectToolForDrops(oreBlockState);
+
             // Ignore result, expect drops to be handled by underlying ore.
             bedrockOre.extract();
 
             oreBlockState.getBlock().playerWillDestroy(level, pos, oreBlockState, player);
-            oreBlockState.getBlock().playerDestroy(level, player, pos, oreBlockState, null, player.getMainHandItem().copy());
+            if (canHarvest) {
+                oreBlockState.getBlock().playerDestroy(level, player, pos, oreBlockState, null, tool);
+            }
 
             // The vanilla break is cancelled below, so its effects never fire; play them for the
             // wrapped ore instead. Using the ore's state also gets the right particle texture.
@@ -117,7 +136,7 @@ public class BedrockOreBlock extends BaseEntityBlock {
     }
 
     // --------------------------------------------------------------------- //
-    // BlockBehaviour — forwarding to the actual ore's block state
+    // BlockBehaviour
 
 
     @Override

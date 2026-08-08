@@ -1,14 +1,14 @@
 package li.cil.bedrockores.neoforge;
 
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import li.cil.bedrockores.client.ClientSetup;
 import li.cil.bedrockores.common.BedrockOres;
 import li.cil.bedrockores.common.config.Constants;
 import li.cil.bedrockores.common.config.neoforge.SettingsImpl;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.loading.FMLEnvironment;
 
 @Mod(Constants.MOD_ID)
 public final class BedrockOresNeoForge {
@@ -17,7 +17,7 @@ public final class BedrockOresNeoForge {
 
         BedrockOres.initialize();
 
-        if (FMLEnvironment.dist == Dist.CLIENT) {
+        if (Platform.getEnvironment() == Env.CLIENT) {
             ClientSetup.initialize();
         }
 

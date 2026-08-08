@@ -1,9 +1,9 @@
 package li.cil.bedrockores.common.block;
 
 import com.mojang.serialization.MapCodec;
+import li.cil.bedrockores.common.RegistryKeys;
 import li.cil.bedrockores.common.block.entity.BedrockOreMinerBlockEntity;
 import li.cil.bedrockores.common.block.entity.BlockEntities;
-import li.cil.bedrockores.common.config.Settings;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -27,6 +27,7 @@ public final class BedrockMinerBlock extends BaseEntityBlock {
 
     public BedrockMinerBlock() {
         super(Properties.of()
+                .setId(RegistryKeys.block(RegistryKeys.BEDROCK_MINER))
                 .mapColor(MapColor.METAL)
                 .strength(5, 10)
                 .sound(SoundType.METAL));

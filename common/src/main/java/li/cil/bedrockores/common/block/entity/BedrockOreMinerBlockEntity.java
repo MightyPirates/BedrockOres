@@ -33,9 +33,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.TemporalAmount;
 import java.util.OptionalInt;
 import java.util.Spliterators;
 import java.util.function.Consumer;
@@ -65,7 +62,7 @@ public final class BedrockOreMinerBlockEntity extends BlockEntityWithInfo implem
     private static final String TAG_EXTRACTION_COOLDOWN = "extractionCooldown";
     private static final String TAG_WORKING = "working";
 
-    private static final TemporalAmount SEND_WORKING_STATE_DELAY = Duration.ofSeconds(1);
+    private static final long SEND_WORKING_STATE_DELAY_TICKS = 20;
 
     public static final int SLOT_FUEL = 0;
     public static final int SLOT_OUTPUT_FIRST = 1;
@@ -80,6 +77,8 @@ public final class BedrockOreMinerBlockEntity extends BlockEntityWithInfo implem
 
     private static final int SOUND_INTERVAL = 30; // in ticks
 
+    private static final long NO_PENDING_UPDATE = -1;
+
     @Nullable
     private BedrockOreBlockEntity currentOre;
     private boolean hasNoMoreOres;
@@ -87,10 +86,12 @@ public final class BedrockOreMinerBlockEntity extends BlockEntityWithInfo implem
     // We delay sending the working state to clients a little to avoid small
     // hiccups causing unnecessary update packets being sent.
     private boolean isWorkingServer, isWorkingClient;
-    @Nullable
-    private Instant sendUpdateTagAfter;
+    private long sendUpdateTagAtTick = NO_PENDING_UPDATE;
 
     private int soundCooldown;
+
+    private int cachedEnergyCapacity = -1;
+    private double cachedEnergyCapacityEfficiency = Double.NaN;
 
     // --------------------------------------------------------------------- //
 
@@ -120,7 +121,16 @@ public final class BedrockOreMinerBlockEntity extends BlockEntityWithInfo implem
         if (efficiency <= 0) {
             return 0;
         }
-        return Math.max(100, Mth.ceil(getFuelBurnTime(new ItemStack(Items.COAL)) / (RF_PER_BURN_TIME * efficiency)));
+
+        if (cachedEnergyCapacity < 0 || cachedEnergyCapacityEfficiency != efficiency) {
+            final var capacity = Math.max(100, Mth.ceil(getFuelBurnTime(new ItemStack(Items.COAL)) / (RF_PER_BURN_TIME * efficiency)));
+            if (getLevel() == null) {
+                return capacity;
+            }
+            cachedEnergyCapacityEfficiency = efficiency;
+            cachedEnergyCapacity = capacity;
+        }
+        return cachedEnergyCapacity;
     }
 
     private int getFuelBurnTime(final ItemStack stack) {
@@ -159,6 +169,8 @@ public final class BedrockOreMinerBlockEntity extends BlockEntityWithInfo implem
     }
 
     private void serverTick() {
+        flushWorkingState();
+
         flushOutput();
         if (!hasAvailableOutputSlot()) {
             setWorking(false);
@@ -538,16 +550,25 @@ public final class BedrockOreMinerBlockEntity extends BlockEntityWithInfo implem
         isWorkingServer = value;
 
         if (isWorkingServer == isWorkingClient) {
-            sendUpdateTagAfter = null;
-        } else if (sendUpdateTagAfter == null) {
-            sendUpdateTagAfter = Instant.now().plus(SEND_WORKING_STATE_DELAY);
+            sendUpdateTagAtTick = NO_PENDING_UPDATE;
+        } else if (sendUpdateTagAtTick == NO_PENDING_UPDATE) {
+            sendUpdateTagAtTick = requireNonNull(getLevel()).getGameTime() + SEND_WORKING_STATE_DELAY_TICKS;
+        }
+    }
+
+    private void flushWorkingState() {
+        if (sendUpdateTagAtTick == NO_PENDING_UPDATE) {
+            return;
         }
 
-        if (sendUpdateTagAfter != null && Instant.now().isAfter(sendUpdateTagAfter)) {
-            sendUpdateTagAfter = null;
-            isWorkingClient = isWorkingServer;
-            requireNonNull(getLevel()).sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_ALL);
+        final var level = requireNonNull(getLevel());
+        if (level.getGameTime() < sendUpdateTagAtTick) {
+            return;
         }
+
+        sendUpdateTagAtTick = NO_PENDING_UPDATE;
+        isWorkingClient = isWorkingServer;
+        level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_ALL);
     }
 
     private static double getInternalPowerEfficiency() {
@@ -561,27 +582,34 @@ public final class BedrockOreMinerBlockEntity extends BlockEntityWithInfo implem
     // --------------------------------------------------------------------- //
 
     private final class ScanAreaSpliterator extends Spliterators.AbstractSpliterator<BedrockOreBlockEntity> {
+        private final int radius, layers;
         private int x, y, z;
 
         ScanAreaSpliterator() {
-            super(numberOfBlocksInArea(), ORDERED | DISTINCT | SIZED | NONNULL | IMMUTABLE | SUBSIZED);
-            this.x = -radius();
-            this.z = -radius();
+            this(Settings.minerAreaRadius.get() - 1, Settings.minerAreaLayers.get());
+        }
+
+        private ScanAreaSpliterator(final int radius, final int layers) {
+            super(numberOfBlocksInArea(radius, layers), ORDERED | DISTINCT | SIZED | NONNULL | IMMUTABLE | SUBSIZED);
+            this.radius = radius;
+            this.layers = layers;
+            this.x = -radius;
+            this.z = -radius;
             this.y = 0;
         }
 
         @Override
         public boolean tryAdvance(final Consumer<? super BedrockOreBlockEntity> action) {
             final var scanLevel = requireNonNull(getLevel());
-            while (y < layers()) {
+            while (y < layers) {
                 final var pos = getBlockPos().below().offset(x, -y, z);
 
                 x++;
-                if (x > radius()) {
-                    x = -radius();
+                if (x > radius) {
+                    x = -radius;
                     z++;
-                    if (z > radius()) {
-                        z = -radius();
+                    if (z > radius) {
+                        z = -radius;
                         y++;
                     }
                 }
@@ -595,16 +623,8 @@ public final class BedrockOreMinerBlockEntity extends BlockEntityWithInfo implem
             return false;
         }
 
-        private static int radius() {
-            return Settings.minerAreaRadius.get() - 1;
-        }
-
-        private static int layers() {
-            return Settings.minerAreaLayers.get();
-        }
-
-        private static int numberOfBlocksInArea() {
-            return (radius() * 2 + 1) * (radius() * 2 + 1) * layers();
+        private static int numberOfBlocksInArea(final int radius, final int layers) {
+            return (radius * 2 + 1) * (radius * 2 + 1) * layers;
         }
     }
 }

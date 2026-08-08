@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public final class BedrockOreBlockEntityFactoryImpl {
     public static BedrockOreBlockEntity create(final BlockPos pos, final BlockState state) {
-        return new BedrockOreBlockEntityNeoForge(pos, state);
+        return new BedrockOreBlockEntity(pos, state);
     }
 
     private BedrockOreBlockEntityFactoryImpl() {

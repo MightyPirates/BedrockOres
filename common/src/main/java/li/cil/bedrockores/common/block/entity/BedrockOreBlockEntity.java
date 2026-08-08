@@ -1,21 +1,25 @@
 package li.cil.bedrockores.common.block.entity;
 
+import com.mojang.logging.LogUtils;
+import li.cil.bedrockores.common.block.BedrockOreBlock;
 import li.cil.bedrockores.common.config.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+
+import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -25,6 +29,8 @@ import static java.util.Objects.requireNonNull;
 import static li.cil.bedrockores.common.block.Blocks.BEDROCK_ORE;
 
 public class BedrockOreBlockEntity extends BlockEntityWithInfo {
+    private static final Logger LOGGER = LogUtils.getLogger();
+
     // --------------------------------------------------------------------- //
     // Persisted data
 
@@ -54,14 +60,13 @@ public class BedrockOreBlockEntity extends BlockEntityWithInfo {
 
     public void setOreBlockState(final BlockState state) {
         if (state.is(BEDROCK_ORE.get())) {
-            throw new IllegalArgumentException("Bedrock ore cannot contain itself.");
+            LOGGER.error("Tried to wrap a bedrock ore inside a bedrock ore at {}.", getBlockPos());
+            return;
         }
 
         if (Objects.equals(state, oreBlockState)) {
             return;
         }
-
-        final var oldState = oreBlockState;
 
         oreBlockState = state;
         droppedStack = new ItemStack(state.getBlock().asItem());
@@ -73,10 +78,7 @@ public class BedrockOreBlockEntity extends BlockEntityWithInfo {
             } else {
                 setChangedAndSendUpdateServer();
             }
-            if (oreBlockState.getLightEmission() != oldState.getLightEmission() ||
-                    oreBlockState.getLightBlock() != oldState.getLightBlock()) {
-                level.getChunkSource().getLightEngine().checkBlock(getBlockPos());
-            }
+            syncLightProperty();
         }
     }
 
@@ -148,20 +150,17 @@ public class BedrockOreBlockEntity extends BlockEntityWithInfo {
     // BlockEntity
 
     @Override
-    public void clearRemoved() {
-        super.clearRemoved();
-
-        refreshLighting();
-    }
-
-    @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
     public CompoundTag getUpdateTag(final HolderLookup.Provider registries) {
-        return saveWithoutMetadata(registries);
+        final var tag = new CompoundTag();
+        BlockState.CODEC
+                .encodeStart(NbtOps.INSTANCE, oreBlockState).result()
+                .ifPresent(encoded -> tag.put(TAG_STATE, encoded));
+        return tag;
     }
 
     @Override
@@ -190,7 +189,6 @@ public class BedrockOreBlockEntity extends BlockEntityWithInfo {
         if (level != null && level.isClientSide() && oreBlockState != oldState) {
             onRenderDataChanged();
             level.setBlocksDirty(getBlockPos(), getBlockState(), getBlockState());
-            refreshLighting();
         }
     }
 
@@ -199,26 +197,20 @@ public class BedrockOreBlockEntity extends BlockEntityWithInfo {
     protected void onRenderDataChanged() {
     }
 
-    /**
-     * Chunk lighting is computed before block entities are loaded, so at that point nothing knows
-     * which ore this block wraps and a glowing one contributes no light. Once the block entity is
-     * in place, nudge the light engine so it picks the emission up.
-     */
-    private void refreshLighting() {
+    private void syncLightProperty() {
         final var level = getLevel();
-        if (level == null || oreBlockState.getLightEmission() <= 0) {
+        if (level == null || level.isClientSide()) {
             return;
         }
 
-        final var pos = getBlockPos();
-        if (level instanceof final ServerLevel serverLevel) {
-            serverLevel.getServer().execute(() -> {
-                if (!isRemoved()) {
-                    serverLevel.getChunkSource().getLightEngine().checkBlock(pos);
-                }
-            });
-        } else {
-            level.getChunkSource().getLightEngine().checkBlock(pos);
+        final var state = getBlockState();
+        if (!state.hasProperty(BedrockOreBlock.LIGHT)) {
+            return;
+        }
+
+        final var light = oreBlockState.getLightEmission();
+        if (state.getValue(BedrockOreBlock.LIGHT) != light) {
+            level.setBlock(getBlockPos(), state.setValue(BedrockOreBlock.LIGHT, light), Block.UPDATE_ALL);
         }
     }
 

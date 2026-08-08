@@ -1,32 +1,65 @@
 package li.cil.bedrockores.client.render.neoforge;
 
-import com.google.common.collect.ImmutableSet;
-import net.minecraft.client.renderer.block.model.ItemOverrides;
+import li.cil.bedrockores.common.block.entity.BedrockOreBlockEntity;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.BlockModelPart;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelBaker;
-import net.minecraft.client.resources.model.ModelState;
-import net.minecraft.client.resources.model.UnbakedModel;
-import net.minecraft.resources.Identifier;
-import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
-import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.client.model.DynamicBlockStateModel;
 
-import java.util.Set;
-import java.util.function.Function;
+import javax.annotation.Nullable;
+import java.util.List;
 
-public final class BedrockOreModel implements IUnbakedGeometry<BedrockOreModel> {
+public final class BedrockOreModel implements DynamicBlockStateModel {
+    private final TextureAtlasSprite particle;
+
+    public BedrockOreModel(final TextureAtlasSprite particle) {
+        this.particle = particle;
+    }
+
+    // --------------------------------------------------------------------- //
+
     @Override
-    public BakedModel bake(final IGeometryBakingContext context, final ModelBaker baker, final Function<Material, TextureAtlasSprite> spriteGetter, final ModelState modelState, final ItemOverrides overrides) {
-        return new BedrockOreBakedModel();
+    public void collectParts(final BlockAndTintGetter level, final BlockPos pos, final BlockState state, final RandomSource random, final List<BlockModelPart> parts) {
+        final var oreState = getOreBlockState(level, pos);
+        if (oreState == null) {
+            return;
+        }
+
+        final var oreModel = Minecraft.getInstance().getBlockRenderer().getBlockModel(oreState);
+        if (oreModel instanceof final DynamicBlockStateModel dynamic) {
+            dynamic.collectParts(level, pos, oreState, random, parts);
+        } else {
+            oreModel.collectParts(random, parts);
+        }
     }
 
     @Override
-    public void resolveParents(final Function<Identifier, UnbakedModel> modelGetter, final IGeometryBakingContext context) {
+    public TextureAtlasSprite particleIcon() {
+        return particle;
     }
 
     @Override
-    public Set<String> getConfigurableComponentNames() {
-        return ImmutableSet.of();
+    public TextureAtlasSprite particleIcon(final BlockAndTintGetter level, final BlockPos pos, final BlockState state) {
+        final var oreState = getOreBlockState(level, pos);
+        if (oreState == null) {
+            return particle;
+        }
+        return Minecraft.getInstance().getBlockRenderer().getBlockModel(oreState).particleIcon();
+    }
+
+    // --------------------------------------------------------------------- //
+
+    @Nullable
+    private static BlockState getOreBlockState(final BlockAndTintGetter level, final BlockPos pos) {
+        if (!(level.getBlockEntity(pos) instanceof final BedrockOreBlockEntity bedrockOre)) {
+            return null;
+        }
+
+        final var oreState = bedrockOre.getOreBlockState();
+        return oreState.isAir() ? null : oreState;
     }
 }

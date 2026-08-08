@@ -9,7 +9,7 @@
       ]
     },
     {
-      "apply": {"model": "bedrockores:block/bedrock_ore"}
+      "apply": {"type": "bedrockores:bedrock_ore"}
     }
   ]
 }

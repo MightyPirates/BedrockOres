@@ -3,6 +3,7 @@ package li.cil.bedrockores.common.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import li.cil.bedrockores.common.block.BedrockOreBlock;
 import li.cil.bedrockores.common.block.Blocks;
 import li.cil.bedrockores.common.block.entity.BedrockOreBlockEntity;
 import net.minecraft.commands.CommandSourceStack;
@@ -38,7 +39,8 @@ public final class ModCommands {
         final var level = context.getSource().getLevel();
 
         final var state = level.getBlockState(pos);
-        level.setBlock(pos, Blocks.BEDROCK_ORE.get().defaultBlockState(), Block.UPDATE_CLIENTS);
+        level.setBlock(pos, Blocks.BEDROCK_ORE.get().defaultBlockState()
+                .setValue(BedrockOreBlock.LIGHT, state.getLightEmission()), Block.UPDATE_CLIENTS);
         if (level.getBlockEntity(pos) instanceof final BedrockOreBlockEntity bedrockOre) {
             bedrockOre.setOreBlockState(state);
             bedrockOre.setAmount(1);

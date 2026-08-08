@@ -3,14 +3,8 @@
     "package": "li.cil.bedrockores.mixin.fabric",
     "compatibilityLevel": "JAVA_21",
     "minVersion": "0.8",
-    "mixins": [
-        "LightEngineAccessor",
-        "MixinBlockLightEngine"
-    ],
     "client": [
-        "client.MixinMultiPlayerGameMode",
-        "client.MixinTerrainParticle",
-        "client.SingleQuadParticleAccessor"
+        "client.MixinMultiPlayerGameMode"
     ],
     "injectors": {
         "defaultRequire": 1

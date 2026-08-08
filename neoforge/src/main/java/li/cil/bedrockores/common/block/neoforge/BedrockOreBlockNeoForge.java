@@ -11,25 +11,22 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.phys.HitResult;
 
 import javax.annotation.Nullable;
 
 public final class BedrockOreBlockNeoForge extends BedrockOreBlock {
     @Override
-    public boolean onDestroyedByPlayer(final BlockState state, final Level level, final BlockPos pos, final Player player, final boolean willHarvest, final FluidState fluid) {
+    public boolean onDestroyedByPlayer(final BlockState state, final Level level, final BlockPos pos, final Player player, final ItemStack tool, final boolean willHarvest, final FluidState fluid) {
         if (level.isClientSide() && !player.isCreative()) {
             // Report the swing as handled so break progress resets, but leave the block alone.
             return true;
         }
-        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+        return super.onDestroyedByPlayer(state, level, pos, player, tool, willHarvest, fluid);
     }
 
     @Override
@@ -43,32 +40,12 @@ public final class BedrockOreBlockNeoForge extends BedrockOreBlock {
     }
 
     @Override
-    public int getLightEmission(final BlockState state, final BlockGetter level, final BlockPos pos) {
-        final var ore = getOreBlockState(level.getBlockEntity(pos));
-        if (ore != null) {
-            return ore.getLightEmission(level, pos);
-        } else {
-            return super.getLightEmission(state, level, pos);
-        }
-    }
-
-    @Override
     public boolean canHarvestBlock(final BlockState state, final BlockGetter level, final BlockPos pos, final Player player) {
         final var ore = getOreBlockState(level.getBlockEntity(pos));
         if (ore != null) {
             return ore.canHarvestBlock(level, pos, player);
         } else {
             return super.canHarvestBlock(state, level, pos, player);
-        }
-    }
-
-    @Override
-    public ItemStack getCloneItemStack(final BlockState state, final HitResult target, final LevelReader level, final BlockPos pos, final Player player) {
-        final var ore = getOreBlockState(level.getBlockEntity(pos));
-        if (ore != null) {
-            return ore.getCloneItemStack(target, level, pos, player);
-        } else {
-            return super.getCloneItemStack(state, target, level, pos, player);
         }
     }
 
@@ -93,16 +70,6 @@ public final class BedrockOreBlockNeoForge extends BedrockOreBlock {
     }
 
     @Override
-    public int getExpDrop(final BlockState state, final LevelAccessor level, final BlockPos pos, @Nullable final BlockEntity blockEntity, @Nullable final Entity breaker, final ItemStack tool) {
-        final var ore = getOreBlockState(level.getBlockEntity(pos));
-        if (ore != null) {
-            return ore.getExpDrop(level, pos, blockEntity, breaker, tool);
-        } else {
-            return super.getExpDrop(state, level, pos, blockEntity, breaker, tool);
-        }
-    }
-
-    @Override
     public SoundType getSoundType(final BlockState state, final LevelReader level, final BlockPos pos, @Nullable final Entity entity) {
         final var ore = getOreBlockState(level.getBlockEntity(pos));
         if (ore != null) {
@@ -110,11 +77,6 @@ public final class BedrockOreBlockNeoForge extends BedrockOreBlock {
         } else {
             return super.getSoundType(state, level, pos, entity);
         }
-    }
-
-    @Override
-    public boolean canStickTo(final BlockState state, final BlockState other) {
-        return false;
     }
 
     @Override

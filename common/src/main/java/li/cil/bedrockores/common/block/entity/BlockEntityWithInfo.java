@@ -9,16 +9,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.TemporalAmount;
 
 public abstract class BlockEntityWithInfo extends BlockEntity {
-    public static final TemporalAmount UPDATE_INTERVAL = Duration.ofMillis(500);
+    private static final long UPDATE_INTERVAL_TICKS = 10;
 
     @Nullable
     private Component currentInfo;
-    private Instant infoValidUntil = Instant.MIN;
+    private long infoValidUntilTick = Long.MIN_VALUE;
 
     // --------------------------------------------------------------------- //
 
@@ -36,8 +33,9 @@ public abstract class BlockEntityWithInfo extends BlockEntity {
             return null;
         }
 
-        if (Instant.now().isAfter(infoValidUntil)) {
-            infoValidUntil = Instant.now().plus(UPDATE_INTERVAL);
+        final var now = level.getGameTime();
+        if (now >= infoValidUntilTick) {
+            infoValidUntilTick = now + UPDATE_INTERVAL_TICKS;
             if (level.isClientSide()) {
                 Network.sendToServer(new InfoRequestMessage(getBlockPos()));
             } else {

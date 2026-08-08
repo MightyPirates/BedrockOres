@@ -1,6 +1,7 @@
 package li.cil.bedrockores.common.world;
 
 import com.mojang.serialization.Codec;
+import li.cil.bedrockores.common.block.BedrockOreBlock;
 import li.cil.bedrockores.common.block.Blocks;
 import li.cil.bedrockores.common.block.entity.BedrockOreBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -23,8 +24,9 @@ public class BedrockOreFeature extends Feature<BedrockOreConfiguration> {
         final var radius = config.radius().sample(random);
         final var height = config.height().sample(random);
 
-        assert radius > 0;
-        assert height > 0;
+        if (radius <= 0 || height <= 0) {
+            return false;
+        }
 
         final var y = origin.getY();
         final var yShift = height / 2;
@@ -55,7 +57,8 @@ public class BedrockOreFeature extends Feature<BedrockOreConfiguration> {
                 continue;
             }
 
-            setBlock(level, pos, Blocks.BEDROCK_ORE.get().defaultBlockState());
+            setBlock(level, pos, Blocks.BEDROCK_ORE.get().defaultBlockState()
+                    .setValue(BedrockOreBlock.LIGHT, config.ore().getLightEmission()));
             if (level.getBlockEntity(pos) instanceof BedrockOreBlockEntity bedrockOre) {
                 bedrockOre.setOreBlockState(config.ore());
                 config.amount()

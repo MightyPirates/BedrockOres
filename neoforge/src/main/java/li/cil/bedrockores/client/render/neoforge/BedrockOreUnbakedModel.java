@@ -1,8 +1,7 @@
-package li.cil.bedrockores.client.render.fabric;
+package li.cil.bedrockores.client.render.neoforge;
 
 import com.mojang.serialization.MapCodec;
 import li.cil.bedrockores.common.config.Constants;
-import net.fabricmc.fabric.api.client.model.loading.v1.CustomUnbakedBlockStateModel;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
@@ -10,6 +9,7 @@ import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelDebugName;
 import net.minecraft.client.resources.model.ResolvableModel;
 import net.minecraft.resources.Identifier;
+import net.neoforged.neoforge.client.model.block.CustomUnbakedBlockStateModel;
 
 public record BedrockOreUnbakedModel() implements CustomUnbakedBlockStateModel {
     public static final Identifier ID = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "bedrock_ore");
