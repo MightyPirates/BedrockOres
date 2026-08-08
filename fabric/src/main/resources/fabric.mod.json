@@ -28,7 +28,7 @@
         "fabric-api": ">=${fabricApiVersion}",
         "architectury": ">=${architecturyVersion}",
         "forgeconfigapiport": ">=${forgeConfigPortVersion}",
-        "minecraft": ">=${minecraftVersion}",
+        "minecraft": "${minecraftVersion}",
         "java": ">=21"
     },
     "custom": {
