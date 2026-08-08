@@ -25,6 +25,7 @@ fun getGitRef(): String {
 
 subprojects {
     apply(plugin = "java")
+    apply(plugin = "pmd")
     apply(plugin = rootProject.libs.plugins.architectury.get().pluginId)
     apply(plugin = rootProject.libs.plugins.loom.get().pluginId)
 
@@ -62,6 +63,22 @@ subprojects {
         targetCompatibility = JavaVersion.VERSION_21
     }
 
+    configure<PmdExtension> {
+        toolVersion = "7.26.0"
+        ruleSets = emptyList()
+        ruleSetFiles = rootProject.files("config/pmd/ruleset.xml")
+        isConsoleOutput = true
+        isIgnoreFailures = false
+    }
+
+    tasks.withType<Pmd>().configureEach {
+        exclude("**/mixin/**")
+        reports {
+            xml.required.set(false)
+            html.required.set(true)
+        }
+    }
+
     tasks {
         jar {
             from("LICENSE") {
@@ -72,6 +89,12 @@ subprojects {
         withType<JavaCompile>().configureEach {
             options.encoding = "utf-8"
             options.release.set(21)
+            options.compilerArgs.addAll(
+                listOf(
+                    "-Xlint:all,-processing,-serial,-classfile,-this-escape",
+                    "-Xmaxwarns", "1000",
+                )
+            )
         }
     }
 
@@ -149,6 +172,13 @@ for (platform in enabledPlatforms.split(',')) {
     }
 }
 
+tasks.register("lint") {
+    group = "verification"
+    description = "Runs Spotless and PMD across all modules."
+    dependsOn("spotlessCheck")
+    dependsOn(subprojects.map { "${it.path}:pmdMain" })
+}
+
 spotless {
     java {
         target("*/src/*/java/li/cil/**/*.java")
@@ -157,5 +187,6 @@ spotless {
         trimTrailingWhitespace()
         removeUnusedImports()
         indentWithSpaces()
+        importOrder("", "javax|java", "\\#")
     }
 }
