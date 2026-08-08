@@ -4,7 +4,7 @@ import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import li.cil.bedrockores.common.config.Constants;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 
 public final class Sounds {
@@ -12,7 +12,7 @@ public final class Sounds {
 
     // --------------------------------------------------------------------- //
 
-    public static final RegistrySupplier<SoundEvent> MINER = SOUND_EVENTS.register("bedrock_miner", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "bedrock_miner")));
+    public static final RegistrySupplier<SoundEvent> MINER = SOUND_EVENTS.register("bedrock_miner", () -> SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath(Constants.MOD_ID, "bedrock_miner")));
 
     // --------------------------------------------------------------------- //
 

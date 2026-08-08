@@ -8,12 +8,12 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.Optional;
 
 public record InfoResponseMessage(BlockPos position, Optional<Component> info) implements CustomPacketPayload {
-    public static final Type<InfoResponseMessage> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "info_response"));
+    public static final Type<InfoResponseMessage> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Constants.MOD_ID, "info_response"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, InfoResponseMessage> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, InfoResponseMessage::position,

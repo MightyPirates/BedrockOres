@@ -9,10 +9,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -25,6 +26,7 @@ import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -118,7 +120,15 @@ public final class BedrockOreMinerBlockEntity extends BlockEntityWithInfo implem
         if (efficiency <= 0) {
             return 0;
         }
-        return Math.max(100, Mth.ceil(FuelRegistry.get(new ItemStack(Items.COAL)) / (RF_PER_BURN_TIME * efficiency)));
+        return Math.max(100, Mth.ceil(getFuelBurnTime(new ItemStack(Items.COAL)) / (RF_PER_BURN_TIME * efficiency)));
+    }
+
+    private int getFuelBurnTime(final ItemStack stack) {
+        final var level = getLevel();
+        if (level == null || stack.isEmpty()) {
+            return 0;
+        }
+        return FuelRegistry.get(stack, RecipeType.SMELTING, level.fuelValues());
     }
 
     public int receiveEnergy(final int amount, final boolean simulate) {
@@ -216,38 +226,30 @@ public final class BedrockOreMinerBlockEntity extends BlockEntityWithInfo implem
     }
 
     @Override
-    protected void saveAdditional(final CompoundTag tag, final HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
+    protected void saveAdditional(final ValueOutput output) {
+        super.saveAdditional(output);
 
-        ContainerHelper.saveAllItems(tag, items, registries);
-        tag.putInt(TAG_ENERGY_STORAGE, energyStored);
-        tag.putInt(TAG_REMAINING_BURN_TIME, remainingBurnTime);
-        tag.putInt(TAG_EXTRACTION_COOLDOWN, extractionCooldown);
+        ContainerHelper.saveAllItems(output, items);
+        output.putInt(TAG_ENERGY_STORAGE, energyStored);
+        output.putInt(TAG_REMAINING_BURN_TIME, remainingBurnTime);
+        output.putInt(TAG_EXTRACTION_COOLDOWN, extractionCooldown);
     }
 
     @Override
-    protected void loadAdditional(final CompoundTag tag, final HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
+    protected void loadAdditional(final ValueInput input) {
+        super.loadAdditional(input);
 
-        // Both the full load and the network update tag come through here, and the update tag
-        // only carries the working flag, so every field has to be applied conditionally, or a
-        // client-side update would wipe the values it does not send.
-        if (tag.contains(TAG_ITEMS, Tag.TAG_LIST)) {
+        // Both the full load and the network update tag come through here, and the update tag only
+        // carries the working flag — so every field defaults to what it already holds rather than
+        // to zero, or a client-side update would wipe the values it does not send.
+        if (input.childrenList(TAG_ITEMS).isPresent()) {
             items.clear();
-            ContainerHelper.loadAllItems(tag, items, registries);
+            ContainerHelper.loadAllItems(input, items);
         }
-        if (tag.contains(TAG_ENERGY_STORAGE, Tag.TAG_INT)) {
-            energyStored = tag.getInt(TAG_ENERGY_STORAGE);
-        }
-        if (tag.contains(TAG_REMAINING_BURN_TIME, Tag.TAG_INT)) {
-            remainingBurnTime = tag.getInt(TAG_REMAINING_BURN_TIME);
-        }
-        if (tag.contains(TAG_EXTRACTION_COOLDOWN, Tag.TAG_INT)) {
-            extractionCooldown = tag.getInt(TAG_EXTRACTION_COOLDOWN);
-        }
-        if (tag.contains(TAG_WORKING, Tag.TAG_BYTE)) {
-            isWorkingClient = tag.getBoolean(TAG_WORKING);
-        }
+        energyStored = input.getIntOr(TAG_ENERGY_STORAGE, energyStored);
+        remainingBurnTime = input.getIntOr(TAG_REMAINING_BURN_TIME, remainingBurnTime);
+        extractionCooldown = input.getIntOr(TAG_EXTRACTION_COOLDOWN, extractionCooldown);
+        isWorkingClient = input.getBooleanOr(TAG_WORKING, isWorkingClient);
     }
 
     // --------------------------------------------------------------------- //
@@ -498,11 +500,8 @@ public final class BedrockOreMinerBlockEntity extends BlockEntityWithInfo implem
         return availableBurnTime;
     }
 
-    private static int getScaledFuelBurnTime(final ItemStack stack) {
-        if (stack.isEmpty()) {
-            return 0;
-        }
-        return Mth.ceil(FuelRegistry.get(stack) * getInternalPowerEfficiency());
+    private int getScaledFuelBurnTime(final ItemStack stack) {
+        return Mth.ceil(getFuelBurnTime(stack) * getInternalPowerEfficiency());
     }
 
     private boolean hasRemainingBurnTime() {

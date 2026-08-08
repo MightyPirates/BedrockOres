@@ -3,15 +3,11 @@ package li.cil.bedrockores.common.block;
 import com.mojang.serialization.MapCodec;
 import li.cil.bedrockores.common.block.entity.BedrockOreMinerBlockEntity;
 import li.cil.bedrockores.common.block.entity.BlockEntities;
-import li.cil.bedrockores.common.config.Constants;
 import li.cil.bedrockores.common.config.Settings;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.RenderShape;
@@ -23,7 +19,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public final class BedrockMinerBlock extends BaseEntityBlock {
     public static final MapCodec<BedrockMinerBlock> CODEC = MapCodec.unit(BedrockMinerBlock::new);
@@ -74,28 +69,19 @@ public final class BedrockMinerBlock extends BaseEntityBlock {
     }
 
     @Override
-    public int getAnalogOutputSignal(final BlockState blockState, final Level level, final BlockPos pos) {
+    public int getAnalogOutputSignal(final BlockState blockState, final Level level, final BlockPos pos, final Direction side) {
         if (level.getBlockEntity(pos) instanceof final BedrockOreMinerBlockEntity miner) {
             return miner.isWorking() ? 15 : 0;
         } else {
-            return super.getAnalogOutputSignal(blockState, level, pos);
+            return super.getAnalogOutputSignal(blockState, level, pos, side);
         }
     }
 
     @Override
-    public void onRemove(final BlockState oldState, final Level level, final BlockPos pos, final BlockState newState, final boolean movedByPiston) {
-        if (!oldState.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof final BedrockOreMinerBlockEntity miner) {
+    public void affectNeighborsAfterRemoval(final BlockState state, final ServerLevel level, final BlockPos pos, final boolean movedByPiston) {
+        if (level.getBlockEntity(pos) instanceof final BedrockOreMinerBlockEntity miner) {
             Containers.dropContents(level, pos, miner);
-            level.updateNeighbourForOutputSignal(pos, this);
         }
-        super.onRemove(oldState, level, pos, newState, movedByPiston);
-    }
-
-    @Override
-    public void appendHoverText(final ItemStack stack, final Item.TooltipContext context, final List<Component> tooltip, final TooltipFlag flags) {
-        super.appendHoverText(stack, context, tooltip, flags);
-        final var edgeLength = (Settings.minerAreaRadius.get() - 1) * 2 + 1;
-        final var layers = Settings.minerAreaLayers.get();
-        tooltip.add(Component.translatable(Constants.TOOLTIP_BEDROCK_MINER, edgeLength, layers, edgeLength).withStyle(ChatFormatting.GRAY));
+        level.updateNeighbourForOutputSignal(pos, this);
     }
 }

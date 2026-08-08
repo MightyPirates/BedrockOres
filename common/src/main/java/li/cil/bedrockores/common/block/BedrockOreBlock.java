@@ -119,15 +119,6 @@ public class BedrockOreBlock extends BaseEntityBlock {
     // --------------------------------------------------------------------- //
     // BlockBehaviour — forwarding to the actual ore's block state
 
-    @Override
-    public int getLightBlock(final BlockState state, final BlockGetter level, final BlockPos pos) {
-        final var ore = getOreBlockState(level.getBlockEntity(pos));
-        if (ore != null) {
-            return ore.getLightBlock(level, pos);
-        } else {
-            return super.getLightBlock(state, level, pos);
-        }
-    }
 
     @Override
     public float getDestroyProgress(final BlockState state, final Player player, final BlockGetter level, final BlockPos pos) {
@@ -140,12 +131,12 @@ public class BedrockOreBlock extends BaseEntityBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(final LevelReader level, final BlockPos pos, final BlockState state) {
+    public ItemStack getCloneItemStack(final LevelReader level, final BlockPos pos, final BlockState state, final boolean includeData) {
         final var ore = getOreBlockState(level.getBlockEntity(pos));
         if (ore != null) {
-            return ore.getBlock().getCloneItemStack(level, pos, ore);
+            return ore.getCloneItemStack(level, pos, includeData);
         } else {
-            return super.getCloneItemStack(level, pos, state);
+            return super.getCloneItemStack(level, pos, state, includeData);
         }
     }
 

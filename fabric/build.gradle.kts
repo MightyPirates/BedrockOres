@@ -1,7 +1,12 @@
+val modId: String by project
 val minecraftVersion: String = libs.versions.minecraft.get()
 val fabricApiVersion: String = libs.versions.fabric.api.get()
 val architecturyVersion: String = libs.versions.architectury.get()
 val forgeConfigPortVersion: String = libs.versions.fabric.forgeConfigPort.get()
+
+loom {
+    accessWidenerPath.set(project(":common").loom.accessWidenerPath)
+}
 
 repositories {
     exclusiveContent {
@@ -34,5 +39,9 @@ tasks {
         filesMatching("fabric.mod.json") {
             expand(properties)
         }
+    }
+
+    remapJar {
+        injectAccessWidener.set(true)
     }
 }

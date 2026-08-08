@@ -8,29 +8,29 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.client.resources.model.UnbakedModel;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 
 public final class BedrockOreUnbakedModel implements UnbakedModel {
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "block/bedrock_ore");
+    public static final Identifier ID = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/bedrock_ore");
 
     public static final BedrockOreUnbakedModel INSTANCE = new BedrockOreUnbakedModel();
 
     private static final Material PARTICLE = new Material(TextureAtlas.LOCATION_BLOCKS,
-            ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "block/bedrock_ore_mask"));
+            Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/bedrock_ore_mask"));
 
     // --------------------------------------------------------------------- //
 
     @Override
-    public Collection<ResourceLocation> getDependencies() {
+    public Collection<Identifier> getDependencies() {
         return List.of();
     }
 
     @Override
-    public void resolveParents(final Function<ResourceLocation, UnbakedModel> resolver) {
+    public void resolveParents(final Function<Identifier, UnbakedModel> resolver) {
     }
 
     @Override

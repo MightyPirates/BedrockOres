@@ -15,7 +15,7 @@ import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 public final class ModCommands {
     public static void register(final CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("bedrock_ores")
-                .requires(stack -> stack.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 
                 .then(Commands.literal("wrap")
                         .then(Commands.argument("pos", BlockPosArgument.blockPos())

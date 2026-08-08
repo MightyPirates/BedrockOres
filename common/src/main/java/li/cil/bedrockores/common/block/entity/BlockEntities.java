@@ -25,8 +25,7 @@ public final class BlockEntities {
 
     // --------------------------------------------------------------------- //
 
-    @SuppressWarnings("DataFlowIssue") // .build(null) is fine
     private static <B extends Block, T extends BlockEntity> RegistrySupplier<BlockEntityType<T>> register(final String name, final RegistrySupplier<B> block, final BlockEntityType.BlockEntitySupplier<T> factory) {
-        return BLOCK_ENTITY_TYPES.register(name, () -> BlockEntityType.Builder.of(factory, block.get()).build(null));
+        return BLOCK_ENTITY_TYPES.register(name, () -> new BlockEntityType<>(factory, java.util.Set.of(block.get())));
     }
 }

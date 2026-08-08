@@ -3,7 +3,7 @@ package li.cil.bedrockores.common.world;
 import li.cil.bedrockores.common.config.Constants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public final class BedrockOrePlacements {
     );
 
     private static ResourceKey<PlacedFeature> key(final String name) {
-        return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, name));
+        return ResourceKey.create(Registries.PLACED_FEATURE, Identifier.fromNamespaceAndPath(Constants.MOD_ID, name));
     }
 
     private BedrockOrePlacements() {

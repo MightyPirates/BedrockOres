@@ -3,9 +3,9 @@ package li.cil.bedrockores.common.block.entity;
 import li.cil.bedrockores.common.config.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -74,7 +74,7 @@ public class BedrockOreBlockEntity extends BlockEntityWithInfo {
                 setChangedAndSendUpdateServer();
             }
             if (oreBlockState.getLightEmission() != oldState.getLightEmission() ||
-                    oreBlockState.getLightBlock(level, getBlockPos()) != oldState.getLightBlock(level, getBlockPos())) {
+                    oreBlockState.getLightBlock() != oldState.getLightBlock()) {
                 level.getChunkSource().getLightEngine().checkBlock(getBlockPos());
             }
         }
@@ -165,34 +165,24 @@ public class BedrockOreBlockEntity extends BlockEntityWithInfo {
     }
 
     @Override
-    protected void saveAdditional(final CompoundTag tag, final HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
+    protected void saveAdditional(final ValueOutput output) {
+        super.saveAdditional(output);
 
-        BlockState.CODEC
-                .encodeStart(NbtOps.INSTANCE, oreBlockState).result()
-                .ifPresent(stateNbt -> tag.put(TAG_STATE, stateNbt));
+        output.store(TAG_STATE, BlockState.CODEC, oreBlockState);
         if (!isInfinite()) {
-            tag.putInt(TAG_AMOUNT, amount);
-        } else {
-            tag.remove(TAG_AMOUNT);
+            output.putInt(TAG_AMOUNT, amount);
         }
     }
 
     @Override
-    protected void loadAdditional(final CompoundTag tag, final HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
+    protected void loadAdditional(final ValueInput input) {
+        super.loadAdditional(input);
 
         final var oldState = oreBlockState;
 
-        oreBlockState = BlockState.CODEC
-                .parse(NbtOps.INSTANCE, tag.get(TAG_STATE)).result()
-                .orElse(Blocks.AIR.defaultBlockState());
+        oreBlockState = input.read(TAG_STATE, BlockState.CODEC).orElse(Blocks.AIR.defaultBlockState());
         droppedStack = new ItemStack(oreBlockState.getBlock().asItem());
-        if (tag.contains(TAG_AMOUNT, Tag.TAG_INT)) {
-            setAmount(tag.getInt(TAG_AMOUNT));
-        } else {
-            setInfinite();
-        }
+        input.getInt(TAG_AMOUNT).ifPresentOrElse(this::setAmount, this::setInfinite);
 
         // This is also the path network updates take, so the model has to be rebuilt when the
         // wrapped ore changed under us.

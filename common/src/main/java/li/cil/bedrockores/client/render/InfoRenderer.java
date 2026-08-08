@@ -47,9 +47,9 @@ public final class InfoRenderer {
         stack.translate(0.5, 1.5, 0.5);
 
         stack.translate(
-                blockPos.getX() - camera.getPosition().x,
-                blockPos.getY() - camera.getPosition().y,
-                blockPos.getZ() - camera.getPosition().z);
+                blockPos.getX() - camera.position().x,
+                blockPos.getY() - camera.position().y,
+                blockPos.getZ() - camera.position().z);
 
         stack.mulPose(camera.rotation());
 

@@ -8,7 +8,7 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.client.resources.model.UnbakedModel;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
 import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
 
@@ -22,7 +22,7 @@ public final class BedrockOreModel implements IUnbakedGeometry<BedrockOreModel> 
     }
 
     @Override
-    public void resolveParents(final Function<ResourceLocation, UnbakedModel> modelGetter, final IGeometryBakingContext context) {
+    public void resolveParents(final Function<Identifier, UnbakedModel> modelGetter, final IGeometryBakingContext context) {
     }
 
     @Override
