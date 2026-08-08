@@ -23,6 +23,7 @@ public final class BedrockOreModel implements DynamicBlockStateModel {
     // --------------------------------------------------------------------- //
 
     @Override
+    @SuppressWarnings("deprecation")
     public void collectParts(final BlockAndTintGetter level, final BlockPos pos, final BlockState state, final RandomSource random, final List<BlockModelPart> parts) {
         final var oreState = getOreBlockState(level, pos);
         if (oreState == null) {
@@ -38,11 +39,13 @@ public final class BedrockOreModel implements DynamicBlockStateModel {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public TextureAtlasSprite particleIcon() {
         return particle;
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public TextureAtlasSprite particleIcon(final BlockAndTintGetter level, final BlockPos pos, final BlockState state) {
         final var oreState = getOreBlockState(level, pos);
         if (oreState == null) {

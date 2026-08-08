@@ -24,6 +24,7 @@ public final class BedrockMinerBlockItem extends BlockItem {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void appendHoverText(final ItemStack stack, final TooltipContext context, final TooltipDisplay display, final Consumer<Component> tooltip, final TooltipFlag flags) {
         super.appendHoverText(stack, context, display, tooltip, flags);
 

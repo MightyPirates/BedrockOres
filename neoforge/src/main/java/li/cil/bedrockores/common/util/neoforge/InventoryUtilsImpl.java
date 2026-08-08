@@ -22,7 +22,7 @@ public final class InventoryUtilsImpl {
             return null;
         }
 
-        try (final var transaction = Transaction.openRoot()) {
+        try (var transaction = Transaction.openRoot()) {
             final var remainder = ItemUtil.insertItemReturnRemaining(handler, stack, false, transaction);
             transaction.commit();
             return remainder;

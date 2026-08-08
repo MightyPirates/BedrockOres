@@ -16,6 +16,7 @@ public record BedrockOreUnbakedModel() implements CustomUnbakedBlockStateModel {
 
     public static final MapCodec<BedrockOreUnbakedModel> CODEC = MapCodec.unit(BedrockOreUnbakedModel::new);
 
+    @SuppressWarnings("deprecation")
     private static final Material PARTICLE = new Material(TextureAtlas.LOCATION_BLOCKS,
             Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/bedrock_ore_mask"));
 
