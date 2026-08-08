@@ -10,7 +10,7 @@
     "client": [
         "client.MixinMultiPlayerGameMode",
         "client.MixinTerrainParticle",
-        "client.TextureSheetParticleAccessor"
+        "client.SingleQuadParticleAccessor"
     ],
     "injectors": {
         "defaultRequire": 1

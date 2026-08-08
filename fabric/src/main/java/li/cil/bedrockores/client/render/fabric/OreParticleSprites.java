@@ -2,7 +2,7 @@ package li.cil.bedrockores.client.render.fabric;
 
 import li.cil.bedrockores.common.block.Blocks;
 import li.cil.bedrockores.common.block.entity.BedrockOreBlockEntity;
-import li.cil.bedrockores.mixin.fabric.client.TextureSheetParticleAccessor;
+import li.cil.bedrockores.mixin.fabric.client.SingleQuadParticleAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.TerrainParticle;
@@ -28,7 +28,7 @@ public final class OreParticleSprites {
         }
 
         final var sprite = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getParticleIcon(oreState);
-        ((TextureSheetParticleAccessor) particle).bedrockores$setSprite(sprite);
+        ((SingleQuadParticleAccessor) particle).bedrockores$setSprite(sprite);
     }
 
     @Nullable
