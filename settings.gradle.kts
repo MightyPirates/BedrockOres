@@ -1,19 +1,37 @@
 pluginManagement {
     repositories {
         exclusiveContent {
-            forRepository { maven("https://maven.minecraftforge.net") }
-            filter { includeGroupByRegex("net\\.minecraftforge.*") }
+            forRepository { maven("https://maven.architectury.dev") }
+            filter {
+                includeGroup("architectury-plugin")
+                includeGroupByRegex("dev\\.architectury.*")
+                includeGroup("com.mojang")
+            }
         }
         exclusiveContent {
-            forRepository { maven("https://maven.parchmentmc.org") }
-            filter { includeGroupByRegex("org\\.parchmentmc.*") }
+            forRepository { maven("https://maven.fabricmc.net") }
+            filter {
+                includeGroupByRegex("net\\.fabricmc.*")
+            }
+        }
+        exclusiveContent {
+            // Required by Architectury Loom itself (installertools, mcinjector, DiffPatch),
+            // not by the mod — keep this even though Forge is no longer a target platform.
+            forRepository { maven("https://maven.minecraftforge.net") }
+            filter {
+                includeGroupByRegex("net\\.minecraftforge.*")
+                includeGroup("de.oceanlabs.mcp")
+            }
         }
         gradlePluginPortal()
     }
 }
 
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
+include("common")
+
+val enabledPlatforms: String by settings
+for (enabledPlatform in enabledPlatforms.split(",")) {
+    include(enabledPlatform)
 }
 
 val modId: String by settings

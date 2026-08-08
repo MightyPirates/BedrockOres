@@ -1,0 +1,42 @@
+modLoader = "javafml"
+loaderVersion = "[${loaderVersion},)"
+issueTrackerURL = "https://github.com/MightyPirates/BedrockOres/issues"
+license = "MIT"
+
+[[mods]]
+modId = "bedrockores"
+version = "${version}"
+displayName = "Bedrock Ores"
+displayURL = "https://github.com/MightyPirates/BedrockOres"
+authors = "Sangar"
+description = '''
+Large ore deposits embedded in the bedrock.
+'''
+
+[[dependencies.bedrockores]]
+modId = "neoforge"
+type = "required"
+versionRange = "[${neoforgeVersion},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.bedrockores]]
+modId = "minecraft"
+type = "required"
+versionRange = "${minecraftVersion}"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.bedrockores]]
+modId = "architectury"
+type = "required"
+versionRange = "[${architecturyVersion},)"
+ordering = "AFTER"
+side = "BOTH"
+
+[mc-publish]
+modrinth = "KCMBVtfE"
+curseforge = 275083
+dependencies = [
+    "architectury@>=${architecturyVersion}(required){modrinth:lhGA9TYQ}{curseforge:419699}"
+]
