@@ -5,6 +5,8 @@ val forgeConfigPortVersion: String = libs.versions.fabric.forgeConfigPort.get()
 
 val gameTestRuntime: Configuration by configurations.creating
 val gameTestResultsDir = layout.buildDirectory.dir("test-results/gameTest")
+val devOnlyMods: Configuration by configurations.creating
+val devOnlyModNames = provider { devOnlyMods.resolvedConfiguration.resolvedArtifacts.map { it.moduleVersion.id.name } }
 
 loom {
     runs {
@@ -28,6 +30,8 @@ repositories {
     }
 }
 
+configurations.named("modRuntimeOnly") { extendsFrom(devOnlyMods) }
+
 dependencies {
     gameTestRuntime(project(path = ":gametest-fabric", configuration = "namedElements")) { isTransitive = false }
 
@@ -39,6 +43,9 @@ dependencies {
     include(modApi(libs.fabric.energy.get().toString()) {
         exclude(group = "net.fabricmc.fabric-api")
     })
+
+    // Not used by mod, just for dev convenience.
+    devOnlyMods(libs.jei.fabric)
 }
 
 tasks {
@@ -74,5 +81,6 @@ val fixGameTestReport = tasks.register("fixGameTestReport") {
 tasks.named<JavaExec>("runGameTest") {
     dependsOn(cleanGameTestResults)
     classpath += gameTestRuntime
+    classpath = classpath.filter { file -> devOnlyModNames.get().none { file.name.startsWith("${it}-") } }
     finalizedBy(fixGameTestReport)
 }

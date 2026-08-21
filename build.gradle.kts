@@ -39,6 +39,10 @@ subprojects {
             forRepository { maven("https://maven.parchmentmc.org") }
             filter { includeGroupByRegex("org\\.parchmentmc.*") }
         }
+        exclusiveContent {
+            forRepository { maven("https://maven.blamejared.com") }
+            filter { includeGroup("mezz.jei") }
+        }
     }
 
     dependencies {
