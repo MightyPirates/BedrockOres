@@ -1,0 +1,25 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "MIT"
+
+[[mods]]
+modId = "bedrockores_gametest"
+version = "0.0.0"
+displayName = "BedrockOres Game Tests"
+description = '''
+Game test suite. Run with ./gradlew :neoforge:runGameTestServer
+'''
+
+[[dependencies.bedrockores_gametest]]
+modId = "architectury"
+type = "required"
+versionRange = "[1,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.bedrockores_gametest]]
+modId = "bedrockores"
+type = "required"
+versionRange = "[0,)"
+ordering = "AFTER"
+side = "BOTH"
