@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 package li.cil.bedrockores.mixin.fabric;
 
 import net.minecraft.world.level.chunk.LightChunkGetter;

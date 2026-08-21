@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 package li.cil.bedrockores.client.render.fabric;
 
 import net.fabricmc.fabric.api.blockview.v2.FabricBlockView;

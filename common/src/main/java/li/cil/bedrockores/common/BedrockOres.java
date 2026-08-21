@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 package li.cil.bedrockores.common;
 
 import dev.architectury.event.events.common.BlockEvent;

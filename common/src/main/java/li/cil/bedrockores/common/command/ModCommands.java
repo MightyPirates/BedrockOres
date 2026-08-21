@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 package li.cil.bedrockores.common.command;
 
 import com.mojang.brigadier.CommandDispatcher;

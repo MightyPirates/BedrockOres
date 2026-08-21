@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 package li.cil.bedrockores.mixin.fabric.client;
 
 import net.minecraft.client.particle.TextureSheetParticle;

@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 package li.cil.bedrockores.gametest.neoforge;
 
 import li.cil.bedrockores.gametest.GameTestReporting;

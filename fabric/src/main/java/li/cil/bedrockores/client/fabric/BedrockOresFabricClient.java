@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 package li.cil.bedrockores.client.fabric;
 
 import li.cil.bedrockores.client.ClientSetup;

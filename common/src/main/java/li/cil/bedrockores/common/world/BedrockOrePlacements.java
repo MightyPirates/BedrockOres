@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 package li.cil.bedrockores.common.world;
 
 import li.cil.bedrockores.common.config.Constants;

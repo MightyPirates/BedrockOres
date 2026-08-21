@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 package li.cil.bedrockores.common.block.entity;
 
 import dev.architectury.registry.registries.DeferredRegister;
