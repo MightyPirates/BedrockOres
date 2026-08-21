@@ -185,3 +185,4 @@ for (platform in enabledPlatforms.split(',')) {
 
 registerGameTestTask()
 registerLintTask()
+configureMavenPublishing(minecraftVersion, "https://github.com/fnuecke/BedrockOres")
