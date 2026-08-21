@@ -49,8 +49,8 @@ public final class BedrockOreMinerBlockEntity extends BlockEntityWithInfo implem
 
     private final NonNullList<ItemStack> items = NonNullList.withSize(SLOT_COUNT, ItemStack.EMPTY);
 
-    private int energyStored = 0;
-    private int remainingBurnTime = 0;
+    private int energyStored;
+    private int remainingBurnTime;
     private int extractionCooldown = -1;
     private int transferCooldown = 20;
 

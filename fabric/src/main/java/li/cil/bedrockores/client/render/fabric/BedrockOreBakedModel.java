@@ -60,7 +60,7 @@ public final class BedrockOreBakedModel implements BakedModel, FabricBakedModel 
         }
 
         try {
-            ((FabricBakedModel) oreModel).emitBlockQuads(blockView, oreState, pos, randomSupplier, context);
+            oreModel.emitBlockQuads(blockView, oreState, pos, randomSupplier, context);
         } finally {
             if (material != null) {
                 context.popTransform();

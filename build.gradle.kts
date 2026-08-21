@@ -25,6 +25,7 @@ fun getGitRef(): String {
 
 subprojects {
     apply(plugin = "java")
+    apply(plugin = "pmd")
     apply(plugin = rootProject.libs.plugins.architectury.get().pluginId)
     apply(plugin = rootProject.libs.plugins.loom.get().pluginId)
 
@@ -58,8 +59,25 @@ subprojects {
     }
 
     java {
+        toolchain.languageVersion.set(JavaLanguageVersion.of(21))
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
+    }
+
+    configure<PmdExtension> {
+        toolVersion = "7.26.0"
+        ruleSets = emptyList()
+        ruleSetFiles = rootProject.files("config/pmd/ruleset.xml")
+        isConsoleOutput = true
+        isIgnoreFailures = false
+    }
+
+    tasks.withType<Pmd>().configureEach {
+        exclude("**/mixin/**")
+        reports {
+            xml.required.set(false)
+            html.required.set(true)
+        }
     }
 
     tasks {
@@ -158,4 +176,11 @@ spotless {
         removeUnusedImports()
         indentWithSpaces()
     }
+}
+
+tasks.register("lint") {
+    group = "verification"
+    description = "Runs Spotless and PMD across all modules."
+    dependsOn("spotlessCheck")
+    dependsOn(subprojects.map { "${it.path}:pmdMain" })
 }

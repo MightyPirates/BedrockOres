@@ -24,7 +24,7 @@ public final class InventoryUtilsImpl {
         }
 
         final long inserted;
-        try (final var transaction = Transaction.openOuter()) {
+        try (var transaction = Transaction.openOuter()) {
             inserted = storage.insert(ItemVariant.of(stack), stack.getCount(), transaction);
             transaction.commit();
         }
