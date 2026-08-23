@@ -3,14 +3,10 @@
 package li.cil.bedrockores.client.render.fabric;
 
 import li.cil.bedrockores.common.config.Constants;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelBaker;
-import net.minecraft.client.resources.model.ModelState;
-import net.minecraft.client.resources.model.UnbakedModel;
+import net.minecraft.client.resources.model.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,8 +17,8 @@ public final class BedrockOreUnbakedModel implements UnbakedModel {
 
     public static final BedrockOreUnbakedModel INSTANCE = new BedrockOreUnbakedModel();
 
-    private static final Material PARTICLE = new Material(TextureAtlas.LOCATION_BLOCKS,
-            ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "block/bedrock_ore_mask"));
+    private static final Material PARTICLE = new Material(InventoryMenu.BLOCK_ATLAS,
+        ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "block/bedrock_ore_mask"));
 
     // --------------------------------------------------------------------- //
 

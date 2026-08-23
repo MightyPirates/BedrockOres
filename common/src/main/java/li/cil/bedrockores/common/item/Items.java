@@ -21,6 +21,7 @@ public final class Items {
 
     // --------------------------------------------------------------------- //
 
+    @SuppressWarnings("unchecked")
     public static void initialize() {
         ITEMS.register();
 
