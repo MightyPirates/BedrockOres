@@ -7,6 +7,7 @@ import dev.architectury.event.events.common.CommandRegistrationEvent;
 import li.cil.bedrockores.common.block.BedrockOreBlock;
 import li.cil.bedrockores.common.block.Blocks;
 import li.cil.bedrockores.common.block.entity.BlockEntities;
+import li.cil.bedrockores.common.block.entity.UnconfiguredOreCleanup;
 import li.cil.bedrockores.common.command.ModCommands;
 import li.cil.bedrockores.common.config.Settings;
 import li.cil.bedrockores.common.item.Items;
@@ -25,6 +26,7 @@ public final class BedrockOres {
         Items.initialize();
         Sounds.initialize();
         BedrockOreFeatures.initialize();
+        UnconfiguredOreCleanup.initialize();
 
         CommandRegistrationEvent.EVENT.register((dispatcher, registry, selection) -> ModCommands.register(dispatcher));
 

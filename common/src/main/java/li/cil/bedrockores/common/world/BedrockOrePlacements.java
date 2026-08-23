@@ -22,6 +22,8 @@ public final class BedrockOrePlacements {
             key("overworld_redstone")
     );
 
+    public static final ResourceKey<PlacedFeature> UNCONFIGURED_ORE_CLEANUP = key("unconfigured_ore_cleanup");
+
     private static ResourceKey<PlacedFeature> key(final String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, name));
     }

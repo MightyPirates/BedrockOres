@@ -76,7 +76,7 @@ public class BedrockOreBlockEntity extends BlockEntityWithInfo {
                 setChangedAndSendUpdateServer();
             }
             if (oreBlockState.getLightEmission() != oldState.getLightEmission() ||
-                    oreBlockState.getLightBlock(level, getBlockPos()) != oldState.getLightBlock(level, getBlockPos())) {
+                oreBlockState.getLightBlock(level, getBlockPos()) != oldState.getLightBlock(level, getBlockPos())) {
                 level.getChunkSource().getLightEngine().checkBlock(getBlockPos());
             }
         }
@@ -102,6 +102,10 @@ public class BedrockOreBlockEntity extends BlockEntityWithInfo {
 
     public void setInfinite() {
         amount = null;
+    }
+
+    public boolean isUnconfigured() {
+        return oreBlockState.isAir();
     }
 
     public boolean isEmpty() {
@@ -154,6 +158,7 @@ public class BedrockOreBlockEntity extends BlockEntityWithInfo {
         super.clearRemoved();
 
         refreshLighting();
+        scheduleRemoveUnconfigured();
     }
 
     @Override
@@ -231,6 +236,12 @@ public class BedrockOreBlockEntity extends BlockEntityWithInfo {
             });
         } else {
             level.getChunkSource().getLightEngine().checkBlock(pos);
+        }
+    }
+
+    private void scheduleRemoveUnconfigured() {
+        if (getLevel() instanceof final ServerLevel level) {
+            UnconfiguredOreCleanup.schedule(level, getBlockPos());
         }
     }
 

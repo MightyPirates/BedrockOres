@@ -1,0 +1,8 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "bedrockores:unconfigured_ore_cleanup"
+  ],
+  "step": "top_layer_modification"
+}

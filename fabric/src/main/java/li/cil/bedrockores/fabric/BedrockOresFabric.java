@@ -23,6 +23,11 @@ public final class BedrockOresFabric implements ModInitializer {
                     placement);
         }
 
+        BiomeModifications.addFeature(
+                BiomeSelectors.foundInOverworld(),
+                GenerationStep.Decoration.TOP_LAYER_MODIFICATION,
+                BedrockOrePlacements.UNCONFIGURED_ORE_CLEANUP);
+
         EnergyStorage.SIDED.registerForBlockEntity(
                 (miner, side) -> side != null && side.getAxis().isHorizontal() && miner.getEnergyCapacity() > 0
                         ? new MinerEnergyStorage(miner)
