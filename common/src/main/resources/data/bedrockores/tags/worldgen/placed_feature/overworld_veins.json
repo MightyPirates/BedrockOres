@@ -1,0 +1,12 @@
+{
+  "values": [
+    "bedrockores:overworld_coal",
+    "bedrockores:overworld_copper",
+    "bedrockores:overworld_diamond",
+    "bedrockores:overworld_emerald",
+    "bedrockores:overworld_gold",
+    "bedrockores:overworld_iron",
+    "bedrockores:overworld_lapis",
+    "bedrockores:overworld_redstone"
+  ]
+}

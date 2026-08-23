@@ -26,9 +26,9 @@ placed feature controlling rarity and height. For example, [`data/bedrockores/wo
 }
 ```
 
-To change an ore, override that path from a data pack in `<world>/datapacks/`. Adding a new ore also needs a matching
-`worldgen/placed_feature` entry and, on NeoForge, listing it in [`data/bedrockores/neoforge/biome_modifier/overworld_minecraft.json`][neoforge-biome-modifiers].
-On Fabric the set of veins added to biomes is currently hardcoded.
+To change an ore, override that path from a data pack in `<world>/datapacks/`. To add one, ship a configured feature
+plus a matching `worldgen/placed_feature` entry, and list that placed feature in the `bedrockores:overworld_veins`
+tag ([`data/bedrockores/tags/worldgen/placed_feature/overworld_veins.json`][vein-tag]).
 
 ## License / Use in Modpacks
 
@@ -37,4 +37,4 @@ all are free to be distributed as long as the license / source credits are kept.
 mod pack **as you please**. I'd be happy to hear about you using it, though, just out of curiosity.
 
 [worldgen-feature]: common/src/main/resources/data/bedrockores/worldgen/configured_feature/overworld_iron.json
-[neoforge-biome-modifiers]: neoforge/src/main/resources/data/bedrockores/neoforge/biome_modifier/overworld_minecraft.json
+[vein-tag]: common/src/main/resources/data/bedrockores/tags/worldgen/placed_feature/overworld_veins.json

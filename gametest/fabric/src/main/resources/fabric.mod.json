@@ -12,7 +12,8 @@
         ],
         "fabric-gametest": [
             "li.cil.bedrockores.gametest.fabric.BedrockOreTestsFabric",
-            "li.cil.bedrockores.gametest.fabric.RecipeTestsFabric"
+            "li.cil.bedrockores.gametest.fabric.RecipeTestsFabric",
+            "li.cil.bedrockores.gametest.fabric.VeinPlacementTestsFabric"
         ]
     },
     "depends": {
