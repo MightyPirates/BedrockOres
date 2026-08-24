@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 package li.cil.bedrockores.common.util.neoforge;
 
 import net.minecraft.core.BlockPos;

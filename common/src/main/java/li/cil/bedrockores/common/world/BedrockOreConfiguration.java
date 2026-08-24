@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 package li.cil.bedrockores.common.world;
 
 import com.mojang.datafixers.util.Either;

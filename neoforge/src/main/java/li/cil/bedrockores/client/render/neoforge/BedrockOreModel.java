@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 package li.cil.bedrockores.client.render.neoforge;
 
 import li.cil.bedrockores.common.block.entity.BedrockOreBlockEntity;

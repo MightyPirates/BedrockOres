@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 package li.cil.bedrockores.neoforge;
 
 import dev.architectury.platform.Platform;

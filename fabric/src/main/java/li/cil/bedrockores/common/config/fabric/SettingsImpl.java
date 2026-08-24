@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 package li.cil.bedrockores.common.config.fabric;
 
 import fuzs.forgeconfigapiport.fabric.api.v5.ConfigRegistry;

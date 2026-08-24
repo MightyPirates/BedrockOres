@@ -4,8 +4,29 @@ val fabricApiVersion: String = libs.versions.fabric.api.get()
 val architecturyVersion: String = libs.versions.architectury.get()
 val forgeConfigPortVersion: String = libs.versions.fabric.forgeConfigPort.get()
 
+val gameTestRuntime: Configuration by configurations.creating
+val gameTestResultsDir = layout.buildDirectory.dir("test-results/gameTest")
+val devOnlyMods: Configuration by configurations.creating
+val devOnlyModNames = provider { devOnlyMods.resolvedConfiguration.resolvedArtifacts.map { it.moduleVersion.id.name } }
+
 loom {
     accessWidenerPath.set(project(":common").loom.accessWidenerPath)
+
+    runs {
+        named("client") { runDir = "run/client" }
+        named("server") { runDir = "run/server" }
+
+        create("gameTest") {
+            server()
+            runDir = "run/gametest"
+            property("fabric-api.gametest")
+            property(
+                "fabric-api.gametest.report-file",
+                gameTestResultsDir.get().file("fabric-game-tests.xml").asFile.absolutePath
+            )
+            vmArg("-ea")
+        }
+    }
 }
 
 repositories {
@@ -15,15 +36,25 @@ repositories {
     }
 }
 
+configurations.named("modRuntimeOnly") { extendsFrom(devOnlyMods) }
+
 dependencies {
+    gameTestRuntime(project(path = ":gametest-fabric", configuration = "namedElements")) { isTransitive = false }
+
     modImplementation(libs.fabric.loader)
     modApi(libs.fabric.api)
     modApi(libs.fabric.architectury)
+
+    // Allows `remapSourcesJar` to resolve `@ExpectPlatform` in the common sources it bundles.
+    compileOnly(libs.architectury.injectables)
 
     modImplementation(libs.fabric.forgeConfigPort)
     include(modApi(libs.fabric.energy.get().toString()) {
         exclude(group = "net.fabricmc.fabric-api")
     })
+
+    // Not used by mod, just for dev convenience.
+    devOnlyMods(libs.jei.fabric)
 }
 
 tasks {
@@ -44,4 +75,25 @@ tasks {
     remapJar {
         injectAccessWidener.set(true)
     }
+}
+
+val cleanGameTestResults = tasks.register<Delete>("cleanGameTestResults") {
+    description = "Deletes game test results and the scratch world from previous runs."
+    delete(gameTestResultsDir)
+    delete(layout.projectDirectory.dir("run/gametest/world"))
+}
+
+val fixGameTestReport = tasks.register("fixGameTestReport") {
+    val reportFile = gameTestResultsDir.map { it.file("fabric-game-tests.xml") }
+    outputs.upToDateWhen { false }
+    doLast {
+        normalizeGameTestReport(reportFile.get().asFile)
+    }
+}
+
+tasks.named<JavaExec>("runGameTest") {
+    dependsOn(cleanGameTestResults)
+    classpath += gameTestRuntime
+    classpath = classpath.filter { file -> devOnlyModNames.get().none { file.name.startsWith("${it}-") } }
+    finalizedBy(fixGameTestReport)
 }

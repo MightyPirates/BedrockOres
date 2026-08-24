@@ -10,7 +10,12 @@
     <rule ref="category/java/bestpractices.xml/UnusedPrivateField"/>
     <rule ref="category/java/bestpractices.xml/UnusedPrivateMethod"/>
     <rule ref="category/java/bestpractices.xml/UnusedLocalVariable"/>
-    <rule ref="category/java/bestpractices.xml/UnusedFormalParameter"/>
+    <rule ref="category/java/bestpractices.xml/UnusedFormalParameter">
+        <properties>
+            <property name="violationSuppressXPath"
+                      value="ancestor::MethodDeclaration[1]/ModifierList/Annotation[@SimpleName='ExpectPlatform']"/>
+        </properties>
+    </rule>
     <rule ref="category/java/bestpractices.xml/UnusedAssignment"/>
     <rule ref="category/java/bestpractices.xml/UnusedLabel"/>
     <rule ref="category/java/bestpractices.xml/UnnecessaryWarningSuppression"/>
@@ -41,7 +46,7 @@
     <rule ref="category/java/errorprone.xml/CompareObjectsWithEquals">
         <properties>
             <property name="typesThatCompareByReference"
-                      value="java.lang.Enum,java.lang.Class,net.minecraft.world.level.block.state.BlockState"/>
+                      value="java.lang.Enum,java.lang.Class,net.minecraft.world.level.block.state.BlockState,net.minecraft.world.item.Item,net.minecraft.world.item.ItemStack,net.minecraft.world.level.Level,net.minecraft.world.level.block.entity.BlockEntity"/>
         </properties>
     </rule>
     <rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashcode"/>

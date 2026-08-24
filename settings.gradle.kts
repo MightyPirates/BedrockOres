@@ -12,6 +12,7 @@ pluginManagement {
             forRepository { maven("https://maven.fabricmc.net") }
             filter {
                 includeGroupByRegex("net\\.fabricmc.*")
+                includeGroup("fabric-loom")
             }
         }
         exclusiveContent {
@@ -30,6 +31,11 @@ include("common")
 val enabledPlatforms: String by settings
 for (enabledPlatform in enabledPlatforms.split(",")) {
     include(enabledPlatform)
+}
+
+for (module in listOf("common") + enabledPlatforms.split(",")) {
+    include("gametest-$module")
+    project(":gametest-$module").projectDir = file("gametest/$module")
 }
 
 val modId: String by settings

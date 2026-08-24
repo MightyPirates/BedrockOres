@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 package li.cil.bedrockores.common.network.message;
 
 import net.minecraft.core.BlockPos;

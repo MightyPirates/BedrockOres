@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 package li.cil.bedrockores.common.block.entity;
 
 import com.mojang.logging.LogUtils;
@@ -11,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -103,6 +106,10 @@ public class BedrockOreBlockEntity extends BlockEntityWithInfo {
         amount = null;
     }
 
+    public boolean isUnconfigured() {
+        return oreBlockState.isAir();
+    }
+
     public boolean isEmpty() {
         final var amount = getAmount();
         if (amount.isPresent()) {
@@ -147,6 +154,13 @@ public class BedrockOreBlockEntity extends BlockEntityWithInfo {
 
     // --------------------------------------------------------------------- //
     // BlockEntity
+
+    @Override
+    public void clearRemoved() {
+        super.clearRemoved();
+
+        scheduleRemoveUnconfigured();
+    }
 
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
@@ -210,6 +224,12 @@ public class BedrockOreBlockEntity extends BlockEntityWithInfo {
         final var light = oreBlockState.getLightEmission();
         if (state.getValue(BedrockOreBlock.LIGHT) != light) {
             level.setBlock(getBlockPos(), state.setValue(BedrockOreBlock.LIGHT, light), Block.UPDATE_ALL);
+        }
+    }
+
+    private void scheduleRemoveUnconfigured() {
+        if (getLevel() instanceof final ServerLevel level) {
+            UnconfiguredOreCleanup.schedule(level, getBlockPos());
         }
     }
 

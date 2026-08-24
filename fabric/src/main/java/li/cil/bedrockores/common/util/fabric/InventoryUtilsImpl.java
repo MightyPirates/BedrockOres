@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 package li.cil.bedrockores.common.util.fabric;
 
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;

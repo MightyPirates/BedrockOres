@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 package li.cil.bedrockores.client;
 
 import dev.architectury.networking.NetworkManager;

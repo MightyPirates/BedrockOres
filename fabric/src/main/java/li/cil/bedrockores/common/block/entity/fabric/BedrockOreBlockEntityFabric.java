@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+
 package li.cil.bedrockores.common.block.entity.fabric;
 
 import li.cil.bedrockores.common.block.entity.BedrockOreBlockEntity;
