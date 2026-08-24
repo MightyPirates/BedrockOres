@@ -15,6 +15,7 @@ import li.cil.bedrockores.common.item.Items;
 import li.cil.bedrockores.common.network.Network;
 import li.cil.bedrockores.common.sound.Sounds;
 import li.cil.bedrockores.common.world.BedrockOreFeatures;
+import li.cil.bedrockores.common.world.BedrockOrePlacementModifiers;
 import li.cil.bedrockores.common.world.BedrockOrePlacements;
 
 public final class BedrockOres {
@@ -28,6 +29,7 @@ public final class BedrockOres {
         Items.initialize();
         Sounds.initialize();
         BedrockOreFeatures.initialize();
+        BedrockOrePlacementModifiers.initialize();
         UnconfiguredOreCleanup.initialize();
 
         CommandRegistrationEvent.EVENT.register((dispatcher, registry, selection) -> ModCommands.register(dispatcher));
