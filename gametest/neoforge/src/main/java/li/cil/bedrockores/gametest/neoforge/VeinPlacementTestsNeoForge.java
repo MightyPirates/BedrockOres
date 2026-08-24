@@ -24,6 +24,11 @@ public final class VeinPlacementTestsNeoForge {
         VeinPlacementTests.overworldBiomesGetVeins(helper);
     }
 
+    @GameTest(template = TEMPLATE)
+    public static void veinsResolveIntoBedrockBand(final GameTestHelper helper) {
+        VeinPlacementTests.veinsResolveIntoBedrockBand(helper);
+    }
+
     private VeinPlacementTestsNeoForge() {
     }
 }

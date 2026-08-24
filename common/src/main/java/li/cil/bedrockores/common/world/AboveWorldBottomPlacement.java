@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 public final class AboveWorldBottomPlacement extends PlacementModifier {
     public static final MapCodec<AboveWorldBottomPlacement> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-        IntProvider.CODEC.fieldOf("offset").forGetter(placement -> placement.offset)
+        IntProvider.NON_NEGATIVE_CODEC.fieldOf("offset").forGetter(placement -> placement.offset)
     ).apply(builder, AboveWorldBottomPlacement::new));
 
     private final IntProvider offset;
@@ -26,7 +26,7 @@ public final class AboveWorldBottomPlacement extends PlacementModifier {
 
     @Override
     public Stream<BlockPos> getPositions(final PlacementContext context, final RandomSource random, final BlockPos pos) {
-        return Stream.of(new BlockPos(pos.getX(), context.getMinBuildHeight() + offset.sample(random), pos.getZ()));
+        return Stream.of(pos.atY(context.getMinBuildHeight() + offset.sample(random)));
     }
 
     @Override

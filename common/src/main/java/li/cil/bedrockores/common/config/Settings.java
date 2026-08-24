@@ -13,7 +13,6 @@ public final class Settings {
     public static ModConfigSpec.IntValue minerAreaRadius;
     public static ModConfigSpec.IntValue minerAreaLayers;
 
-    public static ModConfigSpec.IntValue veinsPerChunk;
     public static ModConfigSpec.BooleanValue allowPlayerMining;
 
     public static ModConfigSpec.BooleanValue uiOnlyWhenSneaking;
@@ -45,9 +44,6 @@ public final class Settings {
                 .defineInRange("areaLayers", 3, 1, 32);
 
         builder.pop().push("world");
-        veinsPerChunk = builder
-                .comment("The number of bedrock ore veins to attempt to generate per chunk.")
-                .defineInRange("veins_per_chunk", 5, 0, 50);
         allowPlayerMining = builder
                 .comment("Whether to allow players to directly mine bedrock ores. " +
                         "Disabling this will force players to use the bedrock miner.")

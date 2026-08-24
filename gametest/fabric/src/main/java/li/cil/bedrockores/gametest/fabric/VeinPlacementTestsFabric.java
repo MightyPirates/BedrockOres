@@ -18,4 +18,9 @@ public final class VeinPlacementTestsFabric {
     public void overworldBiomesGetVeins(final GameTestHelper helper) {
         VeinPlacementTests.overworldBiomesGetVeins(helper);
     }
+
+    @GameTest(template = TEMPLATE)
+    public void veinsResolveIntoBedrockBand(final GameTestHelper helper) {
+        VeinPlacementTests.veinsResolveIntoBedrockBand(helper);
+    }
 }
