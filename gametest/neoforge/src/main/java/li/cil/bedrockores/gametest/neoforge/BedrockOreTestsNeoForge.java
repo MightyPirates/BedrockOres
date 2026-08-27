@@ -39,6 +39,13 @@ public final class BedrockOreTestsNeoForge {
         BedrockOreTests.worldGenKeepsOreWithData(helper);
     }
 
+    @GameTest
+    @EmptyTemplate
+    @TestHolder(description = "State queries on a bedrock ore never load the chunk they are asked about.")
+    public static void stateQueriesNeverLoadChunks(final GameTestHelper helper) {
+        BedrockOreTests.stateQueriesNeverLoadChunks(helper);
+    }
+
     private BedrockOreTestsNeoForge() {
     }
 }

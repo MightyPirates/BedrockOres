@@ -33,7 +33,7 @@ public final class BedrockOreBlockNeoForge extends BedrockOreBlock {
 
     @Override
     public float getFriction(final BlockState state, final LevelReader level, final BlockPos pos, @Nullable final Entity entity) {
-        final var ore = getOreBlockState(level.getBlockEntity(pos));
+        final var ore = getOreBlockState(level, pos);
         if (ore != null) {
             return ore.getFriction(level, pos, entity);
         } else {
@@ -43,7 +43,7 @@ public final class BedrockOreBlockNeoForge extends BedrockOreBlock {
 
     @Override
     public boolean canHarvestBlock(final BlockState state, final BlockGetter level, final BlockPos pos, final Player player) {
-        final var ore = getOreBlockState(level.getBlockEntity(pos));
+        final var ore = getOreBlockState(level, pos);
         if (ore != null) {
             return ore.canHarvestBlock(level, pos, player);
         } else {
@@ -53,7 +53,7 @@ public final class BedrockOreBlockNeoForge extends BedrockOreBlock {
 
     @Override
     public boolean addLandingEffects(final BlockState state, final ServerLevel level, final BlockPos pos, final BlockState stateOverride, final LivingEntity entity, final int numberOfParticles) {
-        final var ore = getOreBlockState(level.getBlockEntity(pos));
+        final var ore = getOreBlockState(level, pos);
         if (ore != null) {
             return ore.addLandingEffects(level, pos, stateOverride, entity, numberOfParticles);
         } else {
@@ -63,7 +63,7 @@ public final class BedrockOreBlockNeoForge extends BedrockOreBlock {
 
     @Override
     public boolean addRunningEffects(final BlockState state, final Level level, final BlockPos pos, final Entity entity) {
-        final var ore = getOreBlockState(level.getBlockEntity(pos));
+        final var ore = getOreBlockState(level, pos);
         if (ore != null) {
             return ore.addRunningEffects(level, pos, entity);
         } else {
@@ -73,7 +73,7 @@ public final class BedrockOreBlockNeoForge extends BedrockOreBlock {
 
     @Override
     public SoundType getSoundType(final BlockState state, final LevelReader level, final BlockPos pos, @Nullable final Entity entity) {
-        final var ore = getOreBlockState(level.getBlockEntity(pos));
+        final var ore = getOreBlockState(level, pos);
         if (ore != null) {
             return ore.getSoundType(level, pos, entity);
         } else {
@@ -83,7 +83,7 @@ public final class BedrockOreBlockNeoForge extends BedrockOreBlock {
 
     @Override
     public MapColor getMapColor(final BlockState state, final BlockGetter level, final BlockPos pos, final MapColor defaultColor) {
-        final var ore = getOreBlockState(level.getBlockEntity(pos));
+        final var ore = getOreBlockState(level, pos);
         if (ore != null) {
             return ore.getMapColor(level, pos);
         } else {
@@ -93,7 +93,7 @@ public final class BedrockOreBlockNeoForge extends BedrockOreBlock {
 
     @Override
     public BlockState getAppearance(final BlockState state, final BlockAndTintGetter level, final BlockPos pos, final Direction side, @Nullable final BlockState queryState, @Nullable final BlockPos queryPos) {
-        final var ore = getOreBlockState(level.getBlockEntity(pos));
+        final var ore = getOreBlockState(level, pos);
         if (ore != null) {
             return ore.getAppearance(level, pos, side, queryState, queryPos);
         } else {
