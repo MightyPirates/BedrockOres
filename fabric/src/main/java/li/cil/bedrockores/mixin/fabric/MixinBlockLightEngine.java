@@ -4,6 +4,7 @@ package li.cil.bedrockores.mixin.fabric;
 
 import li.cil.bedrockores.common.block.Blocks;
 import li.cil.bedrockores.common.block.entity.BedrockOreBlockEntity;
+import li.cil.bedrockores.common.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.lighting.BlockLightEngine;
@@ -22,7 +23,7 @@ public abstract class MixinBlockLightEngine {
 
         final var pos = BlockPos.of(packedPos);
         final var level = ((LightEngineAccessor) this).bedrockores$getChunkSource().getLevel();
-        final var blockEntity = level.getBlockEntity(pos);
+        final var blockEntity = LevelUtils.getBlockEntityIfChunkLoaded(level, pos);
 
         if (blockEntity instanceof final BedrockOreBlockEntity bedrockOre) {
             cir.setReturnValue(bedrockOre.getOreBlockState().getLightEmission());

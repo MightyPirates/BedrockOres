@@ -28,4 +28,9 @@ public final class BedrockOreTestsFabric {
     public void chunkSweepKeepsOreWithData(final GameTestHelper helper) {
         BedrockOreTests.worldGenKeepsOreWithData(helper);
     }
+
+    @GameTest(template = TEMPLATE)
+    public void stateQueriesNeverLoadChunks(final GameTestHelper helper) {
+        BedrockOreTests.stateQueriesNeverLoadChunks(helper);
+    }
 }

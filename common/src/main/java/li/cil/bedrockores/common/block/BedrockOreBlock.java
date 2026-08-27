@@ -8,6 +8,7 @@ import dev.architectury.utils.value.IntValue;
 import li.cil.bedrockores.common.block.entity.BedrockOreBlockEntity;
 import li.cil.bedrockores.common.block.entity.BlockEntities;
 import li.cil.bedrockores.common.config.Settings;
+import li.cil.bedrockores.common.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -43,10 +44,10 @@ public class BedrockOreBlock extends BaseEntityBlock {
 
     public BedrockOreBlock() {
         super(Properties.of()
-                .mapColor(MapColor.STONE)
-                .strength(-1F, 3600000)
-                .noLootTable()
-                .isValidSpawn((state, reader, pos, entity) -> false));
+            .mapColor(MapColor.STONE)
+            .strength(-1F, 3600000)
+            .noLootTable()
+            .isValidSpawn((state, reader, pos, entity) -> false));
     }
 
     // --------------------------------------------------------------------- //
@@ -123,7 +124,7 @@ public class BedrockOreBlock extends BaseEntityBlock {
 
     @Override
     public int getLightBlock(final BlockState state, final BlockGetter level, final BlockPos pos) {
-        final var ore = getOreBlockState(level.getBlockEntity(pos));
+        final var ore = getOreBlockState(level, pos);
         if (ore != null) {
             return ore.getLightBlock(level, pos);
         } else {
@@ -133,7 +134,7 @@ public class BedrockOreBlock extends BaseEntityBlock {
 
     @Override
     public float getDestroyProgress(final BlockState state, final Player player, final BlockGetter level, final BlockPos pos) {
-        final var ore = getOreBlockState(level.getBlockEntity(pos));
+        final var ore = getOreBlockState(level, pos);
         if (ore != null) {
             return ore.getDestroyProgress(player, level, pos);
         } else {
@@ -143,7 +144,7 @@ public class BedrockOreBlock extends BaseEntityBlock {
 
     @Override
     public ItemStack getCloneItemStack(final LevelReader level, final BlockPos pos, final BlockState state) {
-        final var ore = getOreBlockState(level.getBlockEntity(pos));
+        final var ore = getOreBlockState(level, pos);
         if (ore != null) {
             return ore.getBlock().getCloneItemStack(level, pos, ore);
         } else {
@@ -154,8 +155,8 @@ public class BedrockOreBlock extends BaseEntityBlock {
     // --------------------------------------------------------------------- //
 
     @Nullable
-    protected static BlockState getOreBlockState(@Nullable final BlockEntity blockEntity) {
-        if (blockEntity instanceof final BedrockOreBlockEntity bedrockOre) {
+    protected static BlockState getOreBlockState(final BlockGetter level, final BlockPos pos) {
+        if (LevelUtils.getBlockEntityIfChunkLoaded(level, pos) instanceof final BedrockOreBlockEntity bedrockOre) {
             return bedrockOre.getOreBlockState();
         }
         return null;

@@ -34,6 +34,11 @@ public final class BedrockOreTestsNeoForge {
         BedrockOreTests.worldGenKeepsOreWithData(helper);
     }
 
+    @GameTest(template = TEMPLATE)
+    public static void stateQueriesNeverLoadChunks(final GameTestHelper helper) {
+        BedrockOreTests.stateQueriesNeverLoadChunks(helper);
+    }
+
     private BedrockOreTestsNeoForge() {
     }
 }

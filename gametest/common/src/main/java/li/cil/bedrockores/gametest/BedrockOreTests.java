@@ -6,6 +6,7 @@ import li.cil.bedrockores.common.block.entity.BedrockOreBlockEntity;
 import li.cil.bedrockores.common.block.entity.UnconfiguredOreCleanup;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
 
 import static li.cil.bedrockores.common.block.Blocks.BEDROCK_ORE;
@@ -13,6 +14,7 @@ import static li.cil.bedrockores.gametest.TestSupport.*;
 
 public final class BedrockOreTests {
     private static final BlockPos ORE = new BlockPos(1, WORK_Y, 1);
+    private static final BlockPos UNLOADED = new BlockPos(1_000_000, 64, 1_000_000);
     private static final int SETTLE_TICKS = 5;
     private static final int AMOUNT = 4;
 
@@ -62,6 +64,21 @@ public final class BedrockOreTests {
         removeUnconfiguredFromChunk(helper);
 
         helper.assertBlockPresent(BEDROCK_ORE.get(), ORE);
+        helper.succeed();
+    }
+
+    @SuppressWarnings("deprecation") // hasChunkAt
+    public static void stateQueriesNeverLoadChunks(final GameTestHelper helper) {
+        final var level = helper.getLevel();
+        final var state = BEDROCK_ORE.get().defaultBlockState();
+        final var player = helper.makeMockPlayer(GameType.SURVIVAL);
+
+        assertTrue(helper, "expected the probed chunk to start out unloaded", !level.hasChunkAt(UNLOADED));
+
+        state.getMapColor(level, UNLOADED);
+        state.getDestroyProgress(player, level, UNLOADED);
+
+        assertTrue(helper, "expected the probe to leave the chunk unloaded", !level.hasChunkAt(UNLOADED));
         helper.succeed();
     }
 
