@@ -183,6 +183,7 @@ for (platform in enabledPlatforms.split(',')) {
     }
 }
 
+serializeArchitecturyTransforms()
 registerGameTestTask()
 registerLintTask()
 configureMavenPublishing(minecraftVersion, "https://github.com/MightyPirates/BedrockOres")
