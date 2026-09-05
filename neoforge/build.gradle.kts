@@ -10,16 +10,16 @@ val devOnlyModNames = provider { devOnlyMods.resolvedConfiguration.resolvedArtif
 
 loom {
     runs {
-        named("client") { runDir = "run/client" }
-        named("server") { runDir = "run/server" }
+        named("client") { runDirectory.set(file("run/client")) }
+        named("server") { runDirectory.set(file("run/server")) }
 
         create("gameTestServer") {
             server()
-            runDir = "run/gametest"
-            property("neoforge.gameTestServer", "true")
-            property("neoforge.enabledGameTestNamespaces", "bedrockores_gametest")
-            property("bedrockores.gameTest.junitDir", gameTestResultsDir.get().asFile.absolutePath)
-            vmArg("-ea")
+            runDirectory.set(file("run/gametest"))
+            systemProperties.put("neoforge.gameTestServer", "true")
+            systemProperties.put("neoforge.enabledGameTestNamespaces", "bedrockores_gametest")
+            systemProperties.put("bedrockores.gameTest.junitDir", gameTestResultsDir.get().asFile.absolutePath)
+            jvmArguments.add("-ea")
         }
     }
 }
