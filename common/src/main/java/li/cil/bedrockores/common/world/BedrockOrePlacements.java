@@ -13,7 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public final class BedrockOrePlacements {
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger(BedrockOrePlacements.class);
 
     public static final TagKey<PlacedFeature> OVERWORLD_VEINS = TagKey.create(Registries.PLACED_FEATURE, id("overworld_veins"));
 
