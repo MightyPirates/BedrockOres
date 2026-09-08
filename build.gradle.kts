@@ -138,6 +138,12 @@ spotless {
         indentWithSpaces()
         importOrder("", "javax|java", "\\#")
     }
+
+    format("packageInfo") {
+        target("**/src/*/java/li/cil/**/package-info.java")
+
+        licenseHeader("/* SPDX-License-Identifier: MIT */\n\n", "(/\\*\\*|//|@|package )")
+    }
 }
 
 for (platform in enabledPlatforms.split(',')) {
@@ -185,5 +191,6 @@ for (platform in enabledPlatforms.split(',')) {
 
 serializeArchitecturyTransforms()
 registerGameTestTask()
+registerPackageInfoTask()
 registerLintTask()
 configureMavenPublishing(minecraftVersion, "https://github.com/MightyPirates/BedrockOres")
