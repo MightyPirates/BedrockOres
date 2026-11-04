@@ -1,5 +1,11 @@
 # Bedrock Ores
 
+[![build](https://img.shields.io/github/actions/workflow/status/MightyPirates/BedrockOres/build.yml?label=build)](https://github.com/MightyPirates/BedrockOres/actions/workflows/build.yml)
+[![game tests](https://img.shields.io/github/actions/workflow/status/MightyPirates/BedrockOres/test-report.yml?label=game%20tests)](https://github.com/MightyPirates/BedrockOres/actions/workflows/test-report.yml)
+[![curseforge](https://img.shields.io/curseforge/dt/275083?label=curseforge&color=f16436&logo=curseforge&logoColor=white)](https://www.curseforge.com/minecraft/mc-mods/bedrockores)
+[![modrinth](https://img.shields.io/modrinth/dt/bedrockores?label=modrinth&color=1bd96a&logo=modrinth&logoColor=white)](https://modrinth.com/mod/bedrockores)
+![loaders](https://img.shields.io/badge/loaders-Fabric%20%7C%20NeoForge-blueviolet)
+
 Bedrock Ores is a Minecraft mod that adds larger stationary ore deposits that can be harvested over a longer amount of
 time, encouraging mining outposts. It is somewhat inspired by the way resources are gathered in Factorio.
 

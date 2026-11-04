@@ -1,29 +1,29 @@
-val modId: String by project
+val modId = providers.gradleProperty("modId").get()
 val minecraftVersion: String = libs.versions.minecraft.get()
 val neoforgeVersion: String = libs.versions.neoforge.platform.get()
 val neoforgeLoaderVersion: String = libs.versions.neoforge.loader.get()
 val architecturyVersion: String = libs.versions.architectury.get()
 
-val gameTestRuntime: Configuration by configurations.creating
+val gameTestRuntime = configurations.create("gameTestRuntime")
 val gameTestResultsDir = layout.buildDirectory.dir("test-results/gameTest")
-val devOnlyMods: Configuration by configurations.creating
+val devOnlyMods = configurations.create("devOnlyMods")
 val devOnlyModNames = provider { devOnlyMods.resolvedConfiguration.resolvedArtifacts.map { it.moduleVersion.id.name } }
 
 loom {
     accessWidenerPath.set(project(":common").loom.accessWidenerPath)
 
     runs {
-        named("client") { runDir = "run/client" }
-        named("server") { runDir = "run/server" }
+        named("client") { runDirectory.set(file("run/client")) }
+        named("server") { runDirectory.set(file("run/server")) }
 
         create("gameTestServer") {
             server()
             name("Game Test Server")
             mainClass.set("net.neoforged.fml.startup.GameTestServer")
-            runDir = "run/gametest"
-            programArgs("--tests", "${modId}_gametest:*")
-            property("bedrockores.gameTest.junitDir", gameTestResultsDir.get().asFile.absolutePath)
-            vmArg("-ea")
+            runDirectory.set(file("run/gametest"))
+            programArguments.addAll("--tests", "${modId}_gametest:*")
+            systemProperties.put("bedrockores.gameTest.junitDir", gameTestResultsDir.get().asFile.absolutePath)
+            jvmArguments.add("-ea")
         }
     }
 }
